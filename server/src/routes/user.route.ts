@@ -28,8 +28,10 @@ export default class UserRoute implements IRoute {
       (req, res) => this.userController.getUsers(req, res)
     );
 
-    this.app.delete("/api/users/:id?", (req, res) =>
-      this.userController.deleteUser(req, res)
+    this.app.delete(
+      "/api/users/:id?",
+      SessionManager.authorize([Roles.ADMIN]),
+      (req, res) => this.userController.deleteUser(req, res)
     );
   }
 }

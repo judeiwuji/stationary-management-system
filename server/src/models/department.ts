@@ -2,13 +2,13 @@ import { DataTypes, Optional } from "sequelize";
 import { Column, HasMany, Model, Table, Unique } from "sequelize-typescript";
 import User from "./user";
 
-interface DepartmentAttributes {
+export interface DepartmentAttributes {
   id: number;
   name: string;
   users?: User[];
 }
 
-interface DepartmentCreationAttributes
+export interface DepartmentCreationAttributes
   extends Optional<DepartmentAttributes, "id" | "users"> {}
 
 @Table
