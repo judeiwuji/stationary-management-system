@@ -2,7 +2,7 @@ import { Application } from "express";
 import express from "express";
 import * as dotEnv from "dotenv";
 import db from "./models/engine/sequelize";
-import { Roles } from "./models/role";
+import RouteManager from "./routes/routemanager";
 dotEnv.config();
 
 class App {
@@ -13,12 +13,19 @@ class App {
     this.app = express();
     this.port = `${process.env.PORT}`;
     db.sync({ alter: false });
-
+    this.middlewares();
     this.settings();
     this.run();
   }
 
-  settings() {}
+  middlewares() {
+    this.app.use(express.json({}));
+    this.app.use(express.urlencoded({ extended: true }));
+  }
+
+  settings() {
+    new RouteManager(this.app);
+  }
 
   run() {
     this.app.listen(this.port, () => {

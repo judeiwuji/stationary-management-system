@@ -3,13 +3,13 @@ import { Column, DataType, Table, Model, HasMany } from "sequelize-typescript";
 import Requisition from "./requisition";
 import { Roles } from "./role";
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   firstname: string;
   lastname: string;
   email: string;
   password: string;
-  role: Roles;
+  role: number;
 }
 
 export interface UserCreationAttributes

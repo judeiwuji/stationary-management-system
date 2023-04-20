@@ -1,9 +1,12 @@
 import { Application } from "express";
+import UserRoute from "./user.route";
 
 export default class RouteManager {
-  constructor(app: Application) {
+  constructor(private app: Application) {
     this.register();
   }
 
-  register() {}
+  register() {
+    new UserRoute(this.app);
+  }
 }
