@@ -36,7 +36,7 @@ export default class UserService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.createMessage;
-      console.log(error);
+      console.debug(error);
     }
     return feedback;
   }
@@ -57,6 +57,7 @@ export default class UserService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.updateMessage;
+      console.debug(error);
     }
     return feedback;
   }
@@ -73,6 +74,7 @@ export default class UserService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.deleteMessage;
+      console.debug(error);
     }
     return feedback;
   }
@@ -83,7 +85,7 @@ export default class UserService {
     try {
       const pager = new Pagination(page);
       let query = {};
-      console.log(search);
+
       query = search
         ? {
             [Op.or]: {
@@ -109,6 +111,7 @@ export default class UserService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.getMessage;
+      console.debug(error);
     }
     return feedback;
   }

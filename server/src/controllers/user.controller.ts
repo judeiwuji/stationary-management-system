@@ -57,7 +57,7 @@ export default class UserController {
 
   async deleteUser(req: Request, res: Response) {
     const id: any = req.params.id;
-    console.log(id);
+
     if (!id) {
       return res.status(400).send("id is required");
     }

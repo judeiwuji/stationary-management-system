@@ -3,6 +3,7 @@ import express from "express";
 import * as dotEnv from "dotenv";
 import db from "./models/engine/sequelize";
 import RouteManager from "./routes/routemanager";
+import SessionManager from "./middlewares/session-manager";
 dotEnv.config();
 
 class App {
@@ -21,6 +22,12 @@ class App {
   middlewares() {
     this.app.use(express.json({}));
     this.app.use(express.urlencoded({ extended: true }));
+    this.app.use((req, res, next) =>
+      SessionManager.refreshToken(req, res, next)
+    );
+    this.app.use((req, res, next) =>
+      SessionManager.deserializeUser(req, res, next)
+    );
   }
 
   settings() {

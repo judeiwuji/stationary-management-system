@@ -19,7 +19,7 @@ interface SessionAttributes {
 }
 
 interface SessionCreationAttributes
-  extends Optional<SessionAttributes, "id" | "user"> {}
+  extends Optional<SessionAttributes, "id" | "user" | "valid"> {}
 
 @Table
 export default class Session extends Model<
@@ -39,6 +39,6 @@ export default class Session extends Model<
   @Column(DataType.STRING(300))
   userAgent!: number;
 
-  @Column(DataType.BOOLEAN)
+  @Column({ type: DataType.BOOLEAN, defaultValue: true })
   valid!: boolean;
 }
