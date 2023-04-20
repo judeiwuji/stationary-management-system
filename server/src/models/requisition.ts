@@ -3,37 +3,36 @@ import {
   Column,
   DataType,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
 import User from "./user";
 import Department from "./department";
 import { Optional } from "sequelize";
-import { Roles } from "./role";
+import RequisitionItem, {
+  RequistionItemAttributes as RequisitionItemAttributes,
+} from "./requisition_item";
 
-interface RequisitionAttributes {
+export interface RequisitionAttributes {
   id: number;
   userId: number;
   sourceId: number;
-  throughId: number;
-  destinationId: number;
+  through: number;
+  destination: number;
   description: string;
   status: string;
+  items: RequisitionItem[];
 }
 
-interface RequisitionCreationAttributes
-  extends Optional<RequisitionAttributes, "id"> {}
+export interface RequisitionCreationAttributes
+  extends Optional<RequisitionAttributes, "id" | "items"> {}
 
 @Table
 export default class Requisition extends Model<
   RequisitionAttributes,
   RequisitionCreationAttributes
 > {
-  @Column({
-    primaryKey: true,
-  })
-  id!: number;
-
   @ForeignKey(() => User)
   @Column
   userId!: number;
@@ -57,4 +56,7 @@ export default class Requisition extends Model<
 
   @Column(DataType.STRING(40))
   status!: string;
+
+  @HasMany(() => RequisitionItem)
+  items!: RequisitionItem[];
 }

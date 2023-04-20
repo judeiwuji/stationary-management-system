@@ -7,16 +7,19 @@ import {
 } from "sequelize-typescript";
 import Requisition from "./requisition";
 import { DataTypes, Optional } from "sequelize";
+import Stock from "./stock";
 
-interface RequistionItemAttributes {
+export interface RequistionItemAttributes {
   id: number;
   name: string;
   price: number;
   quantity: number;
+  stockId?: number;
+  stock?: Stock;
 }
 
-interface RequistionItemCreationAttributes
-  extends Optional<RequistionItem, "id"> {}
+export interface RequistionItemCreationAttributes
+  extends Optional<RequistionItemAttributes, "id" | "stock"> {}
 
 @Table
 export default class RequistionItem extends Model<
@@ -40,4 +43,11 @@ export default class RequistionItem extends Model<
 
   @Column({ allowNull: false, type: DataTypes.INTEGER })
   quantity!: number;
+
+  @ForeignKey(() => Stock)
+  @Column({ allowNull: true })
+  stockId!: number;
+
+  @BelongsTo(() => Stock)
+  stock!: Stock;
 }

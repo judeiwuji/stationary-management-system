@@ -1,0 +1,35 @@
+import { array, mixed, number, object, string } from "yup";
+import { RequisitionStatus } from "../../models/requisition-status";
+import { Roles } from "../../models/role";
+
+export const RequisitionItemCreationSchema = object({
+  name: string().required(),
+  price: number().positive(),
+  quantity: number().positive().integer().required(),
+  requisitionId: number().positive().integer().optional(),
+  stockId: number().positive().integer().optional(),
+});
+
+export const RequisitionItemUpdateSchema = object({
+  name: string().optional(),
+  price: number().optional(),
+  quantity: number().positive().integer().optional(),
+  requisitionId: number().positive().integer().optional(),
+  stockId: number().positive().integer().optional(),
+});
+
+export const RequisitionCreationSchema = object({
+  sourceId: number().positive().integer().required(),
+  through: mixed().oneOf([Roles.BURSAR]).required(),
+  destination: mixed().oneOf([Roles.RECTOR]).required(),
+  description: string().required(),
+  items: array().of(RequisitionItemCreationSchema).min(1),
+});
+
+export const RequisitionUpdateSchema = object({
+  sourceId: number().positive().integer().optional(),
+  through: number().positive().integer().optional(),
+  destination: number().positive().integer().optional(),
+  description: string().required(),
+  status: mixed().oneOf(Object.values(RequisitionStatus)).optional(),
+});

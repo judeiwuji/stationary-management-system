@@ -12,6 +12,9 @@ import Chat from "../chat";
 import Session from "../session";
 import Comment from "../comment";
 import Purchase from "../purchase";
+import Recommendation from "../recommendation";
+import Audit from "../audit";
+import Verification from "../verification";
 dotenv.config();
 
 const db = new Sequelize({
@@ -39,6 +42,9 @@ const db = new Sequelize({
     Session,
     Comment,
     Purchase,
+    Recommendation,
+    Audit,
+    Verification,
   ],
 });
 
