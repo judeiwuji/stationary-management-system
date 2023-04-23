@@ -12,7 +12,7 @@ import Recommendation from "./recommendation";
 import Audit from "./audit";
 import { Optional } from "sequelize";
 
-interface VerificationAttributes {
+export interface VerificationAttributes {
   id: number;
   status: string;
   requisitionId: number;
@@ -25,10 +25,10 @@ interface VerificationAttributes {
   user: User;
 }
 
-interface VerificationCreationAttributes
+export interface VerificationCreationAttributes
   extends Optional<
     VerificationAttributes,
-    "id" | "user" | "requisition" | "recommendation"
+    "id" | "user" | "requisition" | "recommendation" | "audit"
   > {}
 
 @Table
