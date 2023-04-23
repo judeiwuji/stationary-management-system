@@ -5,7 +5,7 @@ import Department from "../department";
 import User from "../user";
 import Stock from "../stock";
 import Requisition from "../requisition";
-import RequistionItem from "../requisition_item";
+import RequisitionItem from "../requisition_item";
 import Order from "../order";
 import OrderItem from "../order_item";
 import Chat from "../chat";
@@ -35,7 +35,7 @@ const db = new Sequelize({
     User,
     Stock,
     Requisition,
-    RequistionItem,
+    RequisitionItem,
     Order,
     OrderItem,
     Chat,

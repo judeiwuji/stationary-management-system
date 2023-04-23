@@ -4,9 +4,9 @@ import { Roles } from "../../models/role";
 
 export const RequisitionItemCreationSchema = object({
   name: string().required(),
-  price: number().positive(),
+  price: number().positive().required(),
   quantity: number().positive().integer().required(),
-  requisitionId: number().positive().integer().optional(),
+  requisitionId: number().positive().integer().required(),
   stockId: number().positive().integer().optional(),
 });
 
@@ -27,9 +27,10 @@ export const RequisitionCreationSchema = object({
 });
 
 export const RequisitionUpdateSchema = object({
+  id: string().required(),
   sourceId: number().positive().integer().optional(),
   through: number().positive().integer().optional(),
   destination: number().positive().integer().optional(),
-  description: string().required(),
+  description: string().optional(),
   status: mixed().oneOf(Object.values(RequisitionStatus)).optional(),
 });

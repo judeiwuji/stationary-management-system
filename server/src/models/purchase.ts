@@ -8,7 +8,7 @@ import {
 } from "sequelize-typescript";
 import Stock from "./stock";
 import { Optional } from "sequelize";
-import RequistionItem from "./requisition_item";
+import RequisitionItem from "./requisition_item";
 
 interface PurchaseAttributes {
   id: number;
@@ -27,12 +27,12 @@ export default class Purchase extends Model<
   PurchaseAttributes,
   PurchaseCreationAttributes
 > {
-  @ForeignKey(() => RequistionItem)
+  @ForeignKey(() => RequisitionItem)
   @Column
   requisitionItemId!: number;
 
-  @BelongsTo(() => RequistionItem)
-  requisitionItem!: RequistionItem;
+  @BelongsTo(() => RequisitionItem)
+  requisitionItem!: RequisitionItem;
 
   @Column({
     type: DataType.STRING(300),

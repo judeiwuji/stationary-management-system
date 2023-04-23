@@ -9,8 +9,9 @@ import Requisition from "./requisition";
 import { DataTypes, Optional } from "sequelize";
 import Stock from "./stock";
 
-export interface RequistionItemAttributes {
+export interface RequisitionItemAttributes {
   id: number;
+  requisitionId: number;
   name: string;
   price: number;
   quantity: number;
@@ -18,13 +19,13 @@ export interface RequistionItemAttributes {
   stock?: Stock;
 }
 
-export interface RequistionItemCreationAttributes
-  extends Optional<RequistionItemAttributes, "id" | "stock"> {}
+export interface RequisitionItemCreationAttributes
+  extends Optional<RequisitionItemAttributes, "id" | "stock"> {}
 
 @Table
-export default class RequistionItem extends Model<
-  RequistionItemAttributes,
-  RequistionItemCreationAttributes
+export default class RequisitionItem extends Model<
+  RequisitionItemAttributes,
+  RequisitionItemCreationAttributes
 > {
   @ForeignKey(() => Requisition)
   @Column

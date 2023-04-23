@@ -10,9 +10,7 @@ import {
 import User from "./user";
 import Department from "./department";
 import { Optional } from "sequelize";
-import RequisitionItem, {
-  RequistionItemAttributes as RequisitionItemAttributes,
-} from "./requisition_item";
+import RequisitionItem from "./requisition_item";
 
 export interface RequisitionAttributes {
   id: number;
@@ -45,10 +43,10 @@ export default class Requisition extends Model<
   @BelongsTo(() => Department)
   department!: Department;
 
-  @Column(DataType.STRING)
+  @Column(DataType.NUMBER)
   through!: number;
 
-  @Column(DataType.STRING)
+  @Column(DataType.NUMBER)
   destination!: number;
 
   @Column(DataType.STRING(300))

@@ -8,8 +8,9 @@ import Requisition, {
   RequisitionCreationAttributes,
 } from "../models/requisition";
 import { RequisitionStatus } from "../models/requisition-status";
-import RequistionItem, {
-  RequistionItemCreationAttributes,
+import RequisitionItem, {
+  RequisitionItemAttributes,
+  RequisitionItemCreationAttributes,
 } from "../models/requisition_item";
 import { UserAttributes } from "../models/user";
 
@@ -33,7 +34,7 @@ export default class RequisitionService {
         },
         { transaction }
       );
-      const items: RequistionItemCreationAttributes[] = data.items
+      const items: RequisitionItemCreationAttributes[] = data.items
         ? data.items.map((d) => ({
             name: d.name,
             price: d.price,
@@ -42,11 +43,11 @@ export default class RequisitionService {
             stockId: d.stockId,
           }))
         : [];
-      await RequistionItem.bulkCreate(items, { transaction });
+      await RequisitionItem.bulkCreate(items, { transaction });
       transaction.commit();
 
       feedback.data = (await Requisition.findByPk(requisition.id, {
-        include: [RequistionItem],
+        include: [RequisitionItem],
       })) as Requisition;
     } catch (error) {
       await transaction.rollback();
@@ -64,7 +65,7 @@ export default class RequisitionService {
       const pager = new Pagination(page);
       const { rows, count } = await Requisition.findAndCountAll({
         where: query,
-        include: [RequistionItem],
+        include: [RequisitionItem],
         offset: pager.startIndex,
         limit: pager.pageSize,
       });
@@ -107,6 +108,42 @@ export default class RequisitionService {
 
     try {
       const result = await Requisition.destroy({ where: { id } });
+      if (result === 0) {
+        feedback.success = false;
+        feedback.message = "Not found";
+      }
+    } catch (error) {
+      feedback.success = false;
+      feedback.message = Errors.deleteMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async addRequisitionItem(data: RequisitionItemCreationAttributes) {
+    const feedback = new Feedback();
+
+    try {
+      feedback.data = await RequisitionItem.create({
+        name: data.name,
+        price: data.price,
+        quantity: data.quantity,
+        stockId: data.stockId,
+        requisitionId: data.requisitionId,
+      });
+    } catch (error) {
+      feedback.success = false;
+      feedback.message = Errors.createMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async deleteRequisitionItem(id: number) {
+    const feedback = new Feedback();
+
+    try {
+      const result = await RequisitionItem.destroy({ where: { id } });
       if (result === 0) {
         feedback.success = false;
         feedback.message = "Not found";

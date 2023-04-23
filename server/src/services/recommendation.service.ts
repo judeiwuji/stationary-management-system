@@ -1,29 +1,33 @@
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
 import Pagination from "../models/pagination";
+import Recommendation, {
+  RecommendationAttributes,
+  RecommendationCreationAttributes,
+} from "../models/recommendation";
 import Requisition, {
   RequisitionAttributes,
   RequisitionCreationAttributes,
 } from "../models/requisition";
 import { RequisitionStatus } from "../models/requisition-status";
-import { UserAttributes } from "../models/user";
+import User, { UserAttributes } from "../models/user";
 
 export default class RecommendationService {
   async createRecommendation(
-    data: RequisitionCreationAttributes,
+    data: RecommendationCreationAttributes,
     user: UserAttributes
   ) {
-    const feedback = new Feedback<Requisition>();
+    const feedback = new Feedback<Recommendation>();
 
     try {
-      const feedback = await Requisition.create({
-        description: data.description,
-        destination: data.destination,
-        through: data.through,
-        sourceId: data.sourceId,
-        status: RequisitionStatus.PENDING,
-        userId: user.id,
-      });
+      feedback.data = await Recommendation.create(
+        {
+          requisitionId: data.requisitionId,
+          status: RequisitionStatus.PENDING,
+          userId: user.id,
+        },
+        { include: [User, { model: Requisition, include: [User] }] }
+      );
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.createMessage;
@@ -33,12 +37,13 @@ export default class RecommendationService {
   }
 
   async getRecommendations(page = 1, filters: any) {
-    const feedback = new Feedback<Requisition>();
+    const feedback = new Feedback<Recommendation>();
     try {
       const query = filters ? { ...filters } : {};
       const pager = new Pagination(page);
-      const { rows, count } = await Requisition.findAndCountAll({
+      const { rows, count } = await Recommendation.findAndCountAll({
         where: query,
+        include: [User, { model: Requisition, include: [User] }],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);
@@ -51,21 +56,19 @@ export default class RecommendationService {
     return feedback;
   }
 
-  async updateRecommendation(data: RequisitionAttributes) {
+  async updateRecommendation(data: RecommendationAttributes) {
     const feedback = new Feedback();
 
     try {
-      await Requisition.update(
+      await Recommendation.update(
         {
-          description: data.description,
-          destination: data.destination,
-          through: data.through,
-          sourceId: data.sourceId,
           status: data.status,
         },
         { where: { id: data.id } }
       );
-      feedback.data = await Requisition.findByPk(data.id);
+      feedback.data = await Recommendation.findByPk(data.id, {
+        include: [User, { model: Requisition, include: [User] }],
+      });
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.updateMessage;
@@ -78,7 +81,7 @@ export default class RecommendationService {
     const feedback = new Feedback();
 
     try {
-      const result = await Requisition.destroy({ where: { id } });
+      const result = await Recommendation.destroy({ where: { id } });
       if (result === 0) {
         feedback.success = false;
         feedback.message = "Not found";

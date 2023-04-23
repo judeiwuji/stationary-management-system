@@ -19,7 +19,14 @@ export default class RequisitionRoute implements IRoute {
 
     this.app.get(
       "/api/requisitions",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      SessionManager.authorize([
+        Roles.HOD,
+        Roles.STORE_MANAGER,
+        Roles.BURSAR,
+        Roles.AUDITOR,
+        Roles.PURCHASE_OFFICIER,
+        Roles.RECTOR,
+      ]),
       (req, res) => this.requisitionController.getRequisitions(req, res)
     );
 
@@ -30,9 +37,21 @@ export default class RequisitionRoute implements IRoute {
     );
 
     this.app.delete(
-      "/api/requisition",
+      "/api/requisitions/:id",
       SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER]),
       (req, res) => this.requisitionController.deleteRequisition(req, res)
+    );
+
+    this.app.post(
+      "/api/requisitions/items",
+      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      (req, res) => this.requisitionController.addRequisitionItem(req, res)
+    );
+
+    this.app.delete(
+      "/api/requisitions/items/:id",
+      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      (req, res) => this.requisitionController.deleteRequisitionItem(req, res)
     );
   }
 }
