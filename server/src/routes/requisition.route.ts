@@ -13,7 +13,7 @@ export default class RequisitionRoute implements IRoute {
   routes(): void {
     this.app.post(
       "/api/requisitions",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER]),
+      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER]),
       (req, res) => this.requisitionController.createRequisition(req, res)
     );
 
@@ -21,7 +21,7 @@ export default class RequisitionRoute implements IRoute {
       "/api/requisitions",
       SessionManager.authorize([
         Roles.HOD,
-        Roles.STORE_MANAGER,
+        Roles.STOCK_MANAGER,
         Roles.BURSAR,
         Roles.AUDITOR,
         Roles.PURCHASE_OFFICIER,
@@ -32,25 +32,25 @@ export default class RequisitionRoute implements IRoute {
 
     this.app.put(
       "/api/requisitions",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER, Roles.BURSAR]),
       (req, res) => this.requisitionController.updateRequisition(req, res)
     );
 
     this.app.delete(
       "/api/requisitions/:id",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER]),
+      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER]),
       (req, res) => this.requisitionController.deleteRequisition(req, res)
     );
 
     this.app.post(
       "/api/requisitions/items",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER, Roles.BURSAR]),
       (req, res) => this.requisitionController.addRequisitionItem(req, res)
     );
 
     this.app.delete(
       "/api/requisitions/items/:id",
-      SessionManager.authorize([Roles.HOD, Roles.STORE_MANAGER, Roles.BURSAR]),
+      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER, Roles.BURSAR]),
       (req, res) => this.requisitionController.deleteRequisitionItem(req, res)
     );
   }
