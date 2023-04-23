@@ -6,6 +6,7 @@ import RequisitionRoute from "./requisition.route";
 import RecommendationRoute from "./recommendation.route";
 import AuditRoute from "./audit.route";
 import VerificationRoute from "./verification.route";
+import ReceiptRoute from "./receipt.route";
 
 export default class RouteManager {
   constructor(private app: Application) {
@@ -20,5 +21,6 @@ export default class RouteManager {
     new RecommendationRoute(this.app);
     new AuditRoute(this.app);
     new VerificationRoute(this.app);
+    new ReceiptRoute(this.app);
   }
 }

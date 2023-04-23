@@ -11,7 +11,7 @@ import OrderItem from "../order_item";
 import Chat from "../chat";
 import Session from "../session";
 import Comment from "../comment";
-import Purchase from "../purchase";
+import Receipt from "../receipt";
 import Recommendation from "../recommendation";
 import Audit from "../audit";
 import Verification from "../verification";
@@ -41,7 +41,7 @@ const db = new Sequelize({
     Chat,
     Session,
     Comment,
-    Purchase,
+    Receipt,
     Recommendation,
     Audit,
     Verification,

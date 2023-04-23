@@ -4,6 +4,7 @@ import * as dotEnv from "dotenv";
 import db from "./models/engine/sequelize";
 import RouteManager from "./routes/routemanager";
 import SessionManager from "./middlewares/session-manager";
+import path from "path";
 dotEnv.config();
 
 class App {
@@ -20,6 +21,7 @@ class App {
   }
 
   middlewares() {
+    this.app.use(express.static(path.join(__dirname, "../", "public")));
     this.app.use(express.json({}));
     this.app.use(express.urlencoded({ extended: true }));
     this.app.use((req, res, next) =>
