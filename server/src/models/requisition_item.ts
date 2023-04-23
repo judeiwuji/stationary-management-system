@@ -12,7 +12,6 @@ import Stock from "./stock";
 export interface RequisitionItemAttributes {
   id: number;
   requisitionId: number;
-  name: string;
   price: number;
   quantity: number;
   stockId?: number;
@@ -32,12 +31,6 @@ export default class RequisitionItem extends Model<
   requisitionId!: number;
   @BelongsTo(() => Requisition)
   requisition!: Requisition;
-
-  @Column({
-    allowNull: false,
-    type: DataTypes.STRING(250),
-  })
-  name!: string;
 
   @Column({ allowNull: false, type: DataTypes.DECIMAL(10, 2) })
   price!: number;

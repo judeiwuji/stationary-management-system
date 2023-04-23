@@ -35,7 +35,6 @@ export default class RequisitionService {
       );
       const items: RequisitionItemCreationAttributes[] = data.items
         ? data.items.map((d) => ({
-            name: d.name,
             price: d.price,
             quantity: d.quantity,
             requisitionId: requisition.id,
@@ -124,7 +123,6 @@ export default class RequisitionService {
 
     try {
       feedback.data = await RequisitionItem.create({
-        name: data.name,
         price: data.price,
         quantity: data.quantity,
         stockId: data.stockId,

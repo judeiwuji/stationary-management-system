@@ -7,7 +7,7 @@ export const RequisitionItemCreationSchema = object({
   price: number().positive().required(),
   quantity: number().positive().integer().required(),
   requisitionId: number().positive().integer().required(),
-  stockId: number().positive().integer().optional(),
+  stockId: number().positive().integer().required(),
 });
 
 export const RequisitionItemUpdateSchema = object({
