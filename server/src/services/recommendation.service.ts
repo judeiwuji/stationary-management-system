@@ -1,3 +1,5 @@
+import UserDTO from "../models/DTO/UserDTO";
+import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
 import Pagination from "../models/pagination";
@@ -5,10 +7,7 @@ import Recommendation, {
   RecommendationAttributes,
   RecommendationCreationAttributes,
 } from "../models/recommendation";
-import Requisition, {
-  RequisitionAttributes,
-  RequisitionCreationAttributes,
-} from "../models/requisition";
+import Requisition from "../models/requisition";
 import { RequisitionStatus } from "../models/requisition-status";
 import User, { UserAttributes } from "../models/user";
 
@@ -18,17 +17,33 @@ export default class RecommendationService {
     user: UserAttributes
   ) {
     const feedback = new Feedback<Recommendation>();
+    const transaction = await db.transaction();
 
     try {
       feedback.data = await Recommendation.create(
         {
           requisitionId: data.requisitionId,
-          status: RequisitionStatus.PENDING,
+          status: data.status,
           userId: user.id,
         },
-        { include: [User, { model: Requisition, include: [User] }] }
+        {
+          include: [
+            { model: User, attributes: UserDTO },
+            {
+              model: Requisition,
+              include: [{ model: User, attributes: UserDTO }],
+            },
+          ],
+          transaction,
+        }
       );
+      Requisition.update(
+        { status: data.status },
+        { where: { id: data.requisitionId }, transaction }
+      );
+      await transaction.commit();
     } catch (error) {
+      await transaction.rollback();
       feedback.success = false;
       feedback.message = Errors.createMessage;
       console.debug(error);
@@ -43,7 +58,13 @@ export default class RecommendationService {
       const pager = new Pagination(page);
       const { rows, count } = await Recommendation.findAndCountAll({
         where: query,
-        include: [User, { model: Requisition, include: [User] }],
+        include: [
+          { model: User, attributes: UserDTO },
+          {
+            model: Requisition,
+            include: [{ model: User, attributes: UserDTO }],
+          },
+        ],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);
@@ -58,18 +79,43 @@ export default class RecommendationService {
 
   async updateRecommendation(data: RecommendationAttributes) {
     const feedback = new Feedback();
+    const transaction = await db.transaction();
 
     try {
+      const recommedation = await Recommendation.findByPk(data.id, {
+        transaction,
+      });
+      if (!recommedation) {
+        feedback.message = "Recommendation not found";
+        feedback.success = false;
+        await transaction.rollback();
+        return feedback;
+      }
+
       await Recommendation.update(
         {
           status: data.status,
         },
-        { where: { id: data.id } }
+        { where: { id: data.id }, transaction }
       );
+
+      await Requisition.update(
+        { status: data.status },
+        { where: { id: recommedation.requisitionId }, transaction }
+      );
+      transaction.commit();
+
       feedback.data = await Recommendation.findByPk(data.id, {
-        include: [User, { model: Requisition, include: [User] }],
+        include: [
+          { model: User, attributes: UserDTO },
+          {
+            model: Requisition,
+            include: [{ model: User, attributes: UserDTO }],
+          },
+        ],
       });
     } catch (error) {
+      await transaction.rollback();
       feedback.success = false;
       feedback.message = Errors.updateMessage;
       console.debug(error);

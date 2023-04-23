@@ -1,4 +1,3 @@
-import { Transaction } from "sequelize";
 import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";

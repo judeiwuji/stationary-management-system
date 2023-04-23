@@ -11,7 +11,7 @@ import User from "./user";
 import Recommendation from "./recommendation";
 import { Optional } from "sequelize";
 
-interface AuditAttributes {
+export interface AuditAttributes {
   id: number;
   status: string;
   requisitionId: number;
@@ -22,7 +22,7 @@ interface AuditAttributes {
   user: User;
 }
 
-interface AuditCreationAttributes
+export interface AuditCreationAttributes
   extends Optional<
     AuditAttributes,
     "id" | "user" | "requisition" | "recommendation"
