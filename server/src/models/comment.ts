@@ -10,7 +10,7 @@ import Requisition from "./requisition";
 import User from "./user";
 import { Optional } from "sequelize";
 
-interface CommentAttributes {
+export interface CommentAttributes {
   id: number;
   content: string;
   userId: number;
@@ -19,7 +19,7 @@ interface CommentAttributes {
   requisition?: Requisition;
 }
 
-interface CommentCreationAttributes
+export interface CommentCreationAttributes
   extends Optional<CommentAttributes, "id" | "userId" | "requisitionId"> {}
 
 @Table

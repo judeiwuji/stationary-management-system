@@ -3,9 +3,12 @@ import IRoute from "../models/interfaces/iroute";
 import RequisitionController from "../controllers/requisition.controller";
 import SessionManager from "../middlewares/session-manager";
 import { Roles } from "../models/role";
+import CommentController from "../controllers/comment.controller";
 
 export default class RequisitionRoute implements IRoute {
   requisitionController = new RequisitionController();
+  commentController = new CommentController();
+
   constructor(private app: Application) {
     this.routes();
   }
@@ -52,6 +55,18 @@ export default class RequisitionRoute implements IRoute {
       "/api/requisitions/items/:id",
       SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER, Roles.BURSAR]),
       (req, res) => this.requisitionController.deleteRequisitionItem(req, res)
+    );
+
+    this.app.post(
+      "/api/requisitions/:id/comments",
+      SessionManager.ensureAuthenticated,
+      (req, res) => this.commentController.createComment(req, res)
+    );
+
+    this.app.get(
+      "/api/requisitions/:id/comments",
+      SessionManager.ensureAuthenticated,
+      (req, res) => this.commentController.getComments(req, res)
     );
   }
 }

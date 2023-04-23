@@ -1,3 +1,5 @@
+import UserDTO from "../models/DTO/UserDTO";
+import Comment from "../models/comment";
 import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
@@ -11,7 +13,7 @@ import RequisitionItem, {
   RequisitionItemAttributes,
   RequisitionItemCreationAttributes,
 } from "../models/requisition_item";
-import { UserAttributes } from "../models/user";
+import User, { UserAttributes } from "../models/user";
 
 export default class RequisitionService {
   async createRequisition(
@@ -45,7 +47,11 @@ export default class RequisitionService {
       transaction.commit();
 
       feedback.data = (await Requisition.findByPk(requisition.id, {
-        include: [RequisitionItem],
+        include: [
+          { model: User, attributes: UserDTO },
+          RequisitionItem,
+          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
+        ],
       })) as Requisition;
     } catch (error) {
       await transaction.rollback();
@@ -63,7 +69,11 @@ export default class RequisitionService {
       const pager = new Pagination(page);
       const { rows, count } = await Requisition.findAndCountAll({
         where: query,
-        include: [RequisitionItem],
+        include: [
+          { model: User, attributes: UserDTO },
+          RequisitionItem,
+          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
+        ],
         offset: pager.startIndex,
         limit: pager.pageSize,
       });
@@ -92,7 +102,13 @@ export default class RequisitionService {
         },
         { where: { id: data.id } }
       );
-      feedback.data = await Requisition.findByPk(data.id);
+      feedback.data = await Requisition.findByPk(data.id, {
+        include: [
+          { model: User, attributes: UserDTO },
+          RequisitionItem,
+          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
+        ],
+      });
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.updateMessage;

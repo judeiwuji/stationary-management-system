@@ -11,6 +11,7 @@ import User from "./user";
 import Department from "./department";
 import { Optional } from "sequelize";
 import RequisitionItem from "./requisition_item";
+import Comment from "./comment";
 
 export interface RequisitionAttributes {
   id: number;
@@ -57,4 +58,7 @@ export default class Requisition extends Model<
 
   @HasMany(() => RequisitionItem)
   items!: RequisitionItem[];
+
+  @HasMany(() => Comment)
+  comments!: Comment[];
 }

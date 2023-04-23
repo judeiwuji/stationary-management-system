@@ -8,6 +8,7 @@ import AuditRoute from "./audit.route";
 import VerificationRoute from "./verification.route";
 import ReceiptRoute from "./receipt.route";
 import StockRoute from "./stock.route";
+import CommentRoute from "./comment.route";
 
 export default class RouteManager {
   constructor(private app: Application) {
@@ -24,5 +25,6 @@ export default class RouteManager {
     new VerificationRoute(this.app);
     new ReceiptRoute(this.app);
     new StockRoute(this.app);
+    new CommentRoute(this.app);
   }
 }

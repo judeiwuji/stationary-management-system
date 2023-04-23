@@ -63,4 +63,13 @@ export default class SessionManager {
       res.status(403).send("Access forbidden");
     };
   }
+
+  static ensureAuthenticated(req: IRequest, res: Response, next: NextFunction) {
+    const authorization: any =
+      req.headers.authorization || req.query.authorization;
+    if (!authorization) {
+      return res.status(401).send("Not authenticated");
+    }
+    next();
+  }
 }
