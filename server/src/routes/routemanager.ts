@@ -10,6 +10,7 @@ import ReceiptRoute from "./receipt.route";
 import StockRoute from "./stock.route";
 import CommentRoute from "./comment.route";
 import OrderRoute from "./order.route";
+import DashboardRoute from "./dashbard.route";
 
 export default class RouteManager {
   constructor(private app: Application) {
@@ -28,5 +29,6 @@ export default class RouteManager {
     new StockRoute(this.app);
     new CommentRoute(this.app);
     new OrderRoute(this.app);
+    new DashboardRoute(this.app);
   }
 }
