@@ -1,4 +1,4 @@
-import { AuthRequest } from "../models/auth";
+import { AuthRequest, AuthResponse } from "../models/auth";
 import Feedback from "../models/feedback";
 import {
   AccessTokenPayload,
@@ -85,6 +85,7 @@ export default class AuthService {
         user: session.userId,
         session: session.id,
       });
+
       const refreshToken = this.createRefreshToken({ user: session.userId });
       await Session.update(
         { refreshToken: refreshToken },
@@ -100,7 +101,7 @@ export default class AuthService {
   }
 
   async authenticate(data: AuthRequest) {
-    const feedback = new Feedback<string>();
+    const feedback = new Feedback<AuthResponse>();
     try {
       const user = await User.findOne({ where: { email: data.email } });
 
@@ -124,10 +125,16 @@ export default class AuthService {
         userAgent: data.userAgent,
         valid: true,
       });
-      feedback.data = this.createAccessToken({
-        user: user.id,
-        session: session.id,
-      });
+
+      feedback.data = {
+        token: this.createAccessToken({
+          user: user.id,
+          session: session.id,
+        }),
+        role: Roles[user.role].toLowerCase(),
+        redirect: `/dashboard`,
+        name: `${user.firstname} ${user.lastname}`,
+      };
     } catch (error) {
       feedback.success = false;
       feedback.message = "Authentication failed";

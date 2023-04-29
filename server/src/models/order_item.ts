@@ -10,7 +10,7 @@ import Order from "./order";
 import Stock from "./stock";
 import { Optional } from "sequelize";
 
-interface OrderItemAttributes {
+export interface OrderItemAttributes {
   id: number;
   orderId: number;
   stockId: number;
@@ -20,7 +20,7 @@ interface OrderItemAttributes {
   stock: Stock;
 }
 
-interface OrderItemCreationAttributes
+export interface OrderItemCreationAttributes
   extends Optional<OrderItemAttributes, "id" | "order" | "stock"> {}
 
 @Table

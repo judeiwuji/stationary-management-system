@@ -1,0 +1,16 @@
+.logo {
+  color: #020233;
+  font-weight: 700;
+}
+
+.user-details-pane {
+  text-transform: capitalize;
+}
+
+.avatar {
+  width: 2.5em;
+  height: 2.5em;
+  background-color: #f3f3f3;
+  border-radius: 50%;
+  border: 1px solid #404040;
+}

@@ -1,0 +1,39 @@
+<ul class="nav flex-column sidebar-nav">
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      aria-current="page"
+      routerLink="/dashboard"
+      [ngClass]="{ active: currentURL === '/dashboard' }"
+    >
+      <div class="d-flex align-items-center">
+        <fa-icon [icon]="faTachometer"></fa-icon>
+        Dashboard
+      </div>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLink="/users"
+      [ngClass]="{ active: currentURL === '/users' }"
+    >
+      <div class="d-flex align-items-center">
+        <fa-icon [icon]="faUsers"></fa-icon>
+        Users
+      </div>
+    </a>
+  </li>
+  <li class="nav-item">
+    <a
+      class="nav-link"
+      routerLink="/departments"
+      [ngClass]="{ active: currentURL === '/departments' }"
+    >
+      <div class="d-flex align-items-center">
+        <fa-icon [icon]="faBookJournalWhills"></fa-icon>
+        Departments
+      </div>
+    </a>
+  </li>
+</ul>

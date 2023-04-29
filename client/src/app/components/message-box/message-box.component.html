@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body py-5">
+  <p class="text-center mb-0" [innerHTML]="options.message"></p>
+</div>
+
+<div class="modal-footer">
+  <div [ngSwitch]="options.type">
+    <div *ngSwitchCase="MessageBoxTypes.INFO">
+      <button class="btn btn-sm btn-full" (click)="close()">Close</button>
+    </div>
+    <div *ngSwitchCase="MessageBoxTypes.PROMPT">
+      <button class="btn btn-sm btn-light btn-rounded me-2" (click)="cancel()">
+        Cancel
+      </button>
+      <button class="btn btn-sm btn-full" (click)="confirm()">Confirm</button>
+    </div>
+  </div>
+</div>

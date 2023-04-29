@@ -5,4 +5,5 @@ export default class Feedback<T> {
   message!: string;
   page!: number;
   totalPages!: number;
+  redirect?: string;
 }

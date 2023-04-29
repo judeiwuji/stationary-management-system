@@ -9,11 +9,11 @@ export default class AuthRoute implements IRoute {
   }
 
   routes(): void {
-    this.app.post("/api/login", (req, res) =>
+    this.app.post("/api/auth/login", (req, res) =>
       this.authController.login(req, res)
     );
 
-    this.app.post("/api/logout", (req, res) =>
+    this.app.post("/api/auth/logout", (req, res) =>
       this.authController.logout(req, res)
     );
   }

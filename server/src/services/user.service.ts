@@ -103,6 +103,7 @@ export default class UserService {
         offset: pager.startIndex,
         limit: pager.pageSize,
         where: query,
+        order: [["lastname", "ASC"]],
       });
       feedback.totalPages = pager.totalPages(
         await User.count({ where: query }),

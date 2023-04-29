@@ -19,6 +19,7 @@ export default class SessionManager {
       const token = authorization.split(" ")[1];
       const verified = authService.verifyToken(token);
 
+      console.log(verified);
       if (!verified.expired && verified.data.user) {
         req.user = await User.findByPk(verified.data.user, {
           attributes: UserDTO,
@@ -44,6 +45,7 @@ export default class SessionManager {
             return res.status(401).send(feedback.message);
           }
           console.log(`Refreshed: ${feedback.data}`);
+          req.headers["authorization"] = `Bearer ${feedback.data}`;
           res.setHeader("x-access-refresh", feedback.data);
         }
       } else {
@@ -67,7 +69,7 @@ export default class SessionManager {
   static ensureAuthenticated(req: IRequest, res: Response, next: NextFunction) {
     const authorization: any =
       req.headers.authorization || req.query.authorization;
-    if (!authorization) {
+    if (!authorization || !req.user) {
       return res.status(401).send("Not authenticated");
     }
     next();

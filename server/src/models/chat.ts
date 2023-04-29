@@ -8,7 +8,7 @@ import {
 import User from "./user";
 import { Optional } from "sequelize";
 
-interface ChatAttributes {
+export interface ChatAttributes {
   id: number;
   userId: number;
   otherId: number;
@@ -17,7 +17,7 @@ interface ChatAttributes {
   other?: User;
 }
 
-interface ChatCreationAttributes
+export interface ChatCreationAttributes
   extends Optional<ChatAttributes, "id" | "user" | "other"> {}
 
 @Table

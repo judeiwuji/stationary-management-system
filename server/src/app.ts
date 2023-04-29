@@ -5,6 +5,9 @@ import db from "./models/engine/sequelize";
 import RouteManager from "./routes/routemanager";
 import SessionManager from "./middlewares/session-manager";
 import path from "path";
+import cors from "cors";
+import morgan from "morgan";
+
 dotEnv.config();
 
 class App {
@@ -21,6 +24,8 @@ class App {
   }
 
   middlewares() {
+    this.app.use(cors({ exposedHeaders: ["x-access", "x-access-refresh"] }));
+    this.app.use(morgan("dev"));
     this.app.use(express.static(path.join(__dirname, "../", "public")));
     this.app.use(express.json({}));
     this.app.use(express.urlencoded({ extended: true }));

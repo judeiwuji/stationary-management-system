@@ -17,9 +17,10 @@ export default class AuthController {
 
     const feedback = await this.authService.authenticate(request);
     if (!feedback.success) {
-      return res.status(400).send(feedback);
+      res.statusMessage = feedback.message;
+      return res.status(400).send(feedback.message);
     }
-    res.setHeader("x-access", feedback.data);
+    res.setHeader("x-access", feedback.data.token);
     res.send(feedback);
   }
 

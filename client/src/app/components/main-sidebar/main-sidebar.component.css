@@ -1,0 +1,18 @@
+.sidebar-nav li:not(:last-child) {
+  margin-bottom: 10px;
+}
+
+.sidebar-nav li a {
+  color: #a7a7a7;
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.sidebar-nav li a.active {
+  color: #404040;
+}
+
+.sidebar-nav li a fa-icon {
+  font-size: 1.2rem;
+  margin-right: 1.3rem;
+}

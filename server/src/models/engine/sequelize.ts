@@ -46,6 +46,7 @@ const db = new Sequelize({
     Audit,
     Verification,
   ],
+  logging: false,
 });
 
 export default db;

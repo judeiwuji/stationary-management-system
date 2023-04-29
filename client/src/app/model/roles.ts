@@ -1,0 +1,9 @@
+export enum Roles {
+  ADMIN = 1000,
+  HOD = 1001,
+  BURSAR = 1002,
+  AUDITOR = 1003,
+  RECTOR = 1004,
+  PURCHASE_OFFICIER = 1005,
+  STOCK_MANAGER = 1006,
+}

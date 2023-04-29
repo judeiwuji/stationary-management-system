@@ -5,4 +5,5 @@ export enum RequisitionStatus {
   VERIFIED = "verified",
   APPROVED = "approved",
   CANCELED = "canceled",
+  PURCHASED = "purchased",
 }

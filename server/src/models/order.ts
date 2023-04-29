@@ -2,23 +2,29 @@ import {
   BelongsTo,
   Column,
   ForeignKey,
+  HasMany,
   Model,
   Table,
 } from "sequelize-typescript";
 import User from "./user";
 import Requisition from "./requisition";
 import { Optional } from "sequelize";
+import OrderItem from "./order_item";
+import RequisitionItem from "./requisition_item";
 
-interface OrderAttributes {
+export interface OrderAttributes {
   id: number;
   userId: number;
   requisitionId: number;
   user: User;
   requisition: Requisition;
+  items: OrderItem[];
 }
 
-interface OrderCreationAttributes
-  extends Optional<OrderAttributes, "id" | "user" | "requisition"> {}
+export interface OrderCreationAttributes
+  extends Optional<OrderAttributes, "id" | "user" | "requisition" | "items"> {
+  requisitionItems?: RequisitionItem[];
+}
 
 @Table
 export default class Order extends Model<
@@ -38,4 +44,7 @@ export default class Order extends Model<
 
   @BelongsTo(() => Requisition)
   requisition?: Requisition;
+
+  @HasMany(() => OrderItem)
+  items!: OrderItem[];
 }
