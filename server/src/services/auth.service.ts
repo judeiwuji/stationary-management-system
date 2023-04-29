@@ -160,6 +160,7 @@ export default class AuthService {
   async isValidSession(id: number) {
     try {
       const session = await Session.findOne({ where: { id, valid: true } });
+      console.log(`${id}: Session: ${session}`);
       return session !== null;
     } catch (error) {
       console.log(error);

@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span *ngIf="department">Edit</span>
+    <span *ngIf="!department">New</span>
+  </h5>
+  <button class="btn-close" (click)="close()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="deptForm" (ngSubmit)="save()">
+    <div class="mb-3">
+      <label for="dept-name">Department name</label>
+      <input
+        type="text"
+        placeholder="Department name"
+        id="dept-name"
+        class="form-control"
+        formControlName="name"
+      />
+    </div>
+
+    <div class="d-grid">
+      <button class="btn btn-full">
+        <span *ngIf="department">Save</span>
+        <span *ngIf="!department">Create</span>
+      </button>
+    </div>
+  </form>
+</div>

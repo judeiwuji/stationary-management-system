@@ -24,6 +24,7 @@ import { TruncateNumberPipe } from './pipes/truncate-digit.pipe';
 import { RolePipe } from './pipes/role.pipe';
 import { UserFormComponent } from './user-form/user-form.component';
 import { MessageBoxComponent } from './components/message-box/message-box.component';
+import { DepartmentFormComponent } from './department-form/department-form.component';
 
 @NgModule({
   declarations: [
@@ -41,6 +42,7 @@ import { MessageBoxComponent } from './components/message-box/message-box.compon
     RolePipe,
     UserFormComponent,
     MessageBoxComponent,
+    DepartmentFormComponent,
   ],
   imports: [
     BrowserModule,

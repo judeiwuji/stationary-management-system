@@ -24,8 +24,6 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./users.component.css'],
 })
 export class UsersComponent {
-  faSortAlphaUp = faSortAlphaUp;
-  faSortAlphaDown = faSortAlphaDown;
   faChevronLeft = faChevronLeft;
   faChevronRight = faChevronRight;
   faTrashAlt = faTrashAlt;

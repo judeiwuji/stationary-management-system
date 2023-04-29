@@ -19,7 +19,6 @@ export default class SessionManager {
       const token = authorization.split(" ")[1];
       const verified = authService.verifyToken(token);
 
-      console.log(verified);
       if (!verified.expired && verified.data.user) {
         req.user = await User.findByPk(verified.data.user, {
           attributes: UserDTO,

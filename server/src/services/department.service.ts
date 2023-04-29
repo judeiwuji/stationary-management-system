@@ -27,9 +27,13 @@ export default class DepartmentService {
     try {
       await Department.update({ name: data.name }, { where: { id: data.id } });
       feedback.data = (await Department.findByPk(data.id)) as Department;
-    } catch (error) {
+    } catch (error: any) {
       feedback.success = false;
-      feedback.message = Errors.createMessage;
+      if (error.name === "SequelizeUniqueConstraintError") {
+        feedback.message = "Department already exists";
+      } else {
+        feedback.message = Errors.updateMessage;
+      }
       console.debug(error);
     }
     return feedback;
