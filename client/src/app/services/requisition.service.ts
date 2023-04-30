@@ -31,10 +31,13 @@ export class RequisitionService {
   }
 
   addRequisitionItem(item: IRequisitionItem) {
-    return this.http.post<IFeedback<IRequisition>>(`${this.api}`, item);
+    return this.http.post<IFeedback<IRequisitionItem>>(
+      `${this.api}/items`,
+      item
+    );
   }
 
   deleteRequisitionItem(id: number) {
-    return this.http.delete<IFeedback<boolean>>(`${this.api}/${id}`);
+    return this.http.delete<IFeedback<boolean>>(`${this.api}/items/${id}`);
   }
 }

@@ -27,6 +27,9 @@ import { MessageBoxComponent } from './components/message-box/message-box.compon
 import { DepartmentFormComponent } from './department-form/department-form.component';
 import { StocksComponent } from './stocks/stocks.component';
 import { StockFormComponent } from './stock-form/stock-form.component';
+import { RequisitionFormComponent } from './requisition-form/requisition-form.component';
+import { RequisitionDetailComponent } from './requisition-detail/requisition-detail.component';
+import { RequisitionItemFormComponent } from './requisition-item-form/requisition-item-form.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +50,9 @@ import { StockFormComponent } from './stock-form/stock-form.component';
     DepartmentFormComponent,
     StocksComponent,
     StockFormComponent,
+    RequisitionFormComponent,
+    RequisitionDetailComponent,
+    RequisitionItemFormComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,67 @@
+<div class="modal-header">
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="mb-2">
+    <span class="text-capitalize">
+      {{ requisition.user?.lastname }}
+      {{ requisition.user?.firstname }}
+    </span>
+    <span class="badge bg-secondary">Author</span>
+  </div>
+
+  <div class="mb-2">
+    <label>Description</label>
+    <div class="card">
+      <div class="card-body">
+        {{ requisition.description }}
+      </div>
+    </div>
+  </div>
+
+  <div class="mb-2">
+    <label>Items</label>
+    <div class="card">
+      <div class="card-body">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Price</th>
+              <th class="text-end" *ngIf="requisition.isOwner">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of requisition.items; index as i">
+              <tr>
+                <td>{{ i + 1 }}.</td>
+                <td>{{ item.stock?.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price }}</td>
+                <ng-container *ngIf="requisition.isOwner">
+                  <td class="text-end">
+                    <button
+                      class="btn btn-sm btn-rounded btn-danger"
+                      (click)="deleteItem(item)"
+                    >
+                      <div class="d-flex align-items-center small">
+                        <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                        Delete
+                      </div>
+                    </button>
+                  </td>
+                </ng-container>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+        <div class="d-grid" *ngIf="requisition.isOwner">
+          <button class="btn btn-full" (click)="addItem()">Add</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
