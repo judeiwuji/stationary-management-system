@@ -1,4 +1,4 @@
-export interface DashboardAnalytics {
+export interface IDashboardAnalytics {
   userCount: number;
   departmentCount: number;
   requisitionCount: number;

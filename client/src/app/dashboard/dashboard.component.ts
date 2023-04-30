@@ -5,6 +5,8 @@ import {
   faBookBookmark,
   faReceipt,
 } from '@fortawesome/free-solid-svg-icons';
+import { DashboardService } from '../services/dashboard.service';
+import { IDashboardAnalytics } from '../model/dashboard';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +18,17 @@ export class DashboardComponent {
   faBookJournalWhills = faBookJournalWhills;
   faBookBookmark = faBookBookmark;
   faReceipt = faReceipt;
+  analytics!: IDashboardAnalytics;
 
-  constructor() {}
+  constructor(private readonly dashboardService: DashboardService) {
+    this.getAnalytics();
+  }
+
+  getAnalytics() {
+    this.dashboardService.getAnalytics().subscribe((response) => {
+      if (response.success) {
+        this.analytics = response.data;
+      }
+    });
+  }
 }

@@ -4,6 +4,7 @@ import {
   faTachometer,
   faUsers,
   faBookJournalWhills,
+  faComments,
 } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,6 +16,7 @@ export class MainSidebarComponent {
   faTachometer = faTachometer;
   faUsers = faUsers;
   faBookJournalWhills = faBookJournalWhills;
+  faComments = faComments;
   currentURL: string;
   constructor(private readonly router: Router) {
     this.currentURL = this.router.url;

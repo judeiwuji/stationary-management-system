@@ -11,11 +11,11 @@ export default class DashboardService {
     const feedback = new Feedback<DashboardAnalytics>();
     try {
       feedback.data = {
-        StockCount: await Stock.count(),
-        OrderCount: await Order.count(),
-        RequisitionCount: await Requisition.count(),
-        DepartmentCount: await Department.count(),
-        UserCount: await User.count(),
+        stockCount: await Stock.count(),
+        orderCount: await Order.count(),
+        requisitionCount: await Requisition.count(),
+        departmentCount: await Department.count(),
+        userCount: await User.count(),
       };
     } catch (error) {
       console.log(error);

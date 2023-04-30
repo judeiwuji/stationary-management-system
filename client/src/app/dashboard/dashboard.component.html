@@ -14,7 +14,11 @@
                   <fa-icon [icon]="faUsers"></fa-icon>
                 </span>
               </p>
-              <p class="big-text">{{ 12515 | truncateNumber }}</p>
+              <p class="big-text">
+                <ng-container *ngIf="analytics">
+                  {{ analytics.userCount | truncateNumber }}
+                </ng-container>
+              </p>
               <p class="fw-bold small text-muted">Users</p>
             </div>
           </div>
@@ -27,7 +31,11 @@
                   <fa-icon [icon]="faBookJournalWhills"></fa-icon>
                 </span>
               </p>
-              <p class="big-text">{{ 12515 | truncateNumber }}</p>
+              <p class="big-text">
+                <ng-container *ngIf="analytics">
+                  {{ analytics.departmentCount | truncateNumber }}
+                </ng-container>
+              </p>
               <p class="fw-bold small text-muted">Departments</p>
             </div>
           </div>
@@ -40,7 +48,11 @@
                   <fa-icon [icon]="faBookBookmark"></fa-icon>
                 </span>
               </p>
-              <p class="big-text">{{ 12515 | truncateNumber }}</p>
+              <p class="big-text">
+                <ng-container *ngIf="analytics">
+                  {{ analytics.requisitionCount | truncateNumber }}
+                </ng-container>
+              </p>
               <p class="fw-bold small text-muted">Requisitions</p>
             </div>
           </div>
@@ -53,7 +65,11 @@
                   <fa-icon [icon]="faReceipt"></fa-icon>
                 </span>
               </p>
-              <p class="big-text">{{ 12515 | truncateNumber }}</p>
+              <p class="big-text">
+                <ng-container *ngIf="analytics">
+                  {{ analytics.orderCount | truncateNumber }}
+                </ng-container>
+              </p>
               <p class="fw-bold small text-muted">Orders</p>
             </div>
           </div>

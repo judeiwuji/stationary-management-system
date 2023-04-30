@@ -117,3 +117,26 @@ app-main-sidebar {
   color: #020233;
 }
 /* icon-bg-blue */
+
+/* notify-badge */
+.notify-badge-pane {
+  position: relative;
+}
+
+.notify-badge {
+  position: absolute;
+  display: flex;
+  display: -webkit-flex;
+  display: flexbox;
+  justify-content: center;
+  align-items: center;
+  min-width: 1.5em;
+  height: 1.5em;
+  background-color: #ff0000;
+  color: #ffffff;
+  border-radius: 50%;
+  right: -28px;
+  top: -10px;
+  border: 1px solid #ffffff;
+}
+/* notify-badge */
