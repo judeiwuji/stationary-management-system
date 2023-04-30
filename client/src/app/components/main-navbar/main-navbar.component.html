@@ -14,7 +14,7 @@
             {{ credentials.name }}
           </p>
           <p class="m-0 small">
-            {{ credentials.role }}
+            {{ credentials.role.split("_").join(" ") }}
           </p>
         </div>
         <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>

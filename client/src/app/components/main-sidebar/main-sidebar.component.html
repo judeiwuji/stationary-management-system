@@ -42,7 +42,12 @@
     </li>
   </ng-container>
 
-  <ng-container *ngIf="credentials && credentials.role === 'hod'">
+  <ng-container
+    *ngIf="
+      credentials &&
+      (credentials.role === 'hod' || credentials.role === 'stock_manager')
+    "
+  >
     <li class="nav-item">
       <a
         class="nav-link"
@@ -50,8 +55,23 @@
         [ngClass]="{ active: currentURL === '/requisitions' }"
       >
         <div class="d-flex align-items-center">
-          <fa-icon [icon]="faBookJournalWhills"></fa-icon>
+          <fa-icon [icon]="faBookBookmark"></fa-icon>
           Requisitions
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="credentials && credentials.role === 'stock_manager'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/stocks"
+        [ngClass]="{ active: currentURL === '/stocks' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faCartShopping"></fa-icon>
+          Stocks
         </div>
       </a>
     </li>

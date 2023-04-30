@@ -25,6 +25,8 @@ import { RolePipe } from './pipes/role.pipe';
 import { UserFormComponent } from './user-form/user-form.component';
 import { MessageBoxComponent } from './components/message-box/message-box.component';
 import { DepartmentFormComponent } from './department-form/department-form.component';
+import { StocksComponent } from './stocks/stocks.component';
+import { StockFormComponent } from './stock-form/stock-form.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,8 @@ import { DepartmentFormComponent } from './department-form/department-form.compo
     UserFormComponent,
     MessageBoxComponent,
     DepartmentFormComponent,
+    StocksComponent,
+    StockFormComponent,
   ],
   imports: [
     BrowserModule,

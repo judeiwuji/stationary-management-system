@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
@@ -30,15 +31,23 @@ export default class StockService {
     return feedback;
   }
 
-  async getStocks(page = 1, filters: any) {
+  async getStocks(page = 1, search = "") {
     const feedback = new Feedback<Stock>();
     try {
-      const query = filters ? { ...filters } : {};
+      let query = {};
+
+      if (search) {
+        query = {
+          ...query,
+          name: { [Op.like]: `%${search}%` },
+        };
+      }
       const pager = new Pagination(page);
       const { rows, count } = await Stock.findAndCountAll({
         where: query,
         offset: pager.startIndex,
         limit: pager.pageSize,
+        order: [["name", "ASC"]],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);

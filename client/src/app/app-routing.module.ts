@@ -6,6 +6,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { UsersComponent } from './users/users.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { RequisitionsComponent } from './requisitions/requisitions.component';
+import { StocksComponent } from './stocks/stocks.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -13,6 +14,7 @@ const routes: Routes = [
   { path: 'users', component: UsersComponent },
   { path: 'departments', component: DepartmentsComponent },
   { path: 'requisitions', component: RequisitionsComponent },
+  { path: 'stocks', component: StocksComponent },
   { path: '**', component: Error404Component },
 ];
 
