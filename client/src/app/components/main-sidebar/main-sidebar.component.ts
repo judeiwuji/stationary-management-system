@@ -6,6 +6,8 @@ import {
   faBookJournalWhills,
   faComments,
 } from '@fortawesome/free-solid-svg-icons';
+import { IAuthResponse } from 'src/app/model/auth';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-main-sidebar',
@@ -18,7 +20,13 @@ export class MainSidebarComponent {
   faBookJournalWhills = faBookJournalWhills;
   faComments = faComments;
   currentURL: string;
-  constructor(private readonly router: Router) {
+  credentials: IAuthResponse | null;
+
+  constructor(
+    private readonly router: Router,
+    private authService: AuthService
+  ) {
     this.currentURL = this.router.url;
+    this.credentials = this.authService.getCredentials();
   }
 }

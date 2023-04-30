@@ -12,30 +12,51 @@
       </div>
     </a>
   </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      routerLink="/users"
-      [ngClass]="{ active: currentURL === '/users' }"
-    >
-      <div class="d-flex align-items-center">
-        <fa-icon [icon]="faUsers"></fa-icon>
-        Users
-      </div>
-    </a>
-  </li>
-  <li class="nav-item">
-    <a
-      class="nav-link"
-      routerLink="/departments"
-      [ngClass]="{ active: currentURL === '/departments' }"
-    >
-      <div class="d-flex align-items-center">
-        <fa-icon [icon]="faBookJournalWhills"></fa-icon>
-        Departments
-      </div>
-    </a>
-  </li>
+  <ng-container *ngIf="credentials && credentials.role === 'admin'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/users"
+        [ngClass]="{ active: currentURL === '/users' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faUsers"></fa-icon>
+          Users
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="credentials && credentials.role === 'admin'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/departments"
+        [ngClass]="{ active: currentURL === '/departments' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faBookJournalWhills"></fa-icon>
+          Departments
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="credentials && credentials.role === 'hod'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/requisitions"
+        [ngClass]="{ active: currentURL === '/requisitions' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faBookJournalWhills"></fa-icon>
+          Requisitions
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
   <li class="nav-item">
     <a
       class="nav-link"
