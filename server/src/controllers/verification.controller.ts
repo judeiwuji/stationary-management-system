@@ -39,13 +39,14 @@ export default class VerificationController {
     return res.status(201).send(feedback);
   }
 
-  async getVerifications(req: Request, res: Response) {
+  async getVerifications(req: IRequest, res: Response) {
     const filters: any = req.query.filters;
     const page = Number(req.query.page) || 1;
 
     const feedback = await this.verifyService.getVerifications(
       page,
-      filters ? JSON.parse(filters) : ""
+      filters ? JSON.parse(filters) : "",
+      req.user as User
     );
     res.send(feedback);
   }

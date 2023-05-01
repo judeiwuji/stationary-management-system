@@ -21,6 +21,8 @@ import { MessageBoxService } from 'src/app/services/message-box.service';
 import { RecommendationService } from 'src/app/services/recommendation.service';
 import { RequisitionService } from 'src/app/services/requisition.service';
 import { CommentsComponent } from '../comments/comments.component';
+import { AuthService } from 'src/app/services/auth.service';
+import { IAuthResponse } from 'src/app/model/auth';
 
 @Component({
   selector: 'app-recommendation-list',
@@ -51,16 +53,20 @@ export class RecommendationListComponent {
 
   @Input()
   showMenu = false;
+
+  credentials!: IAuthResponse | null;
   constructor(
     private recommendationService: RecommendationService,
     private requitionService: RequisitionService,
     private modal: NgbModal,
     private messageBoxService: MessageBoxService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private authService: AuthService
   ) {}
 
   ngOnInit(): void {
     this.loadRecommendations();
+    this.credentials = this.authService.getCredentials();
   }
 
   loadRecommendations(page = 1, search = '') {

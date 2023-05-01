@@ -6,7 +6,7 @@ export interface IComment {
   content: string;
   requisitionId: number;
   userId: number;
-  user?: IUser;
+  user: IUser;
   requisition?: IRequisition;
   createdAt?: string;
   updatedAt?: string;

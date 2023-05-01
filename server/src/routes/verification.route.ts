@@ -19,7 +19,7 @@ export default class VerificationRoute implements IRoute {
     );
     this.app.get(
       "/api/verifications/",
-      SessionManager.authorize([Roles.RECTOR]),
+      SessionManager.authorize([Roles.RECTOR, Roles.PURCHASE_OFFICIER]),
       (req, res) => this.verifyController.getVerifications(req, res)
     );
     this.app.put(

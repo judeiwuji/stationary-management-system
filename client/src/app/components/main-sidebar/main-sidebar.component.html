@@ -66,6 +66,18 @@
     <li class="nav-item">
       <a
         class="nav-link"
+        routerLink="/orders"
+        [ngClass]="{ active: currentURL === '/orders' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faListAlt"></fa-icon>
+          Orders
+        </div>
+      </a>
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link"
         routerLink="/stocks"
         [ngClass]="{ active: currentURL === '/stocks' }"
       >
@@ -117,6 +129,21 @@
         <div class="d-flex align-items-center">
           <fa-icon [icon]="faNewspaper"></fa-icon>
           Verifications
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
+  <ng-container *ngIf="credentials && credentials.role === 'purchase_officier'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/purchase-history"
+        [ngClass]="{ active: currentURL === '/purchase-history' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faHistory"></fa-icon>
+          Purchase History
         </div>
       </a>
     </li>

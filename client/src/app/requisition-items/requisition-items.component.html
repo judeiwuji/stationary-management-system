@@ -1,0 +1,61 @@
+<div class="modal-header">
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <ng-container *ngIf="!loading">
+    <div class="card mb-3">
+      <div class="card-body">
+        <table class="table table-striped m-0">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Quantity</th>
+              <th>Unit Price</th>
+              <th>Sub total</th>
+              <th class="text-end">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <ng-container *ngFor="let item of requisition.items; index as i">
+              <tr>
+                <td>{{ i + 1 }}.</td>
+                <td>{{ item.stock?.name }}</td>
+                <td>{{ item.quantity }}</td>
+                <td>{{ item.price | number }}</td>
+                <td>{{ computeSubtotal(item) | number }}</td>
+                <td class="text-end">
+                  <ng-container *ngIf="item.receipt">
+                    <span class="badge bg-info"> Uploaded </span>
+                  </ng-container>
+                  <ng-container *ngIf="!item.receipt">
+                    <input
+                      type="file"
+                      class="visually-hidden"
+                      id="receipt"
+                      accept="image/*"
+                      (change)="uploadReceipt($event)"
+                      (click)="selectItem(item)"
+                    />
+                    <label class="btn btn-full btn-sm" for="receipt"
+                      >Upload receipt</label
+                    >
+                  </ng-container>
+                </td>
+              </tr>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div
+      class="text-center"
+      *ngIf="canMarkRequisitionAsPurchased && requisition.status === 'approved'"
+    >
+      <button class="btn btn-full" (click)="markRequisitionAsPurchased()">
+        Mark as purchased
+      </button>
+    </div>
+  </ng-container>
+</div>

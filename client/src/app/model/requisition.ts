@@ -1,5 +1,6 @@
 import { IComment } from './comment';
 import { IDepartment } from './department';
+import { IReceipt } from './purchase';
 import { IStock } from './stock';
 import { IUser } from './user';
 
@@ -18,6 +19,7 @@ export interface IRequisition {
   isBursar?: boolean;
   isAuditor?: boolean;
   isRector?: boolean;
+  isPurchaseOfficier?: boolean;
   user?: IUser;
   createdAt?: string;
 }
@@ -29,6 +31,7 @@ export interface IRequisitionItem {
   quantity: number;
   stockId: number;
   stock?: IStock;
+  receipt?: IReceipt;
 }
 
 export enum RequisitionStatus {

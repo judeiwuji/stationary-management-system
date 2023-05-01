@@ -9,6 +9,8 @@ import {
   faBookBookmark,
   faShare,
   faNewspaper,
+  faHistory,
+  faListAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { IAuthResponse } from 'src/app/model/auth';
 import { AuthService } from 'src/app/services/auth.service';
@@ -27,6 +29,8 @@ export class MainSidebarComponent {
   faBookBookmark = faBookBookmark;
   faShare = faShare;
   faNewspaper = faNewspaper;
+  faHistory = faHistory;
+  faListAlt = faListAlt;
   currentURL: string;
   credentials: IAuthResponse | null;
 

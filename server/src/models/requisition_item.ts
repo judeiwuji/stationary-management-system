@@ -2,12 +2,14 @@ import {
   BelongsTo,
   Column,
   ForeignKey,
+  HasOne,
   Model,
   Table,
 } from "sequelize-typescript";
 import Requisition from "./requisition";
 import { DataTypes, Optional } from "sequelize";
 import Stock from "./stock";
+import Receipt from "./receipt";
 
 export interface RequisitionItemAttributes {
   id: number;
@@ -44,4 +46,7 @@ export default class RequisitionItem extends Model<
 
   @BelongsTo(() => Stock)
   stock!: Stock;
+
+  @HasOne(() => Receipt)
+  receipt!: Receipt;
 }

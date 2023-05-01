@@ -9,6 +9,7 @@ import {
   faCheck,
   faTimesCircle,
   faComment,
+  faReceipt,
 } from '@fortawesome/free-solid-svg-icons';
 import { IRequisition, RequisitionStatus } from '../../model/requisition';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -21,6 +22,7 @@ import { MessageBoxTypes } from '../../model/message-box';
 import { RequisitionDetailComponent } from '../../requisition-detail/requisition-detail.component';
 import { Roles } from 'src/app/model/roles';
 import { CommentsComponent } from '../comments/comments.component';
+import { RequisitionItemsComponent } from 'src/app/requisition-items/requisition-items.component';
 
 @Component({
   selector: 'app-requisition-list',
@@ -37,6 +39,7 @@ export class RequisitionListComponent implements OnInit {
   faCheck = faCheck;
   faTimesCircle = faTimesCircle;
   faComment = faComment;
+  faReceipt = faReceipt;
 
   sorts: any = {};
   requisitions: IRequisition[] = [];
@@ -174,5 +177,14 @@ export class RequisitionListComponent implements OnInit {
 
     this.requisitions = [];
     this.loadRequisitions(1);
+  }
+
+  viewReceipts(requisition: IRequisition) {
+    const instance = this.modal.open(RequisitionItemsComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    });
+
+    instance.componentInstance.requisition = requisition;
   }
 }

@@ -61,7 +61,10 @@ export default class ReceiptService {
         offset: pager.startIndex,
         limit: pager.pageSize,
         order: [["createdAt", "ASC"]],
-        include: [{ model: User, attributes: UserDTO }, RequisitionItem],
+        include: [
+          { model: User, attributes: UserDTO },
+          { model: RequisitionItem, include: [Stock] },
+        ],
       });
     } catch (error) {
       feedback.success = false;

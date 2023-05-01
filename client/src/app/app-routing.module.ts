@@ -10,6 +10,7 @@ import { StocksComponent } from './stocks/stocks.component';
 import { RecommendationsComponent } from './recommendations/recommendations.component';
 import { AuditsComponent } from './audits/audits.component';
 import { VerificationsComponent } from './verifications/verifications.component';
+import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -21,6 +22,7 @@ const routes: Routes = [
   { path: 'recommendations', component: RecommendationsComponent },
   { path: 'audits', component: AuditsComponent },
   { path: 'verifications', component: VerificationsComponent },
+  { path: 'purchase-history', component: PurchaseHistoryComponent },
   { path: '**', component: Error404Component },
 ];
 

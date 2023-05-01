@@ -3,12 +3,32 @@
 </div>
 
 <div class="modal-body">
-  <div class="mb-2">
-    <span class="text-capitalize">
-      {{ requisition.user?.lastname }}
-      {{ requisition.user?.firstname }}
-    </span>
-    <span class="badge bg-secondary">Author</span>
+  <div class="mb-3">
+    <div class="card">
+      <div class="card-body">
+        <div class="mb-2 border-bottom">
+          <span>Author: </span>
+          <span class="text-capitalize">
+            {{ requisition.user?.lastname }}
+            {{ requisition.user?.firstname }}
+          </span>
+        </div>
+
+        <div class="mb-2 border-bottom">
+          <span>Source: </span>
+          <span class="text-capitalize">
+            {{ requisition.department?.name }}
+          </span>
+        </div>
+
+        <div class="mb-2">
+          <span>Status: </span>
+          <span class="badge bg-dark text-capitalize">
+            {{ requisition.status }}
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 
   <div class="mb-2">

@@ -5,9 +5,14 @@
   <div class="w-100">
     <div class="card bg-light">
       <div class="card-body p-2">
-        <h5 class="small mb-1 fw-bold text-capitalize">
-          {{ comment.user?.lastname }} {{ comment.user?.firstname }}
-        </h5>
+        <div class="mb-1">
+          <h5 class="small mb-0 fw-bold text-capitalize">
+            {{ comment.user.lastname }} {{ comment.user.firstname }}
+          </h5>
+          <span class="text-muted text-capitalize small">
+            {{ comment.user.role | role }}
+          </span>
+        </div>
         <p class="m-0">
           {{ comment.content }}
         </p>

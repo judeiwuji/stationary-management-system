@@ -76,24 +76,41 @@
         </div>
       </div>
 
-      <div class="mb-3">
-        <h1 class="title-text">Requisitions</h1>
-        <app-requisition-list
-          [filters]="{ status: 'pending' }"
-        ></app-requisition-list>
-      </div>
+      <ng-container *ngIf="credentials && credentials.role === 'bursar'">
+        <div class="mb-3">
+          <h1 class="title-text">Pending Requisitions</h1>
+          <app-requisition-list
+            [filters]="{ status: 'pending' }"
+          ></app-requisition-list>
+        </div>
+      </ng-container>
 
-      <div class="mb-3">
-        <h1 class="title-text">Recommendations</h1>
-        <app-recommendation-list
-          [filters]="{ status: 'recommended' }"
-        ></app-recommendation-list>
-      </div>
+      <ng-container *ngIf="credentials && credentials.role === 'auditor'">
+        <div class="mb-3">
+          <h1 class="title-text">Recommendations</h1>
+          <app-recommendation-list
+            [filters]="{ status: 'recommended' }"
+          ></app-recommendation-list>
+        </div>
+      </ng-container>
 
-      <div class="mb-3">
-        <h1 class="title-text">Audits</h1>
-        <app-audit-list [filters]="{ status: 'verified' }"></app-audit-list>
-      </div>
+      <ng-container *ngIf="credentials && credentials.role === 'rector'">
+        <div class="mb-3">
+          <h1 class="title-text">Audits</h1>
+          <app-audit-list [filters]="{ status: 'verified' }"></app-audit-list>
+        </div>
+      </ng-container>
+
+      <ng-container
+        *ngIf="credentials && credentials.role === 'purchase_officier'"
+      >
+        <div class="mb-3">
+          <h1 class="title-text">Approved Requisitions</h1>
+          <app-requisition-list
+            [filters]="{ status: 'approved' }"
+          ></app-requisition-list>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

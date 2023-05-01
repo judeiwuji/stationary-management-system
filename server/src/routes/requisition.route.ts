@@ -48,7 +48,12 @@ export default class RequisitionRoute implements IRoute {
 
     this.app.put(
       "/api/requisitions",
-      SessionManager.authorize([Roles.HOD, Roles.STOCK_MANAGER, Roles.BURSAR]),
+      SessionManager.authorize([
+        Roles.HOD,
+        Roles.STOCK_MANAGER,
+        Roles.BURSAR,
+        Roles.PURCHASE_OFFICIER,
+      ]),
       (req, res) => this.requisitionController.updateRequisition(req, res)
     );
 

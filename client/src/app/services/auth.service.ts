@@ -8,9 +8,9 @@ import { environment } from 'src/environment/environment';
   providedIn: 'root',
 })
 export class AuthService {
-  api = `${environment.apiURL}/auth`;
-  AUTH_TOKEN = 'sms__auth_token';
-  AUTH_CREDENTIALS = 'sms__auth_credentials';
+  private api = `${environment.apiURL}/auth`;
+  private AUTH_TOKEN = 'sms__auth_token';
+  private AUTH_CREDENTIALS = 'sms__auth_credentials';
   constructor(private http: HttpClient) {}
 
   login(request: IAuthRequest) {

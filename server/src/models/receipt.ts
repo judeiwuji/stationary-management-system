@@ -32,7 +32,7 @@ export default class Receipt extends Model<
   requisitionItemId!: number;
 
   @BelongsTo(() => RequisitionItem)
-  requisitionItem!: RequisitionItem;
+  item!: RequisitionItem;
 
   @ForeignKey(() => User)
   @Column

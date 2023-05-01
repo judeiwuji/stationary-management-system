@@ -39,6 +39,9 @@ import { AuditsComponent } from './audits/audits.component';
 import { AuditListComponent } from './components/audit-list/audit-list.component';
 import { VerificationListComponent } from './components/verification-list/verification-list.component';
 import { VerificationsComponent } from './verifications/verifications.component';
+import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
+import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
+import { RequisitionItemsComponent } from './requisition-items/requisition-items.component';
 
 @NgModule({
   declarations: [
@@ -71,6 +74,9 @@ import { VerificationsComponent } from './verifications/verifications.component'
     AuditListComponent,
     VerificationListComponent,
     VerificationsComponent,
+    PurchaseHistoryComponent,
+    PurchaseFormComponent,
+    RequisitionItemsComponent,
   ],
   imports: [
     BrowserModule,

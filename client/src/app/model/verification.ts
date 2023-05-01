@@ -15,6 +15,7 @@ export interface IVerification {
   user: IUser;
   audit: IAudit;
   isOwner: boolean;
+  isPurchaseOfficier: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

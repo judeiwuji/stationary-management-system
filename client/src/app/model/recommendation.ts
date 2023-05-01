@@ -8,6 +8,8 @@ export interface IRecommendation {
   requisition: IRequisition;
   userId: number;
   user: IUser;
+  isAuditor: boolean;
+  isOwner: boolean;
   createdAt: string;
   updatedAt: string;
 }

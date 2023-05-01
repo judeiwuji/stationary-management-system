@@ -4,46 +4,39 @@
   <div class="main-content">
     <div class="container">
       <div class="mb-2">
-        <h5 class="text-muted">Stocks</h5>
+        <h5 class="text-muted">Purchase History</h5>
       </div>
       <div class="card rounded-card">
         <div class="card-body">
-          <!-- Header -->
-          <div class="d-flex justify-content-between align-items-center mb-3">
-            <form [formGroup]="searchForm" (ngSubmit)="search()">
-              <input
-                type="search"
-                class="form-control"
-                placeholder="Search"
-                formControlName="search"
-              />
-            </form>
-
-            <div>
-              <button class="btn btn-sm btn-full" (click)="createStock()">
-                New stock
-              </button>
-            </div>
-          </div>
-          <!-- Header -->
-
           <table class="table table-striped mb-4">
             <thead>
               <tr>
                 <th>#</th>
-                <th>Name</th>
-                <th>Quantity</th>
-                <th>Last modified</th>
+                <th>Date created</th>
+                <th>Item</th>
+                <th>Unit Price</th>
+                <th>Sub Total</th>
+                <th>Receipt</th>
                 <th class="text-end">Action</th>
               </tr>
             </thead>
             <tbody>
-              <ng-container *ngFor="let stock of stocks; index as i">
+              <ng-container *ngFor="let receipt of receipts; index as i">
                 <tr>
                   <td>{{ i + 1 }}.</td>
-                  <td class="text-capitalize">{{ stock.name }}</td>
-                  <td>{{ stock.quantity }}</td>
-                  <td>{{ stock.updatedAt | date }}</td>
+                  <td>{{ receipt.createdAt | date }}</td>
+                  <td class="text-capitalize">
+                    {{ receipt.item.stock?.name }}
+                  </td>
+                  <td class="text-capitalize">
+                    {{ receipt.item.price }}
+                  </td>
+                  <td class="text-capitalize">
+                    {{ computeSubtotal(receipt) | number }}
+                  </td>
+                  <td class="text-capitalize">
+                    <button class="btn btn-sm btn-light">view</button>
+                  </td>
                   <td class="dropdown text-end">
                     <button
                       class="btn btn-sm btn-light"
@@ -60,19 +53,13 @@
                       <li>
                         <button
                           class="dropdown-item"
-                          (click)="editStock(stock)"
+                          (click)="deleteReceipt(receipt)"
                         >
                           <div class="d-flex align-items-center">
-                            <fa-icon [icon]="faPen" class="me-2"></fa-icon>
-                            Edit
-                          </div>
-                        </button>
-                        <button
-                          class="dropdown-item"
-                          (click)="deleteStock(stock)"
-                        >
-                          <div class="d-flex align-items-center">
-                            <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                            <fa-icon
+                              [icon]="faTrashAlt"
+                              class="me-2 text-danger"
+                            ></fa-icon>
                             Delete
                           </div>
                         </button>

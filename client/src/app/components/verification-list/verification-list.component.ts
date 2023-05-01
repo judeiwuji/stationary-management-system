@@ -7,6 +7,7 @@ import {
   faComment,
   faList,
   faPen,
+  faReceipt,
   faTimesCircle,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
@@ -20,6 +21,7 @@ import { MessageBoxService } from 'src/app/services/message-box.service';
 import { RequisitionService } from 'src/app/services/requisition.service';
 import { VerificationService } from 'src/app/services/verification.service';
 import { CommentsComponent } from '../comments/comments.component';
+import { RequisitionItemsComponent } from 'src/app/requisition-items/requisition-items.component';
 
 @Component({
   selector: 'app-verification-list',
@@ -36,6 +38,7 @@ export class VerificationListComponent {
   faCheck = faCheck;
   faTimesCircle = faTimesCircle;
   faComment = faComment;
+  faReceipt = faReceipt;
 
   sorts: any = {};
   verifications: IVerification[] = [];
@@ -142,5 +145,14 @@ export class VerificationListComponent {
 
     this.verifications = [];
     this.loadVerifications(1);
+  }
+
+  viewReceipts(verification: IVerification) {
+    const instance = this.modal.open(RequisitionItemsComponent, {
+      size: 'lg',
+      backdrop: 'static',
+    });
+
+    instance.componentInstance.requisition = verification.requisition;
   }
 }

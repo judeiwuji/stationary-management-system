@@ -10,6 +10,7 @@ import Recommendation, {
 } from "../models/recommendation";
 import Requisition from "../models/requisition";
 import { RequisitionStatus } from "../models/requisition-status";
+import { Roles } from "../models/role";
 import User, { UserAttributes } from "../models/user";
 
 export default class RecommendationService {
@@ -80,7 +81,12 @@ export default class RecommendationService {
             db.cast(db.where(db.col("Recommendation.userId"), user.id), "int"),
             "isOwner",
           ],
+          [
+            db.cast(db.literal(`${user.role === Roles.AUDITOR}`), "int"),
+            "isAuditor",
+          ],
         ],
+        order: [["createdAt", "DESC"]],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);

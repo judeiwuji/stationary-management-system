@@ -9,6 +9,7 @@ import Feedback from "../models/feedback";
 import Pagination from "../models/pagination";
 import Recommendation from "../models/recommendation";
 import Requisition from "../models/requisition";
+import { Roles } from "../models/role";
 import User, { UserAttributes } from "../models/user";
 import Verification, {
   VerificationCreationAttributes,
@@ -72,6 +73,20 @@ export default class VerificationService {
             include: [{ model: User, attributes: UserDTO }],
           },
         ],
+        attributes: [
+          "id",
+          "status",
+          "requisitionId",
+          "recommendationId",
+          "auditId",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          [
+            db.cast(db.where(db.col("Verification.userId"), user.id), "int"),
+            "isOwner",
+          ],
+        ],
       })) as Verification;
     } catch (error) {
       await transaction.rollback();
@@ -82,7 +97,7 @@ export default class VerificationService {
     return feedback;
   }
 
-  async getVerifications(page = 1, filters: any) {
+  async getVerifications(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Verification>();
     try {
       const query = filters ? { ...filters } : {};
@@ -103,6 +118,27 @@ export default class VerificationService {
             model: Audit,
             include: [{ model: User, attributes: UserDTO }],
           },
+        ],
+        attributes: [
+          "id",
+          "status",
+          "requisitionId",
+          "recommendationId",
+          "auditId",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          [
+            db.cast(db.where(db.col("Verification.userId"), user.id), "int"),
+            "isOwner",
+          ],
+          [
+            db.cast(
+              db.literal(`${Roles.PURCHASE_OFFICIER === user.role}`),
+              "int"
+            ),
+            "isPurchaseOfficier",
+          ],
         ],
       });
       feedback.results = rows;

@@ -93,12 +93,27 @@
               {{ requisition.destination | role }}
             </td>
             <td class="dropdown text-end">
-              <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-                <div class="d-flex justifycontent-between align-items-center">
-                  More
-                  <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
-                </div>
-              </button>
+              <ng-container *ngIf="!requisition.isPurchaseOfficier">
+                <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
+                  <div class="d-flex justifycontent-between align-items-center">
+                    More
+                    <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
+                  </div>
+                </button>
+              </ng-container>
+
+              <ng-container *ngIf="requisition.isPurchaseOfficier">
+                <button
+                  class="btn btn-full btn-sm"
+                  (click)="viewReceipts(requisition)"
+                >
+                  <div class="d-flex align-items-center">
+                    <fa-icon [icon]="faReceipt" class="me-2"></fa-icon>
+                    Receipts
+                  </div>
+                </button>
+              </ng-container>
+
               <ul class="dropdown-menu dropdown-menu-end">
                 <li>
                   <button
@@ -120,30 +135,6 @@
                       Comment
                     </div>
                   </button>
-
-                  <!-- <ng-container *ngIf="requisition?.isBursar">
-                    <button
-                      class="dropdown-item"
-                      (click)="editRequisition(requisition)"
-                    >
-                      <div class="d-flex align-items-center">
-                        <fa-icon [icon]="faCheck" class="me-2"></fa-icon>
-                        Recommend
-                      </div>
-                    </button>
-                    <button
-                      class="dropdown-item"
-                      (click)="editRequisition(requisition)"
-                    >
-                      <div class="d-flex align-items-center">
-                        <fa-icon
-                          [icon]="faTimesCircle"
-                          class="me-2 text-danger"
-                        ></fa-icon>
-                        Cancel
-                      </div>
-                    </button>
-                  </ng-container> -->
 
                   <ng-container *ngIf="requisition.isOwner">
                     <button

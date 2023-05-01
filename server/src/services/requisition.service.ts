@@ -5,6 +5,7 @@ import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
 import Pagination from "../models/pagination";
+import Receipt from "../models/receipt";
 import Requisition, {
   RequisitionAttributes,
   RequisitionCreationAttributes,
@@ -89,22 +90,31 @@ export default class RequisitionService {
           "description",
           "status",
           "createdAt",
-          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [
+            db.cast(db.where(db.col("Requisition.userId"), user.id), "int"),
+            "isOwner",
+          ],
           [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
           [db.literal(`${user.role === Roles.RECTOR}`), "isRector"],
+          [
+            db.cast(
+              db.literal(`${Roles.PURCHASE_OFFICIER === user.role}`),
+              "int"
+            ),
+            "isPurchaseOfficier",
+          ],
         ],
         include: [
           { model: User, attributes: UserDTO },
           {
             model: RequisitionItem,
-            include: [{ model: Stock, attributes: ["name"] }],
+            include: [{ model: Stock, attributes: ["name"] }, Receipt],
           },
           {
             model: Department,
             attributes: ["name"],
           },
-          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
         ],
         offset: pager.startIndex,
         limit: pager.pageSize,
@@ -134,22 +144,34 @@ export default class RequisitionService {
           "description",
           "status",
           "createdAt",
-          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [
+            db.cast(db.where(db.col("Requisition.userId"), user.id), "int"),
+            "isOwner",
+          ],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
           [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
           [db.literal(`${user.role === Roles.RECTOR}`), "isRector"],
+          [
+            db.cast(
+              db.literal(`${Roles.PURCHASE_OFFICIER === user.role}`),
+              "int"
+            ),
+            "isPurchaseOfficier",
+          ],
         ],
         include: [
           { model: User, attributes: UserDTO },
           {
             model: RequisitionItem,
-            include: [{ model: Stock, attributes: ["name"] }],
+            include: [
+              { model: Stock, attributes: ["name"] },
+              { model: Receipt, attributes: ["id"] },
+            ],
           },
           {
             model: Department,
             attributes: ["name"],
           },
-          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
         ],
       })) as Requisition;
     } catch (error) {

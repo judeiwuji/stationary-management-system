@@ -27,6 +27,7 @@ export default class CommentController {
     }
 
     validation.data.requisitionId = Number(id);
+    console.log(req.user);
     const feedback = await this.commentService.createComment(
       validation.data,
       req.user as User
