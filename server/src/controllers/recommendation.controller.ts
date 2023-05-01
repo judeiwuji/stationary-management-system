@@ -34,13 +34,14 @@ export default class RecommendationCongtroller {
     return res.status(201).send(feedback);
   }
 
-  async getRecommendations(req: Request, res: Response) {
+  async getRecommendations(req: IRequest, res: Response) {
     const filters: any = req.query.filters;
     const page = Number(req.query.page) || 1;
 
     const feedback = await this.recommendationService.getRecommendations(
       page,
-      filters ? JSON.parse(filters) : ""
+      filters ? JSON.parse(filters) : "",
+      req.user as User
     );
     res.send(feedback);
   }

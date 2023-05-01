@@ -36,6 +36,7 @@ import { RecommendationListComponent } from './components/recommendation-list/re
 import { CommentsComponent } from './components/comments/comments.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { AuditsComponent } from './audits/audits.component';
+import { AuditListComponent } from './components/audit-list/audit-list.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { AuditsComponent } from './audits/audits.component';
     CommentsComponent,
     CommentComponent,
     AuditsComponent,
+    AuditListComponent,
   ],
   imports: [
     BrowserModule,

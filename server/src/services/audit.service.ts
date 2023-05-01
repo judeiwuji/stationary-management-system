@@ -10,6 +10,7 @@ import Pagination from "../models/pagination";
 import Recommendation from "../models/recommendation";
 import Requisition from "../models/requisition";
 import { RequisitionStatus } from "../models/requisition-status";
+import { Roles } from "../models/role";
 import User, { UserAttributes } from "../models/user";
 
 export default class AuditService {
@@ -86,7 +87,7 @@ export default class AuditService {
     return feedback;
   }
 
-  async getAudits(page = 1, filters: any) {
+  async getAudits(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Audit>();
     try {
       const query = filters ? { ...filters } : {};
@@ -103,6 +104,19 @@ export default class AuditService {
             model: Recommendation,
             include: [{ model: User, attributes: UserDTO }],
           },
+        ],
+        attributes: [
+          "id",
+          "status",
+          "requisitionId",
+          "recommendationId",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          [
+            db.cast(db.where(db.col("Audit.userId"), user.id), "int"),
+            "isOwner",
+          ],
         ],
       });
       feedback.results = rows;

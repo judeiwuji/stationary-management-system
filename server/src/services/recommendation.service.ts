@@ -52,7 +52,7 @@ export default class RecommendationService {
     return feedback;
   }
 
-  async getRecommendations(page = 1, filters: any) {
+  async getRecommendations(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Recommendation>();
     try {
       const query = filters ? { ...filters } : {};
@@ -68,6 +68,18 @@ export default class RecommendationService {
               { model: Department },
             ],
           },
+        ],
+        attributes: [
+          "id",
+          "status",
+          "requisitionId",
+          "userId",
+          "createdAt",
+          "updatedAt",
+          [
+            db.cast(db.where(db.col("Recommendation.userId"), user.id), "int"),
+            "isOwner",
+          ],
         ],
       });
       feedback.results = rows;

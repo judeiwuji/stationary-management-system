@@ -31,11 +31,15 @@ export default class AuditController {
     return res.status(201).send(feedback);
   }
 
-  async getAudits(req: Request, res: Response) {
+  async getAudits(req: IRequest, res: Response) {
     const filters: any = req.query.filters;
     const page = Number(req.query.page) || 1;
 
-    const feedback = await this.auditService.getAudits(page, filters);
+    const feedback = await this.auditService.getAudits(
+      page,
+      filters ? JSON.parse(filters) : "",
+      req.user as User
+    );
     res.send(feedback);
   }
 
