@@ -37,6 +37,8 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { CommentComponent } from './components/comment/comment.component';
 import { AuditsComponent } from './audits/audits.component';
 import { AuditListComponent } from './components/audit-list/audit-list.component';
+import { VerificationListComponent } from './components/verification-list/verification-list.component';
+import { VerificationsComponent } from './verifications/verifications.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +69,8 @@ import { AuditListComponent } from './components/audit-list/audit-list.component
     CommentComponent,
     AuditsComponent,
     AuditListComponent,
+    VerificationListComponent,
+    VerificationsComponent,
   ],
   imports: [
     BrowserModule,

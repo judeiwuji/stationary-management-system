@@ -75,7 +75,8 @@ export default class RequisitionService {
   async getRequisitions(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Requisition>();
     try {
-      const query = filters ? { ...filters } : {};
+      let query = {};
+      query = filters ? { ...filters, ...query } : query;
       const pager = new Pagination(page);
       const { rows, count } = await Requisition.findAndCountAll({
         where: query,
@@ -91,6 +92,7 @@ export default class RequisitionService {
           [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
           [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
+          [db.literal(`${user.role === Roles.RECTOR}`), "isRector"],
         ],
         include: [
           { model: User, attributes: UserDTO },
@@ -135,6 +137,7 @@ export default class RequisitionService {
           [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
           [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
+          [db.literal(`${user.role === Roles.RECTOR}`), "isRector"],
         ],
         include: [
           { model: User, attributes: UserDTO },
