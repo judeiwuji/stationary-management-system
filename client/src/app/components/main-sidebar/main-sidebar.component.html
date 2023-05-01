@@ -92,6 +92,21 @@
     </li>
   </ng-container>
 
+  <ng-container *ngIf="credentials && credentials.role === 'auditor'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/audits"
+        [ngClass]="{ active: currentURL === '/audits' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faShare"></fa-icon>
+          Audits
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
   <li class="nav-item">
     <a
       class="nav-link"

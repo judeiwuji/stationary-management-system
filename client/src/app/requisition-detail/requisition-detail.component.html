@@ -92,4 +92,24 @@
     </button>
   </div>
   <!-- Bursar Actions -->
+
+  <!-- Auditor Actions -->
+  <div
+    class="text-end"
+    *ngIf="requisition.isAuditor && requisition.status === 'recommended'"
+  >
+    <button
+      class="btn btn-light btn-rounded me-2"
+      (click)="auditorAction(RequisitionStatus.CANCELED)"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-full"
+      (click)="auditorAction(RequisitionStatus.VERIFIED)"
+    >
+      Verify
+    </button>
+  </div>
+  <!-- Auditor Actions -->
 </div>

@@ -16,6 +16,7 @@ export interface IRequisition {
   comments?: IComment[];
   isOwner?: boolean;
   isBursar?: boolean;
+  isAuditor?: boolean;
   user?: IUser;
   createdAt?: string;
 }

@@ -8,6 +8,7 @@ import { DepartmentsComponent } from './departments/departments.component';
 import { RequisitionsComponent } from './requisitions/requisitions.component';
 import { StocksComponent } from './stocks/stocks.component';
 import { RecommendationsComponent } from './recommendations/recommendations.component';
+import { AuditsComponent } from './audits/audits.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -17,6 +18,7 @@ const routes: Routes = [
   { path: 'requisitions', component: RequisitionsComponent },
   { path: 'stocks', component: StocksComponent },
   { path: 'recommendations', component: RecommendationsComponent },
+  { path: 'audits', component: AuditsComponent },
   { path: '**', component: Error404Component },
 ];
 

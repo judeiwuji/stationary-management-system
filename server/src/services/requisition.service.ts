@@ -89,6 +89,7 @@ export default class RequisitionService {
           "status",
           "createdAt",
           [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
         ],
         include: [
@@ -133,6 +134,7 @@ export default class RequisitionService {
           "createdAt",
           [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
           [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
+          [db.literal(`${user.role === Roles.AUDITOR}`), "isAuditor"],
         ],
         include: [
           { model: User, attributes: UserDTO },

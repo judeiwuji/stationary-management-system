@@ -122,6 +122,7 @@ export class RecommendationListComponent {
           });
 
           instance.componentInstance.requisition = recommendation.requisition;
+          instance.componentInstance.recommendation = recommendation;
         }
       });
   }

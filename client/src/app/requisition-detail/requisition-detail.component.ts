@@ -16,7 +16,12 @@ import { ToastrService } from 'ngx-toastr';
 import { RequisitionService } from '../services/requisition.service';
 import { MessageBoxTypes } from '../model/message-box';
 import { RecommendationService } from '../services/recommendation.service';
-import { IRecommendationActionRequest } from '../model/recommendation';
+import {
+  IRecommendation,
+  IRecommendationActionRequest,
+} from '../model/recommendation';
+import { AuditService } from '../services/audit.service';
+import { IAuditActionRequest } from '../model/audit';
 
 @Component({
   selector: 'app-requisition-detail',
@@ -26,6 +31,10 @@ import { IRecommendationActionRequest } from '../model/recommendation';
 export class RequisitionDetailComponent {
   @Input()
   requisition!: IRequisition;
+
+  @Input()
+  recommendation!: IRecommendation;
+
   faTrashAlt = faTrashAlt;
   faPen = faPen;
   faChevronDown = faChevronDown;
@@ -38,7 +47,8 @@ export class RequisitionDetailComponent {
     private readonly messageBoxService: MessageBoxService,
     private readonly toastr: ToastrService,
     private readonly requisitionService: RequisitionService,
-    private readonly recommendationService: RecommendationService
+    private readonly recommendationService: RecommendationService,
+    private readonly auditService: AuditService
   ) {}
 
   close() {
@@ -112,6 +122,38 @@ export class RequisitionDetailComponent {
       status: status,
     };
     this.recommendationService.createRecommendation(request).subscribe({
+      next: (response) => {
+        this.toastr.clear();
+        this.processing = false;
+
+        if (response.success) {
+          this.toastr.success('Done');
+          this.requisition.status = status;
+          this.activeModal.close();
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.toastr.clear();
+        this.processing = false;
+        this.toastr.warning(err.error);
+      },
+    });
+  }
+
+  auditorAction(status: RequisitionStatus) {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.toastr.info('Please wait...', '', { timeOut: 0 });
+    const request: IAuditActionRequest = {
+      recommendationId: this.recommendation.id,
+      requisitionId: this.requisition.id,
+      status: status,
+    };
+
+    this.auditService.createAudit(request).subscribe({
       next: (response) => {
         this.toastr.clear();
         this.processing = false;
