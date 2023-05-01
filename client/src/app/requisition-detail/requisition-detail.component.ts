@@ -1,6 +1,10 @@
 import { Component, Input } from '@angular/core';
 import { NgbActiveModal, NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { IRequisition, IRequisitionItem } from '../model/requisition';
+import {
+  IRequisition,
+  IRequisitionItem,
+  RequisitionStatus,
+} from '../model/requisition';
 import {
   faChevronDown,
   faPen,
@@ -11,6 +15,8 @@ import { MessageBoxService } from '../services/message-box.service';
 import { ToastrService } from 'ngx-toastr';
 import { RequisitionService } from '../services/requisition.service';
 import { MessageBoxTypes } from '../model/message-box';
+import { RecommendationService } from '../services/recommendation.service';
+import { IRecommendationActionRequest } from '../model/recommendation';
 
 @Component({
   selector: 'app-requisition-detail',
@@ -24,13 +30,15 @@ export class RequisitionDetailComponent {
   faPen = faPen;
   faChevronDown = faChevronDown;
   processing = false;
+  RequisitionStatus = RequisitionStatus;
 
   constructor(
     private readonly activeModal: NgbActiveModal,
     private readonly modal: NgbModal,
     private readonly messageBoxService: MessageBoxService,
     private readonly toastr: ToastrService,
-    private readonly requisitionService: RequisitionService
+    private readonly requisitionService: RequisitionService,
+    private readonly recommendationService: RecommendationService
   ) {}
 
   close() {
@@ -78,6 +86,49 @@ export class RequisitionDetailComponent {
       },
       onDismiss: () => {},
       type: MessageBoxTypes.PROMPT,
+    });
+  }
+
+  computeSubTotal(item: IRequisitionItem) {
+    return Number(item.price) * item.quantity;
+  }
+
+  computeTotal() {
+    let total = 0;
+
+    this.requisition.items.forEach((item) => {
+      total += Number(this.computeSubTotal(item));
+    });
+    return total;
+  }
+
+  bursarAction(status: RequisitionStatus) {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.toastr.info('Please wait...', '', { timeOut: 0 });
+    const request: IRecommendationActionRequest = {
+      requisitionId: this.requisition.id,
+      status: status,
+    };
+    this.recommendationService.createRecommendation(request).subscribe({
+      next: (response) => {
+        this.toastr.clear();
+        this.processing = false;
+
+        if (response.success) {
+          this.toastr.success('Done');
+          this.requisition.status = status;
+          this.activeModal.close();
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.toastr.clear();
+        this.processing = false;
+        this.toastr.warning(err.error);
+      },
     });
   }
 }

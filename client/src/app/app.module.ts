@@ -30,6 +30,11 @@ import { StockFormComponent } from './stock-form/stock-form.component';
 import { RequisitionFormComponent } from './requisition-form/requisition-form.component';
 import { RequisitionDetailComponent } from './requisition-detail/requisition-detail.component';
 import { RequisitionItemFormComponent } from './requisition-item-form/requisition-item-form.component';
+import { RecommendationsComponent } from './recommendations/recommendations.component';
+import { RequisitionListComponent } from './components/requisition-list/requisition-list.component';
+import { RecommendationListComponent } from './components/recommendation-list/recommendation-list.component';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentComponent } from './components/comment/comment.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +58,11 @@ import { RequisitionItemFormComponent } from './requisition-item-form/requisitio
     RequisitionFormComponent,
     RequisitionDetailComponent,
     RequisitionItemFormComponent,
+    RecommendationsComponent,
+    RequisitionListComponent,
+    RecommendationListComponent,
+    CommentsComponent,
+    CommentComponent,
   ],
   imports: [
     BrowserModule,

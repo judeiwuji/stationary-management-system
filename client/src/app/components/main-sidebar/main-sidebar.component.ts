@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import {
   faTachometer,
   faUsers,
@@ -7,6 +7,7 @@ import {
   faComments,
   faCartShopping,
   faBookBookmark,
+  faShare,
 } from '@fortawesome/free-solid-svg-icons';
 import { IAuthResponse } from 'src/app/model/auth';
 import { AuthService } from 'src/app/services/auth.service';
@@ -23,6 +24,7 @@ export class MainSidebarComponent {
   faComments = faComments;
   faCartShopping = faCartShopping;
   faBookBookmark = faBookBookmark;
+  faShare = faShare;
   currentURL: string;
   credentials: IAuthResponse | null;
 

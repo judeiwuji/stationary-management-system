@@ -48,6 +48,16 @@ export default class RequisitionController {
     res.send(feedback);
   }
 
+  async getRequisition(req: IRequest, res: Response) {
+    const { id } = req.params;
+
+    const feedback = await this.requisitionService.getRequisition(
+      Number(id),
+      req.user as User
+    );
+    res.send(feedback);
+  }
+
   async updateRequisition(req: Request, res: Response) {
     const validation = await validate<RequisitionAttributes>(
       RequisitionUpdateSchema,

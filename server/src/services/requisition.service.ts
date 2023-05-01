@@ -14,6 +14,7 @@ import RequisitionItem, {
   RequisitionItemAttributes,
   RequisitionItemCreationAttributes,
 } from "../models/requisition_item";
+import { Roles } from "../models/role";
 import Stock from "../models/stock";
 import User, { UserAttributes } from "../models/user";
 
@@ -88,6 +89,7 @@ export default class RequisitionService {
           "status",
           "createdAt",
           [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
         ],
         include: [
           { model: User, attributes: UserDTO },
@@ -108,6 +110,43 @@ export default class RequisitionService {
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);
       feedback.page = page;
+    } catch (error) {
+      feedback.success = false;
+      feedback.message = Errors.getMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async getRequisition(id: number, user: User) {
+    const feedback = new Feedback<Requisition>();
+    try {
+      feedback.data = (await Requisition.findByPk(id, {
+        attributes: [
+          "id",
+          "userId",
+          "sourceId",
+          "through",
+          "destination",
+          "description",
+          "status",
+          "createdAt",
+          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [db.literal(`${user.role === Roles.BURSAR}`), "isBursar"],
+        ],
+        include: [
+          { model: User, attributes: UserDTO },
+          {
+            model: RequisitionItem,
+            include: [{ model: Stock, attributes: ["name"] }],
+          },
+          {
+            model: Department,
+            attributes: ["name"],
+          },
+          { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
+        ],
+      })) as Requisition;
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.getMessage;

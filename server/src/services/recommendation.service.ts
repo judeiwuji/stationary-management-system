@@ -1,4 +1,5 @@
 import UserDTO from "../models/DTO/UserDTO";
+import Department from "../models/department";
 import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
@@ -37,7 +38,7 @@ export default class RecommendationService {
           transaction,
         }
       );
-      Requisition.update(
+      await Requisition.update(
         { status: data.status },
         { where: { id: data.requisitionId }, transaction }
       );
@@ -62,7 +63,10 @@ export default class RecommendationService {
           { model: User, attributes: UserDTO },
           {
             model: Requisition,
-            include: [{ model: User, attributes: UserDTO }],
+            include: [
+              { model: User, attributes: UserDTO },
+              { model: Department },
+            ],
           },
         ],
       });

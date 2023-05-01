@@ -7,6 +7,7 @@ import { UsersComponent } from './users/users.component';
 import { DepartmentsComponent } from './departments/departments.component';
 import { RequisitionsComponent } from './requisitions/requisitions.component';
 import { StocksComponent } from './stocks/stocks.component';
+import { RecommendationsComponent } from './recommendations/recommendations.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -15,6 +16,7 @@ const routes: Routes = [
   { path: 'departments', component: DepartmentsComponent },
   { path: 'requisitions', component: RequisitionsComponent },
   { path: 'stocks', component: StocksComponent },
+  { path: 'recommendations', component: RecommendationsComponent },
   { path: '**', component: Error404Component },
 ];
 

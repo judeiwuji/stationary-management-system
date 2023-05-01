@@ -75,6 +75,11 @@
           </div>
         </div>
       </div>
+
+      <h1 class="title-text">Requisitions</h1>
+      <app-requisition-list
+        [filters]="{ status: 'pending' }"
+      ></app-requisition-list>
     </div>
   </div>
 </div>

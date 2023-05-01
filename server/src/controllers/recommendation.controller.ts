@@ -40,7 +40,7 @@ export default class RecommendationCongtroller {
 
     const feedback = await this.recommendationService.getRecommendations(
       page,
-      filters
+      filters ? JSON.parse(filters) : ""
     );
     res.send(feedback);
   }

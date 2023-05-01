@@ -15,6 +15,7 @@ export interface IRequisition {
   department?: IDepartment;
   comments?: IComment[];
   isOwner?: boolean;
+  isBursar?: boolean;
   user?: IUser;
   createdAt?: string;
 }
@@ -36,4 +37,14 @@ export enum RequisitionStatus {
   APPROVED = 'approved',
   CANCELED = 'canceled',
   PURCHASED = 'purchased',
+}
+
+export interface IRequisitionActionRequest {
+  id?: number;
+  sourceId?: number;
+  through?: number;
+  destination?: number;
+  description?: string;
+  status?: string;
+  items?: IRequisitionItem[];
 }

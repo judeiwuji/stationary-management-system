@@ -77,6 +77,21 @@
     </li>
   </ng-container>
 
+  <ng-container *ngIf="credentials && credentials.role === 'bursar'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/recommendations"
+        [ngClass]="{ active: currentURL === '/recommendations' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faShare"></fa-icon>
+          Recommendations
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
   <li class="nav-item">
     <a
       class="nav-link"

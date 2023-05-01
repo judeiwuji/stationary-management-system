@@ -18,7 +18,7 @@ export default class CommentService {
     const feedback = new Feedback<Comment>();
 
     try {
-      feedback.data = await Comment.create(
+      const { id } = await Comment.create(
         {
           content: data.content,
           requisitionId: data.requisitionId,
@@ -26,6 +26,9 @@ export default class CommentService {
         },
         { include: [{ model: User, attributes: UserDTO }] }
       );
+      feedback.data = (await Comment.findByPk(id, {
+        include: [{ model: User, attributes: UserDTO }],
+      })) as Comment;
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.createMessage;

@@ -1,0 +1,173 @@
+<div class="card rounded-card">
+  <div class="card-body">
+    <!-- Header -->
+    <ng-container *ngIf="showMenu">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="dropdown">
+          <button
+            class="btn btn-sm btn-light btn-rounded"
+            data-bs-toggle="dropdown"
+          >
+            Filter By:
+            <span *ngIf="!filters.status">All</span>
+            <span *ngIf="filters.status">{{ filters.status }}</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-start">
+            <li>
+              <button class="dropdown-item" (click)="filterBy('')">All</button>
+            </li>
+            <ng-container *ngFor="let status of requisitionStatus">
+              <li>
+                <button
+                  class="dropdown-item text-capitalize"
+                  (click)="filterBy(status)"
+                >
+                  {{ status }}
+                </button>
+              </li>
+            </ng-container>
+          </ul>
+        </div>
+      </div>
+    </ng-container>
+    <!-- Header -->
+
+    <table class="table table-striped mb-4">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Date created</th>
+          <th>Status</th>
+          <th>Requisition Author</th>
+          <th>Source</th>
+          <th class="text-end">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container
+          *ngFor="let recommendation of recommendations; index as i"
+        >
+          <tr>
+            <td>{{ i + 1 }}.</td>
+            <td>{{ recommendation.createdAt | date }}</td>
+            <td class="text-capitalize">
+              <ng-container [ngSwitch]="recommendation.status">
+                <span
+                  class="badge rounded-pill bg-success"
+                  *ngSwitchCase="RequisitionStatus.VERIFIED"
+                >
+                  {{ recommendation.status }}
+                </span>
+
+                <span
+                  class="badge rounded-pill bg-danger"
+                  *ngSwitchCase="RequisitionStatus.CANCELED"
+                >
+                  {{ recommendation.status }}
+                </span>
+
+                <span
+                  class="badge rounded-pill bg-secondary"
+                  *ngSwitchCase="RequisitionStatus.PENDING"
+                >
+                  {{ recommendation.status }}
+                </span>
+
+                <span class="badge rounded-pill bg-dark" *ngSwitchDefault>
+                  {{ recommendation.status }}
+                </span>
+              </ng-container>
+            </td>
+            <td class="text-capitalize">
+              {{ recommendation.requisition.user?.lastname }}
+              {{ recommendation.requisition.user?.firstname }}
+            </td>
+            <td class="text-capitalize">
+              {{ recommendation.requisition.department?.name }}
+            </td>
+
+            <td class="dropdown text-end">
+              <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
+                <div class="d-flex justifycontent-between align-items-center">
+                  More
+                  <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
+                </div>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-end">
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="viewDetails(recommendation)"
+                  >
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faList" class="me-2"></fa-icon>
+                      Details
+                    </div>
+                  </button>
+
+                  <button
+                    class="dropdown-item"
+                    (click)="viewComments(recommendation)"
+                  >
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faComment" class="me-2"></fa-icon>
+                      Comments
+                    </div>
+                  </button>
+
+                  <!-- <ng-container *ngIf="recommendation.requisition?.isAuditor">
+                      <button
+                        class="dropdown-item"
+                        (click)="editRequisition(requisition)"
+                      >
+                        <div class="d-flex align-items-center">
+                          <fa-icon [icon]="faCheck" class="me-2"></fa-icon>
+                          Recommend
+                        </div>
+                      </button>
+                      <button
+                        class="dropdown-item"
+                        (click)="editRequisition(requisition)"
+                      >
+                        <div class="d-flex align-items-center">
+                          <fa-icon
+                            [icon]="faTimesCircle"
+                            class="me-2 text-danger"
+                          ></fa-icon>
+                          Cancel
+                        </div>
+                      </button>
+                    </ng-container> -->
+
+                  <ng-container *ngIf="recommendation.requisition.isOwner">
+                    <button
+                      class="dropdown-item"
+                      (click)="deleteRecommendation(recommendation)"
+                    >
+                      <div class="d-flex align-items-center">
+                        <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                        Delete
+                      </div>
+                    </button>
+                  </ng-container>
+                </li>
+              </ul>
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+
+    <!-- Footer -->
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="mb-0 small text-muted">
+        &laquo;&nbsp;{{ currentPage }} of {{ totalPages }}&nbsp;&raquo;
+      </p>
+
+      <ng-container *ngIf="totalPages > currentPage">
+        <button class="btn btn-sm btn-full">Load more</button>
+      </ng-container>
+    </div>
+    <!-- Footer -->
+  </div>
+</div>

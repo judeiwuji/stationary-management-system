@@ -24,13 +24,14 @@
     <label>Items</label>
     <div class="card">
       <div class="card-body">
-        <table class="table table-striped">
+        <table class="table table-striped m-0">
           <thead>
             <tr>
               <th>#</th>
               <th>Name</th>
               <th>Qty</th>
               <th>Unit Price</th>
+              <th *ngIf="requisition.isBursar">Sub Total</th>
               <th class="text-end" *ngIf="requisition.isOwner">Action</th>
             </tr>
           </thead>
@@ -40,7 +41,10 @@
                 <td>{{ i + 1 }}.</td>
                 <td class="text-capitalize">{{ item.stock?.name }}</td>
                 <td>{{ item.quantity }}</td>
-                <td>{{ item.price }}</td>
+                <td>{{ item.price | number }}</td>
+                <td *ngIf="requisition.isBursar">
+                  {{ computeSubTotal(item) | number }}
+                </td>
                 <ng-container *ngIf="requisition.isOwner">
                   <td class="text-end">
                     <button
@@ -55,12 +59,37 @@
                 </ng-container>
               </tr>
             </ng-container>
+            <tr *ngIf="requisition.isBursar">
+              <td colspan="3"></td>
+              <th>Total Amount</th>
+              <th>{{ computeTotal() | number }}</th>
+            </tr>
           </tbody>
         </table>
-        <div class="d-grid" *ngIf="requisition.isOwner">
+        <div class="d-grid mt-2" *ngIf="requisition.isOwner">
           <button class="btn btn-full" (click)="addItem()">Add</button>
         </div>
       </div>
     </div>
   </div>
+
+  <!-- Bursar Actions -->
+  <div
+    class="text-end"
+    *ngIf="requisition.isBursar && requisition.status === 'pending'"
+  >
+    <button
+      class="btn btn-light btn-rounded me-2"
+      (click)="bursarAction(RequisitionStatus.CANCELED)"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-full"
+      (click)="bursarAction(RequisitionStatus.RECOMMENDED)"
+    >
+      Recommend
+    </button>
+  </div>
+  <!-- Bursar Actions -->
 </div>

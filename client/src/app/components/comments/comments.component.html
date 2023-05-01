@@ -1,0 +1,54 @@
+<div class="modal-header">
+  <h5 class="modal-title">Comments</h5>
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <ng-container *ngFor="let comment of comments">
+    <app-comment [comment]="comment"></app-comment>
+  </ng-container>
+  <div
+    class="text-center text-muted"
+    *ngIf="firstTimeLoadCompleted && comments.length === 0"
+  >
+    <fa-icon [icon]="faComments"></fa-icon>
+    Be the first to comment
+  </div>
+  <ng-container *ngIf="totalPages > currentPage">
+    <div class="my-2">
+      <button
+        class="btn btn-sm btn-full"
+        (click)="loadComments(currentPage + 1)"
+      >
+        Load more
+      </button>
+    </div>
+  </ng-container>
+</div>
+
+<div class="modal-footer d-block">
+  <form [formGroup]="commentForm" (ngSubmit)="comment()">
+    <div class="input-group">
+      <textarea
+        class="form-control shadow-none"
+        rows="1"
+        placeholder="Write a comment"
+        autofocus="true"
+        formControlName="content"
+        [ngClass]="{
+          'border-danger':
+            commentForm.controls['content'].touched &&
+            commentForm.controls['content'].errors
+        }"
+      ></textarea>
+      <button class="btn btn-outline-secondary shadow-none" type="submit">
+        <fa-icon [icon]="faPaperPlane" [hidden]="processing"></fa-icon>
+        <fa-icon
+          [icon]="faSpinner"
+          [spin]="true"
+          [hidden]="!processing"
+        ></fa-icon>
+      </button>
+    </div>
+  </form>
+</div>
