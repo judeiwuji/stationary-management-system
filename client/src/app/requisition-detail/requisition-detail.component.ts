@@ -21,7 +21,9 @@ import {
   IRecommendationActionRequest,
 } from '../model/recommendation';
 import { AuditService } from '../services/audit.service';
-import { IAuditActionRequest } from '../model/audit';
+import { IAudit, IAuditActionRequest } from '../model/audit';
+import { IVerificationActionRequest } from '../model/verification';
+import { VerificationService } from '../services/verification.service';
 
 @Component({
   selector: 'app-requisition-detail',
@@ -34,6 +36,9 @@ export class RequisitionDetailComponent {
 
   @Input()
   recommendation!: IRecommendation;
+
+  @Input()
+  audit!: IAudit;
 
   faTrashAlt = faTrashAlt;
   faPen = faPen;
@@ -48,7 +53,8 @@ export class RequisitionDetailComponent {
     private readonly toastr: ToastrService,
     private readonly requisitionService: RequisitionService,
     private readonly recommendationService: RecommendationService,
-    private readonly auditService: AuditService
+    private readonly auditService: AuditService,
+    private readonly verificationService: VerificationService
   ) {}
 
   close() {
@@ -154,6 +160,39 @@ export class RequisitionDetailComponent {
     };
 
     this.auditService.createAudit(request).subscribe({
+      next: (response) => {
+        this.toastr.clear();
+        this.processing = false;
+
+        if (response.success) {
+          this.toastr.success('Done');
+          this.requisition.status = status;
+          this.activeModal.close();
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.toastr.clear();
+        this.processing = false;
+        this.toastr.warning(err.error);
+      },
+    });
+  }
+
+  rectorAction(status: RequisitionStatus) {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.toastr.info('Please wait...', '', { timeOut: 0 });
+    const request: IVerificationActionRequest = {
+      recommendationId: this.audit.recommendationId,
+      requisitionId: this.requisition.id,
+      auditId: this.audit.id,
+      status: status,
+    };
+
+    this.verificationService.createVerification(request).subscribe({
       next: (response) => {
         this.toastr.clear();
         this.processing = false;

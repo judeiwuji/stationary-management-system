@@ -112,4 +112,24 @@
     </button>
   </div>
   <!-- Auditor Actions -->
+
+  <!-- Rector Actions -->
+  <div
+    class="text-end"
+    *ngIf="requisition.isRector && requisition.status === 'verified'"
+  >
+    <button
+      class="btn btn-light btn-rounded me-2"
+      (click)="rectorAction(RequisitionStatus.CANCELED)"
+    >
+      Cancel
+    </button>
+    <button
+      class="btn btn-full"
+      (click)="rectorAction(RequisitionStatus.APPROVED)"
+    >
+      Approve
+    </button>
+  </div>
+  <!-- Rector Actions -->
 </div>

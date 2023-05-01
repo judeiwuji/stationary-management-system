@@ -8,6 +8,7 @@ import {
   faCartShopping,
   faBookBookmark,
   faShare,
+  faNewspaper,
 } from '@fortawesome/free-solid-svg-icons';
 import { IAuthResponse } from 'src/app/model/auth';
 import { AuthService } from 'src/app/services/auth.service';
@@ -25,6 +26,7 @@ export class MainSidebarComponent {
   faCartShopping = faCartShopping;
   faBookBookmark = faBookBookmark;
   faShare = faShare;
+  faNewspaper = faNewspaper;
   currentURL: string;
   credentials: IAuthResponse | null;
 

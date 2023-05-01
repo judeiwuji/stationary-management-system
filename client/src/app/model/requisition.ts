@@ -17,6 +17,7 @@ export interface IRequisition {
   isOwner?: boolean;
   isBursar?: boolean;
   isAuditor?: boolean;
+  isRector?: boolean;
   user?: IUser;
   createdAt?: string;
 }

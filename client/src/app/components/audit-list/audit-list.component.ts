@@ -118,7 +118,8 @@ export class AuditListComponent {
           });
 
           instance.componentInstance.requisition = audit.requisition;
-          instance.componentInstance.recommendation = audit;
+          instance.componentInstance.recommendation = audit.recommendation;
+          instance.componentInstance.audit = audit;
         }
       });
   }

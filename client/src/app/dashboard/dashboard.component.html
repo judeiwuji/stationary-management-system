@@ -89,6 +89,11 @@
           [filters]="{ status: 'recommended' }"
         ></app-recommendation-list>
       </div>
+
+      <div class="mb-3">
+        <h1 class="title-text">Audits</h1>
+        <app-audit-list [filters]="{ status: 'verified' }"></app-audit-list>
+      </div>
     </div>
   </div>
 </div>

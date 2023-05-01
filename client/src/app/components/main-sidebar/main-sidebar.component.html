@@ -107,6 +107,21 @@
     </li>
   </ng-container>
 
+  <ng-container *ngIf="credentials && credentials.role === 'rector'">
+    <li class="nav-item">
+      <a
+        class="nav-link"
+        routerLink="/verifications"
+        [ngClass]="{ active: currentURL === '/verifications' }"
+      >
+        <div class="d-flex align-items-center">
+          <fa-icon [icon]="faNewspaper"></fa-icon>
+          Verifications
+        </div>
+      </a>
+    </li>
+  </ng-container>
+
   <li class="nav-item">
     <a
       class="nav-link"
