@@ -1,1 +1,130 @@
-<p>requisition-form works!</p>
+<div class="modal-header">
+  <h5 class="modal-title">
+    <span *ngIf="requisition">Edit</span>
+    <span *ngIf="!requisition">New</span>
+  </h5>
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <form [formGroup]="requisitionForm" (ngSubmit)="save()">
+    <div class="mb-2">
+      <label for="description">Description</label>
+      <textarea
+        rows="5"
+        maxlength="300"
+        class="form-control"
+        placeholder="Description"
+        id="description"
+        formControlName="description"
+        [ngClass]="{
+          'border-danger': fc['description'].touched && fc['description'].errors
+        }"
+      ></textarea>
+    </div>
+
+    <div class="mb-2">
+      <label for="source">Source</label>
+      <select
+        id="source"
+        class="form-select text-capitalize"
+        formControlName="source"
+        [ngClass]="{
+          'border-danger': fc['source'].touched && fc['source'].errors
+        }"
+      >
+        <option value="">Select department</option>
+        <ng-container *ngFor="let dept of departments">
+          <option [value]="dept.id">{{ dept.name }}</option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="row mb-3">
+      <div class="col-6">
+        <label for="through">Through</label>
+        <select
+          id="through"
+          class="form-select text-capitalize"
+          formControlName="through"
+          [ngClass]="{
+            'border-danger': fc['through'].touched && fc['through'].errors
+          }"
+        >
+          <ng-container *ngFor="let role of roles">
+            <option [value]="role">{{ role | role }}</option>
+          </ng-container>
+        </select>
+      </div>
+      <div class="col-6">
+        <label for="destination">Destination</label>
+        <select
+          id="destination"
+          class="form-select text-capitalize"
+          formControlName="destination"
+          [ngClass]="{
+            'border-danger':
+              fc['destination'].touched && fc['destination'].errors
+          }"
+        >
+          <ng-container *ngFor="let role of roles">
+            <option [value]="role">{{ role | role }}</option>
+          </ng-container>
+        </select>
+      </div>
+    </div>
+
+    <div class="mb-3">
+      <ng-container *ngIf="items && items.length > 0">
+        <div class="card mb-2">
+          <div class="card-body">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Name</th>
+                  <th>Quantity</th>
+                  <th>Unit Price</th>
+                  <th class="text-end">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let item of items; index as i">
+                  <tr>
+                    <td>{{ i + 1 }}.</td>
+                    <td>{{ item.stock?.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td class="text-end">
+                      <button
+                        class="btn btn-sm btn-rounded btn-danger"
+                        (click)="deleteItem(item)"
+                      >
+                        <div class="d-flex align-items-center small">
+                          <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                          Delete
+                        </div>
+                      </button>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </ng-container>
+      <ng-container *ngIf="!requisition">
+        <button class="btn btn-sm btn-full" (click)="addItem()" type="button">
+          Add Item
+        </button>
+      </ng-container>
+    </div>
+
+    <div class="d-grid">
+      <button class="btn btn-full">
+        <span *ngIf="requisition">Save</span>
+        <span *ngIf="!requisition">Create</span>
+      </button>
+    </div>
+  </form>
+</div>

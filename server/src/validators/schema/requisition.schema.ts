@@ -3,15 +3,13 @@ import { RequisitionStatus } from "../../models/requisition-status";
 import { Roles } from "../../models/role";
 
 export const RequisitionItemCreationSchema = object({
-  name: string().required(),
   price: number().positive().required(),
   quantity: number().positive().integer().required(),
-  requisitionId: number().positive().integer().required(),
+  requisitionId: number().positive().integer().optional(),
   stockId: number().positive().integer().required(),
 });
 
 export const RequisitionItemUpdateSchema = object({
-  name: string().optional(),
   price: number().optional(),
   quantity: number().positive().integer().optional(),
   requisitionId: number().positive().integer().optional(),

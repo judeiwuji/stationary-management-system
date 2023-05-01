@@ -39,6 +39,8 @@ export class RequisitionsComponent {
   });
   processing!: boolean;
   RequisitionStatus = RequisitionStatus;
+  requisitionStatus = Object.values(RequisitionStatus);
+  filters: { status?: string } = {};
 
   constructor(
     private requisitionService: RequisitionService,
@@ -51,7 +53,7 @@ export class RequisitionsComponent {
 
   loadRequisitions(page = 1, search = '') {
     this.requisitionService
-      .getRequisitions(page, search)
+      .getRequisitions(page, search, JSON.stringify(this.filters))
       .subscribe((response) => {
         if (response.success) {
           this.currentPage = page;
@@ -100,7 +102,7 @@ export class RequisitionsComponent {
   deleteRequisition(requisition: IRequisition) {
     if (this.processing) return;
     this.messageBoxService.show({
-      message: `Are you sure you want to delete this requisition <strong class="text-capitalize">${requisition.id}</strong>`,
+      message: `Are you sure you want to delete this requisition with id: <strong class="text-capitalize">${requisition.id}</strong>?`,
       onCancel: () => {},
       onConfirm: () => {
         this.processing = true;
@@ -139,5 +141,13 @@ export class RequisitionsComponent {
     });
 
     instance.componentInstance.requisition = requisition;
+  }
+
+  filterBy(status: string) {
+    if (status) this.filters.status = status;
+    else delete this.filters.status;
+
+    this.requisitions = [];
+    this.loadRequisitions(1);
   }
 }

@@ -20,7 +20,7 @@ export default class StockRoute implements IRoute {
     );
     this.app.get(
       "/api/stocks/",
-      SessionManager.authorize([Roles.STOCK_MANAGER]),
+      SessionManager.ensureAuthenticated,
       (req, res) => this.stockController.getStocks(req, res)
     );
     this.app.put(

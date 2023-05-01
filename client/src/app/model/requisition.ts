@@ -10,18 +10,18 @@ export interface IRequisition {
   through: number;
   destination: number;
   description: string;
-  status: string;
+  status?: string;
   items: IRequisitionItem[];
   department?: IDepartment;
   comments?: IComment[];
-  isOwner: boolean;
+  isOwner?: boolean;
   user?: IUser;
   createdAt?: string;
 }
 
 export interface IRequisitionItem {
   id?: number;
-  requisitionId: number;
+  requisitionId?: number;
   price: number;
   quantity: number;
   stockId: number;

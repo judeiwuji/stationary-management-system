@@ -51,16 +51,23 @@ export class RequisitionItemFormComponent {
   }
 
   addItem() {
+    const item: IRequisitionItem = {
+      price: Number(this.itemForm.controls['price'].value),
+      quantity: Number(this.itemForm.controls['quantity'].value),
+      stockId: Number(this.itemForm.controls['stockId'].value),
+      stock: this.stocks.find(
+        (d) => d.id === Number(this.itemForm.controls['stockId'].value)
+      ),
+    };
+
+    if (!this.requisition) {
+      return this.activeModal.close(item);
+    }
+
     if (this.processing) return;
 
     this.processing = true;
     this.toastr.info('Adding...', '', { timeOut: 0 });
-    const item: IRequisitionItem = {
-      price: Number(this.itemForm.controls['price'].value),
-      quantity: Number(this.itemForm.controls['quantity'].value),
-      requisitionId: Number(this.requisition.id),
-      stockId: Number(this.itemForm.controls['stockId'].value),
-    };
 
     this.requisitionService.addRequisitionItem(item).subscribe({
       next: (response) => {

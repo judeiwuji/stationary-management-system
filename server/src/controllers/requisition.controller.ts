@@ -36,13 +36,14 @@ export default class RequisitionController {
     return res.status(201).send(feedback);
   }
 
-  async getRequisitions(req: Request, res: Response) {
+  async getRequisitions(req: IRequest, res: Response) {
     const filters: any = req.query.filters;
     const page = Number(req.query.page) || 1;
 
     const feedback = await this.requisitionService.getRequisitions(
       page,
-      filters
+      filters ? JSON.parse(filters) : "",
+      req.user as User
     );
     res.send(feedback);
   }

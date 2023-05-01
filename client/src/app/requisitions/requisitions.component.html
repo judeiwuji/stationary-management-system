@@ -7,14 +7,33 @@
         <div class="card-body">
           <!-- Header -->
           <div class="d-flex justify-content-between align-items-center mb-3">
-            <form [formGroup]="searchForm" (ngSubmit)="search()">
-              <input
-                type="search"
-                class="form-control"
-                placeholder="Search"
-                formControlName="search"
-              />
-            </form>
+            <div class="dropdown">
+              <button
+                class="btn btn-sm btn-light btn-rounded"
+                data-bs-toggle="dropdown"
+              >
+                Filter By:
+                <span *ngIf="!filters.status">All</span>
+                <span *ngIf="filters.status">{{ filters.status }}</span>
+              </button>
+              <ul class="dropdown-menu dropdown-menu-start">
+                <li>
+                  <button class="dropdown-item" (click)="filterBy('')">
+                    All
+                  </button>
+                </li>
+                <ng-container *ngFor="let status of requisitionStatus">
+                  <li>
+                    <button
+                      class="dropdown-item text-capitalize"
+                      (click)="filterBy(status)"
+                    >
+                      {{ status }}
+                    </button>
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
 
             <div>
               <button class="btn btn-sm btn-full" (click)="createRequisition()">

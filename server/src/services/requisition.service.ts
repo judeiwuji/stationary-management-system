@@ -1,5 +1,6 @@
 import UserDTO from "../models/DTO/UserDTO";
 import Comment from "../models/comment";
+import Department from "../models/department";
 import db from "../models/engine/sequelize";
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
@@ -13,6 +14,7 @@ import RequisitionItem, {
   RequisitionItemAttributes,
   RequisitionItemCreationAttributes,
 } from "../models/requisition_item";
+import Stock from "../models/stock";
 import User, { UserAttributes } from "../models/user";
 
 export default class RequisitionService {
@@ -49,7 +51,14 @@ export default class RequisitionService {
       feedback.data = (await Requisition.findByPk(requisition.id, {
         include: [
           { model: User, attributes: UserDTO },
-          RequisitionItem,
+          {
+            model: RequisitionItem,
+            include: [{ model: Stock, attributes: ["name"] }],
+          },
+          {
+            model: Department,
+            attributes: ["name"],
+          },
           { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
         ],
       })) as Requisition;
@@ -62,20 +71,39 @@ export default class RequisitionService {
     return feedback;
   }
 
-  async getRequisitions(page = 1, filters: any) {
+  async getRequisitions(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Requisition>();
     try {
       const query = filters ? { ...filters } : {};
       const pager = new Pagination(page);
       const { rows, count } = await Requisition.findAndCountAll({
         where: query,
+        attributes: [
+          "id",
+          "userId",
+          "sourceId",
+          "through",
+          "destination",
+          "description",
+          "status",
+          "createdAt",
+          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+        ],
         include: [
           { model: User, attributes: UserDTO },
-          RequisitionItem,
+          {
+            model: RequisitionItem,
+            include: [{ model: Stock, attributes: ["name"] }],
+          },
+          {
+            model: Department,
+            attributes: ["name"],
+          },
           { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
         ],
         offset: pager.startIndex,
         limit: pager.pageSize,
+        order: [["createdAt", "DESC"]],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);
@@ -105,7 +133,14 @@ export default class RequisitionService {
       feedback.data = await Requisition.findByPk(data.id, {
         include: [
           { model: User, attributes: UserDTO },
-          RequisitionItem,
+          {
+            model: RequisitionItem,
+            include: [{ model: Stock, attributes: ["name"] }],
+          },
+          {
+            model: Department,
+            attributes: ["name"],
+          },
           { model: Comment, limit: 15, order: [["createdAt", "DESC"]] },
         ],
       });
@@ -138,12 +173,18 @@ export default class RequisitionService {
     const feedback = new Feedback();
 
     try {
-      feedback.data = await RequisitionItem.create({
-        price: data.price,
-        quantity: data.quantity,
-        stockId: data.stockId,
-        requisitionId: data.requisitionId,
-      });
+      const { id } = await RequisitionItem.create(
+        {
+          price: data.price,
+          quantity: data.quantity,
+          stockId: data.stockId,
+          requisitionId: data.requisitionId,
+        },
+        { include: [{ model: Stock, attributes: ["name"] }] }
+      );
+      feedback.data = (await RequisitionItem.findByPk(id, {
+        include: [{ model: Stock, attributes: ["name"] }],
+      })) as RequisitionItem;
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.createMessage;

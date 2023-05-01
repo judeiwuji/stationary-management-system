@@ -24,7 +24,13 @@ class App {
   }
 
   middlewares() {
-    this.app.use(cors({ exposedHeaders: ["x-access", "x-access-refresh"] }));
+    this.app.use(
+      cors({
+        exposedHeaders: ["x-access", "x-access-refresh"],
+        origin: "*",
+        maxAge: 0,
+      })
+    );
     this.app.use(morgan("dev"));
     this.app.use(express.static(path.join(__dirname, "../", "public")));
     this.app.use(express.json({}));

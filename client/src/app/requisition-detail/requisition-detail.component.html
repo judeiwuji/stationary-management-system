@@ -29,8 +29,8 @@
             <tr>
               <th>#</th>
               <th>Name</th>
-              <th>Quantity</th>
-              <th>Price</th>
+              <th>Qty</th>
+              <th>Unit Price</th>
               <th class="text-end" *ngIf="requisition.isOwner">Action</th>
             </tr>
           </thead>
@@ -38,7 +38,7 @@
             <ng-container *ngFor="let item of requisition.items; index as i">
               <tr>
                 <td>{{ i + 1 }}.</td>
-                <td>{{ item.stock?.name }}</td>
+                <td class="text-capitalize">{{ item.stock?.name }}</td>
                 <td>{{ item.quantity }}</td>
                 <td>{{ item.price }}</td>
                 <ng-container *ngIf="requisition.isOwner">
@@ -48,8 +48,7 @@
                       (click)="deleteItem(item)"
                     >
                       <div class="d-flex align-items-center small">
-                        <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
-                        Delete
+                        <fa-icon [icon]="faTrashAlt"></fa-icon>
                       </div>
                     </button>
                   </td>
