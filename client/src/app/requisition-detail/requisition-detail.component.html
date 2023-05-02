@@ -52,7 +52,12 @@
               <th>Qty</th>
               <th>Unit Price</th>
               <th *ngIf="requisition.isBursar">Sub Total</th>
-              <th class="text-end" *ngIf="requisition.isOwner">Action</th>
+              <th
+                class="text-end"
+                *ngIf="requisition.isOwner && requisition.status === 'pending'"
+              >
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -65,7 +70,11 @@
                 <td *ngIf="requisition.isBursar">
                   {{ computeSubTotal(item) | number }}
                 </td>
-                <ng-container *ngIf="requisition.isOwner">
+                <ng-container
+                  *ngIf="
+                    requisition.isOwner && requisition.status === 'pending'
+                  "
+                >
                   <td class="text-end">
                     <button
                       class="btn btn-sm btn-rounded btn-danger"
@@ -86,7 +95,10 @@
             </tr>
           </tbody>
         </table>
-        <div class="d-grid mt-2" *ngIf="requisition.isOwner">
+        <div
+          class="d-grid mt-2"
+          *ngIf="requisition.isOwner && requisition.status === 'pending'"
+        >
           <button class="btn btn-full" (click)="addItem()">Add</button>
         </div>
       </div>
@@ -152,4 +164,13 @@
     </button>
   </div>
   <!-- Rector Actions -->
+
+  <!-- Order -->
+  <div
+    class="d-grid"
+    *ngIf="requisition.status === 'purchased' && requisition.isOwner"
+  >
+    <button class="btn btn-full" (click)="createOrder()">Order</button>
+  </div>
+  <!-- Order -->
 </div>

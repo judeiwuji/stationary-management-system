@@ -1,0 +1,39 @@
+<div class="modal-header">
+  <button class="btn-close" (click)="close()"></button>
+</div>
+
+<div class="modal-body">
+  <div class="card">
+    <div class="card-body">
+      <table class="table table-hover m-0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Quantity</th>
+            <th>Subtotal</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let item of order.items; index as i">
+            <tr>
+              <td>{{ i + 1 }}</td>
+              <td>{{ item.stock.name }}</td>
+              <td>{{ item.quantity }}</td>
+              <td>{{ item.subTotal | number }}</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+
+      <div
+        class="mt-3 d-grid"
+        *ngIf="order.status === 'pending' && order.isStockManager"
+      >
+        <button class="btn btn-full" (click)="markAsCompleted()">
+          Collected
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

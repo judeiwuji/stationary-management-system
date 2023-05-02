@@ -45,6 +45,6 @@ export default class OrderItem extends Model<
   @Column(DataType.INTEGER)
   quantity!: number;
 
-  @Column(DataType.DECIMAL(8, 2))
+  @Column(DataType.DECIMAL(10, 2))
   subTotal!: number;
 }

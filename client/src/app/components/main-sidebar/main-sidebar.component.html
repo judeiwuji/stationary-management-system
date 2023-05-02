@@ -62,7 +62,12 @@
     </li>
   </ng-container>
 
-  <ng-container *ngIf="credentials && credentials.role === 'stock_manager'">
+  <ng-container
+    *ngIf="
+      credentials &&
+      (credentials.role === 'stock_manager' || credentials.role === 'hod')
+    "
+  >
     <li class="nav-item">
       <a
         class="nav-link"
@@ -75,6 +80,9 @@
         </div>
       </a>
     </li>
+  </ng-container>
+
+  <ng-container *ngIf="credentials && credentials.role === 'stock_manager'">
     <li class="nav-item">
       <a
         class="nav-link"

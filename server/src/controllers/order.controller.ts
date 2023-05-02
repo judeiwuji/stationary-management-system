@@ -1,8 +1,11 @@
 import { Request, Response } from "express";
 import validate from "../validators/validate";
 import OrderService from "../services/order.service";
-import { OrderCreationAttributes } from "../models/order";
-import { OrderCreationSchema } from "../validators/schema/order.schema";
+import { OrderAttributes, OrderCreationAttributes } from "../models/order";
+import {
+  OrderCreationSchema,
+  OrderUpdateSchema,
+} from "../validators/schema/order.schema";
 import IRequest from "../models/interfaces/irequest";
 import User from "../models/user";
 
@@ -29,10 +32,32 @@ export default class OrderController {
     res.status(201).send(feedback);
   }
 
-  async getOrders(req: Request, res: Response) {
-    const page = Number(req.query.page) || 1;
+  async updateOrder(req: IRequest, res: Response) {
+    const validation = await validate<OrderAttributes>(
+      OrderUpdateSchema,
+      req.body
+    );
 
-    const feedback = await this.orderService.getOrders(page);
+    if (!validation.success) {
+      return res.status(400).send(validation.message);
+    }
+    const feedback = await this.orderService.updateOrder(validation.data);
+
+    if (!feedback.success) {
+      return res.status(400).send(feedback.message);
+    }
+    res.send(feedback);
+  }
+
+  async getOrders(req: IRequest, res: Response) {
+    const page = Number(req.query.page) || 1;
+    const filters: any = req.query.filters;
+
+    const feedback = await this.orderService.getOrders(
+      page,
+      filters ? JSON.parse(filters) : {},
+      req.user as User
+    );
     res.send(feedback);
   }
 

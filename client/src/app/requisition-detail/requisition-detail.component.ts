@@ -24,6 +24,8 @@ import { AuditService } from '../services/audit.service';
 import { IAudit, IAuditActionRequest } from '../model/audit';
 import { IVerificationActionRequest } from '../model/verification';
 import { VerificationService } from '../services/verification.service';
+import { IOrderActionRequest } from '../model/order';
+import { OrderService } from '../services/order.service';
 
 @Component({
   selector: 'app-requisition-detail',
@@ -54,7 +56,8 @@ export class RequisitionDetailComponent {
     private readonly requisitionService: RequisitionService,
     private readonly recommendationService: RecommendationService,
     private readonly auditService: AuditService,
-    private readonly verificationService: VerificationService
+    private readonly verificationService: VerificationService,
+    private readonly orderService: OrderService
   ) {}
 
   close() {
@@ -208,6 +211,39 @@ export class RequisitionDetailComponent {
       error: (err) => {
         this.toastr.clear();
         this.processing = false;
+        this.toastr.warning(err.error);
+      },
+    });
+  }
+
+  createOrder() {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.toastr.info('Ordering...', '', { timeOut: 0 });
+    const request: IOrderActionRequest = {
+      requisitionId: this.requisition.id,
+      requisitionItems: this.requisition.items.map((d) => ({
+        quantity: d.quantity,
+        price: d.price,
+        stockId: d.stockId,
+      })),
+    };
+
+    this.orderService.createOrder(request).subscribe({
+      next: (response) => {
+        this.processing = false;
+        this.toastr.clear();
+        if (response.success) {
+          this.requisition.status = RequisitionStatus.ORDERED;
+          this.toastr.success('Ordered');
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.processing = false;
+        this.toastr.clear();
         this.toastr.warning(err.error);
       },
     });

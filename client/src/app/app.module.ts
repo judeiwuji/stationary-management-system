@@ -42,6 +42,9 @@ import { VerificationsComponent } from './verifications/verifications.component'
 import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 import { PurchaseFormComponent } from './purchase-form/purchase-form.component';
 import { RequisitionItemsComponent } from './requisition-items/requisition-items.component';
+import { OrdersComponent } from './orders/orders.component';
+import { OrderListComponent } from './components/order-list/order-list.component';
+import { OrderDetailsComponent } from './order-details/order-details.component';
 
 @NgModule({
   declarations: [
@@ -77,6 +80,9 @@ import { RequisitionItemsComponent } from './requisition-items/requisition-items
     PurchaseHistoryComponent,
     PurchaseFormComponent,
     RequisitionItemsComponent,
+    OrdersComponent,
+    OrderListComponent,
+    OrderDetailsComponent,
   ],
   imports: [
     BrowserModule,

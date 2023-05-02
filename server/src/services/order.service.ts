@@ -7,12 +7,18 @@ import Comment, {
 } from "../models/comment";
 import User from "../models/user";
 import UserDTO from "../models/DTO/UserDTO";
-import Order, { OrderCreationAttributes } from "../models/order";
+import Order, {
+  OrderAttributes,
+  OrderCreationAttributes,
+} from "../models/order";
 import db from "../models/engine/sequelize";
 import OrderItem, { OrderItemCreationAttributes } from "../models/order_item";
 import Requisition from "../models/requisition";
 import Stock from "../models/stock";
 import { RequisitionStatus } from "../models/requisition-status";
+import { OrderStatus } from "../models/order-status";
+import { Roles } from "../models/role";
+import { where } from "sequelize";
 
 export default class OrderService {
   async createOrder(data: OrderCreationAttributes, user: User) {
@@ -24,6 +30,7 @@ export default class OrderService {
         {
           requisitionId: data.requisitionId,
           userId: user.id,
+          status: OrderStatus.PENDING,
         },
         { transaction }
       );
@@ -46,8 +53,8 @@ export default class OrderService {
         }
         await OrderItem.bulkCreate(items, { transaction });
         await Requisition.update(
-          { status: RequisitionStatus.COMPLETED },
-          { where: { id: data.requisitionId } }
+          { status: RequisitionStatus.ORDERED },
+          { where: { id: data.requisitionId }, transaction }
         );
       }
       await transaction.commit();
@@ -63,17 +70,35 @@ export default class OrderService {
     return feedback;
   }
 
-  async getOrders(page = 1) {
+  async getOrders(page = 1, filters: any, user: User) {
     const feedback = new Feedback<Order>();
 
     try {
+      const query = filters ? { ...filters } : {};
       const pager = new Pagination(page);
 
       const { rows, count } = await Order.findAndCountAll({
+        where: query,
         offset: pager.startIndex,
         limit: pager.pageSize,
         order: [["createdAt", "DESC"]],
-        include: [{ model: User, attributes: UserDTO }, OrderItem],
+        include: [
+          { model: User, attributes: UserDTO },
+          { model: OrderItem, include: [Stock] },
+        ],
+        attributes: [
+          "id",
+          "userId",
+          "requisitionId",
+          "status",
+          "createdAt",
+          "updatedAt",
+          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
+          [
+            db.literal(`${user.role === Roles.STOCK_MANAGER}`),
+            "isStockManager",
+          ],
+        ],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);
@@ -81,6 +106,37 @@ export default class OrderService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.getMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async updateOrder(order: OrderAttributes) {
+    const feedback = new Feedback<boolean>();
+    const transaction = await db.transaction();
+    try {
+      const [affectedCount] = await Order.update(
+        { status: order.status },
+        { where: { id: order.id }, transaction }
+      );
+
+      feedback.data = affectedCount > 0;
+      if (affectedCount > 0 && order.status === OrderStatus.COMPLETED) {
+        await Requisition.update(
+          { status: RequisitionStatus.COMPLETED },
+          {
+            where: {
+              id: order.requisitionId,
+            },
+            transaction,
+          }
+        );
+      }
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      feedback.success = false;
+      feedback.message = Errors.updateMessage;
       console.debug(error);
     }
     return feedback;

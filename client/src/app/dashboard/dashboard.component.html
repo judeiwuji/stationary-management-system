@@ -111,6 +111,13 @@
           ></app-requisition-list>
         </div>
       </ng-container>
+
+      <ng-container *ngIf="credentials && credentials.role === 'stock_manager'">
+        <div class="mb-3">
+          <h1 class="title-text">Pending Orders</h1>
+          <app-order-list [filters]="{ status: 'pending' }"></app-order-list>
+        </div>
+      </ng-container>
     </div>
   </div>
 </div>

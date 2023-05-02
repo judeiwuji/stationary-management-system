@@ -1,6 +1,7 @@
 import {
   BelongsTo,
   Column,
+  DataType,
   ForeignKey,
   HasMany,
   Model,
@@ -19,6 +20,7 @@ export interface OrderAttributes {
   user: User;
   requisition: Requisition;
   items: OrderItem[];
+  status: string;
 }
 
 export interface OrderCreationAttributes
@@ -31,6 +33,9 @@ export default class Order extends Model<
   OrderAttributes,
   OrderCreationAttributes
 > {
+  @Column({ defaultValue: "pending", type: DataType.STRING(20) })
+  status!: string;
+
   @ForeignKey(() => User)
   @Column
   userId!: number;

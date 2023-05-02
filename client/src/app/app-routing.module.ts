@@ -11,6 +11,7 @@ import { RecommendationsComponent } from './recommendations/recommendations.comp
 import { AuditsComponent } from './audits/audits.component';
 import { VerificationsComponent } from './verifications/verifications.component';
 import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
+import { OrdersComponent } from './orders/orders.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -23,6 +24,7 @@ const routes: Routes = [
   { path: 'audits', component: AuditsComponent },
   { path: 'verifications', component: VerificationsComponent },
   { path: 'purchase-history', component: PurchaseHistoryComponent },
+  { path: 'orders', component: OrdersComponent },
   { path: '**', component: Error404Component },
 ];
 

@@ -42,6 +42,7 @@ export enum RequisitionStatus {
   APPROVED = 'approved',
   CANCELED = 'canceled',
   PURCHASED = 'purchased',
+  ORDERED = 'ordered',
 }
 
 export interface IRequisitionActionRequest {
@@ -52,4 +53,12 @@ export interface IRequisitionActionRequest {
   description?: string;
   status?: string;
   items?: IRequisitionItem[];
+}
+
+export interface IRequisitionActionRequest {
+  id?: number;
+  requisitionId?: number;
+  price?: number;
+  quantity?: number;
+  stockId?: number;
 }
