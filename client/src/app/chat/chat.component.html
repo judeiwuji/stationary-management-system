@@ -1,0 +1,82 @@
+<app-main-navbar></app-main-navbar>
+<div class="app-content-wrapper">
+  <div class="chat-inbox">
+    <div class="chat-inbox-header">
+      <h5 class="title-text">Chats</h5>
+      <input
+        type="text"
+        class="form-control shadow-none"
+        placeholder="Search"
+        readonly="true"
+        (click)="searchUser()"
+      />
+    </div>
+
+    <!-- Inbox Users -->
+    <ng-container *ngFor="let inbox of inboxes">
+      <div class="chat-inbox-content mb-2">
+        <button
+          (click)="gotoChat(inbox)"
+          class="chat-inbox-item"
+          [ngClass]="{ active: selectedInbox && selectedInbox.id === inbox.id }"
+        >
+          <div class="d-flex align-items-center">
+            <span class="me-2">
+              <img src="assets/avatar.svg" class="avatar" />
+            </span>
+
+            <div class="w-100 text-start">
+              <h5 class="chat-inbox-item-title">
+                {{ inbox.other.lastname }}
+                {{ inbox.other.firstname }}
+              </h5>
+              <ng-container *ngIf="inbox.messages && inbox.messages.length > 0">
+                <div class="d-flex">
+                  <!-- Unread -->
+                  <fa-icon
+                    [icon]="faCheck"
+                    class="me-1 text-muted"
+                    *ngIf="inbox.messages[0].status === 0"
+                  ></fa-icon>
+                  <!-- Unread -->
+
+                  <!-- Read -->
+                  <fa-icon
+                    [icon]="faCheckDouble"
+                    class="me-1 text-muted"
+                    *ngIf="inbox.messages[0].status === 1"
+                  ></fa-icon>
+                  <!-- Read -->
+
+                  <!-- Message -->
+                  <p class="chat-inbox-item-message">
+                    {{ inbox.messages[0].content }}
+                  </p>
+                  <!-- Message -->
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </button>
+      </div>
+    </ng-container>
+    <!-- Inbox Users -->
+  </div>
+  <div class="chat-wrapper">
+    <ng-container *ngIf="isMainView">
+      <div
+        class="chat-wrapper d-flex align-items-center justify-content-center w-100"
+      >
+        <p class="fw-bold text-muted">
+          Select a chat or start a new conversation
+        </p>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="isMessagesView">
+      <app-messages
+        (onInbox)="newInbox($event)"
+        [onSelectInbox]="onSelectInbox.asObservable()"
+      ></app-messages>
+    </ng-container>
+  </div>
+</div>

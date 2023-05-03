@@ -38,6 +38,9 @@ export default class Message extends Model<
   @Column
   inboxId!: number;
 
+  @BelongsTo(() => Inbox)
+  inbox!: Inbox;
+
   @Column(DataType.STRING(300))
   content!: string;
 

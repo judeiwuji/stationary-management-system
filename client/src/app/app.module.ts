@@ -45,6 +45,9 @@ import { RequisitionItemsComponent } from './requisition-items/requisition-items
 import { OrdersComponent } from './orders/orders.component';
 import { OrderListComponent } from './components/order-list/order-list.component';
 import { OrderDetailsComponent } from './order-details/order-details.component';
+import { ChatComponent } from './chat/chat.component';
+import { MessagesComponent } from './messages/messages.component';
+import { ChatSearchUsersComponent } from './chat-search-users/chat-search-users.component';
 
 @NgModule({
   declarations: [
@@ -83,6 +86,9 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
     OrdersComponent,
     OrderListComponent,
     OrderDetailsComponent,
+    ChatComponent,
+    MessagesComponent,
+    ChatSearchUsersComponent,
   ],
   imports: [
     BrowserModule,

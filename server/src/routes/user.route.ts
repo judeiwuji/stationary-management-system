@@ -23,11 +23,8 @@ export default class UserRoute implements IRoute {
       this.userController.updateUser(req, res)
     );
 
-    this.app.get(
-      "/api/users",
-      SessionManager.ensureAuthenticated,
-      SessionManager.authorize([Roles.ADMIN]),
-      (req, res) => this.userController.getUsers(req, res)
+    this.app.get("/api/users", SessionManager.ensureAuthenticated, (req, res) =>
+      this.userController.getUsers(req, res)
     );
 
     this.app.delete(

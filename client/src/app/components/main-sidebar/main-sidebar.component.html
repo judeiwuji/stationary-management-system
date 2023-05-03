@@ -160,14 +160,16 @@
   <li class="nav-item">
     <a
       class="nav-link"
-      routerLink="/chats"
-      [ngClass]="{ active: currentURL.includes('/chats') }"
+      routerLink="/chat"
+      [ngClass]="{ active: currentURL.includes('/chat') }"
     >
       <div class="d-flex align-items-center">
         <fa-icon [icon]="faComments"></fa-icon>
         <div class="notify-badge-pane">
           Chat
-          <span class="notify-badge">1</span>
+          <span class="notify-badge" *ngIf="messageCount">{{
+            messageCount
+          }}</span>
         </div>
       </div>
     </a>

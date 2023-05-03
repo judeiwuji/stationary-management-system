@@ -9,10 +9,76 @@ import Message, {
 import Pagination from "../models/pagination";
 import User from "../models/user";
 import { MessageStatus } from "../models/message_status";
-import Inbox from "../models/inbox";
+import Inbox, { InboxCreationAttributes } from "../models/inbox";
 import { Op } from "sequelize";
 
 export default class MessageService {
+  async createNewMessage(
+    data: MessageCreationAttributes & InboxCreationAttributes,
+    user: User
+  ) {
+    const feedback = new Feedback<Message>();
+    const transaction = await db.transaction();
+
+    try {
+      const inbox = await Inbox.create(
+        { otherId: data.otherId, userId: user.id },
+        { transaction }
+      );
+
+      await Inbox.create(
+        { otherId: user.id, userId: data.otherId, inboxId: inbox.id },
+        { transaction }
+      );
+      await Inbox.update(
+        { inboxId: inbox.id },
+        { where: { id: inbox.id }, transaction }
+      );
+
+      const message = await Message.create(
+        {
+          content: data.content,
+          inboxId: inbox.id,
+          status: MessageStatus.UNREAD,
+          userId: user.id,
+        },
+        { transaction }
+      );
+
+      feedback.data = (await Message.findByPk(message.id, {
+        attributes: [
+          "id",
+          "userId",
+          "inboxId",
+          "content",
+          "status",
+          [
+            db.cast(db.where(db.col("Message.userId"), user.id), "int"),
+            "isOwner",
+          ],
+        ],
+        include: [
+          { model: User, attributes: UserDTO },
+          {
+            model: Inbox,
+            include: [
+              { model: User, attributes: UserDTO, as: "other" },
+              { model: Message, limit: 1 },
+            ],
+          },
+        ],
+        transaction,
+      })) as Message;
+      await transaction.commit();
+    } catch (error) {
+      await transaction.rollback();
+      feedback.message = Errors.createMessage;
+      feedback.success = false;
+      console.log(error);
+    }
+    return feedback;
+  }
+
   async createMessage(
     data: MessageCreationAttributes,
     inboxId: number,
@@ -111,7 +177,17 @@ export default class MessageService {
     try {
       const count = await Inbox.count({
         where: { userId: user.id },
-        include: [{ model: Message, where: { status: MessageStatus.UNREAD } }],
+        include: [
+          {
+            model: Message,
+            where: {
+              status: MessageStatus.UNREAD,
+              userId: {
+                [Op.ne]: user.id,
+              },
+            },
+          },
+        ],
       });
       console.log(count);
       feedback.data = count;

@@ -5,30 +5,40 @@ import {
   MessageUpdateSchema,
 } from "../validators/schema/inbox.schema";
 import validate from "../validators/validate";
-import {
+import Message, {
   MessageAttributes,
   MessageCreationAttributes,
 } from "../models/message";
 import MessageService from "../services/message.service";
 import User from "../models/user";
+import Feedback from "../models/feedback";
+import { InboxCreationAttributes } from "../models/inbox";
 
 export default class MessageController {
   messageService = new MessageService();
   async createMessage(req: IRequest, res: Response) {
-    const inboxId = req.params.id;
-    const validation = await validate<MessageCreationAttributes>(
-      MessageCreationSchema,
-      req.body
-    );
+    const inboxId = Number(req.params.id);
+    const validation = await validate<
+      MessageCreationAttributes & InboxCreationAttributes
+    >(MessageCreationSchema, req.body);
 
     if (!validation.success) {
       return res.status(400).send(validation.message);
     }
-    const feedback = await this.messageService.createMessage(
-      validation.data,
-      Number(inboxId),
-      req.user as User
-    );
+    let feedback: Feedback<Message>;
+
+    if (inboxId === 0) {
+      feedback = await this.messageService.createNewMessage(
+        validation.data,
+        req.user as User
+      );
+    } else {
+      feedback = await this.messageService.createMessage(
+        validation.data,
+        Number(inboxId),
+        req.user as User
+      );
+    }
     if (!feedback.success) {
       return res.status(400).send(feedback.message);
     }

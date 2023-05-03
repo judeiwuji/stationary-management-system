@@ -1,0 +1,53 @@
+.message-header {
+  padding: 0.5rem 0.75rem;
+}
+
+.message-header {
+  min-height: 2em;
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.message-header h5 {
+  font-size: 1rem;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+.message-pane {
+  height: 70vh;
+  padding: 1rem;
+  transform: scaleY(-1);
+}
+
+.message-pane > div {
+  transform: scaleY(-1);
+}
+
+.message-item {
+  background-color: #e9e8e8;
+  display: inline-block;
+  border-radius: 20px;
+  padding: 0.3rem 0.8rem;
+  color: #000000;
+  margin: 0.2rem;
+  max-width: 15em;
+}
+
+.received-message {
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.received-message .text-muted {
+  color: #d1d1d1 !important;
+}
+
+.received-message .message-item {
+  background-color: #0d6efd;
+  color: #ffffff;
+}
+
+.message-text-pane {
+  padding: 1rem 0.5rem;
+}

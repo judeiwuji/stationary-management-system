@@ -1,0 +1,35 @@
+<div class="modal-header">
+  <h5 class="modal-title">Search</h5>
+  <button class="btn-close" (click)="close()"></button>
+</div>
+<div class="modal-body">
+  <div class="mb-2">
+    <form [formGroup]="searchForm" (ngSubmit)="search()">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search"
+        formControlName="search"
+      />
+    </form>
+  </div>
+  <ng-container *ngFor="let user of users">
+    <div class="d-grid mb-2">
+      <a class="btn btn-hover" href="/chat/{{ user.id }}">
+        <div class="d-flex align-items-center">
+          <span class="me-2">
+            <img src="assets/avatar.svg" alt="profile photo" class="avatar" />
+          </span>
+          <h5 class="m-0 text-capitalize body-text">
+            {{ user.lastname }} {{ user.firstname }}
+          </h5>
+        </div>
+      </a>
+    </div>
+  </ng-container>
+  <div class="d-grid" *ngIf="totalPages > currentPage">
+    <button class="btn btn-full btn-sm" (click)="loadUsers(currentPage + 1)">
+      Load more
+    </button>
+  </div>
+</div>

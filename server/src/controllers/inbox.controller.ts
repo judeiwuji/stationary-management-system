@@ -34,4 +34,14 @@ export default class InboxController {
     const feedback = await this.inboxService.getInboxes(page, req.user as User);
     res.send(feedback);
   }
+
+  async getInbox(req: IRequest, res: Response) {
+    const otherId = Number(req.params.id);
+
+    const feedback = await this.inboxService.getInbox(
+      otherId,
+      req.user as User
+    );
+    res.send(feedback);
+  }
 }

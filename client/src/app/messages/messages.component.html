@@ -1,0 +1,45 @@
+<ng-container *ngIf="inbox">
+  <div class="message-header">
+    <div class="d-flex align-items-center" *ngIf="inbox.id === 0">
+      <h5>New message</h5>
+    </div>
+    <div class="d-flex align-items-center" *ngIf="inbox.id !== 0">
+      <span class="me-2">
+        <img src="assets/avatar.svg" class="avatar" />
+      </span>
+      <div>
+        <h5>
+          {{ inbox.other.lastname }}
+          {{ inbox.other.firstname }}
+        </h5>
+        <span class="small text-muted text-capitalize">{{
+          inbox.other.role | role
+        }}</span>
+      </div>
+    </div>
+  </div>
+  <div class="message-pane">
+    <ng-container *ngFor="let message of messages">
+      <div [ngClass]="{ 'received-message': !message.isOwner }">
+        <div class="message-item">
+          <p class="m-0">{{ message.content }}</p>
+          <p class="m-0 small text-muted text-end">
+            {{ message.createdAt | date }}
+          </p>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+  <!-- Message Field -->
+  <div class="message-text-pane">
+    <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">
+      <input
+        type="text"
+        class="form-control"
+        placeholder="Message"
+        formControlName="content"
+      />
+    </form>
+  </div>
+  <!-- Message Field -->
+</ng-container>

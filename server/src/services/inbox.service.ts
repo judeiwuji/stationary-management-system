@@ -63,4 +63,29 @@ export default class InboxService {
     }
     return feedback;
   }
+
+  async getInbox(otherId: number, user: User) {
+    const feedback = new Feedback<Inbox | null>();
+    try {
+      feedback.data = await Inbox.findOne({
+        where: {
+          userId: user.id,
+          otherId,
+        },
+        include: [
+          { model: User, as: "other", attributes: UserDTO, required: true },
+          {
+            model: Message,
+            limit: 1,
+            order: [["createdAt", "DESC"]],
+          },
+        ],
+      });
+    } catch (error) {
+      feedback.message = Errors.createMessage;
+      feedback.success = false;
+      console.debug(error);
+    }
+    return feedback;
+  }
 }
