@@ -67,4 +67,11 @@ export default class MessageController {
     }
     res.send(feedback);
   }
+
+  async countUnReadMessages(req: IRequest, res: Response) {
+    const feedback = await this.messageService.countUnreadMessages(
+      req.user as User
+    );
+    res.send(feedback);
+  }
 }

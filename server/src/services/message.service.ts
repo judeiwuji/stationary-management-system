@@ -9,6 +9,8 @@ import Message, {
 import Pagination from "../models/pagination";
 import User from "../models/user";
 import { MessageStatus } from "../models/message_status";
+import Inbox from "../models/inbox";
+import { Op } from "sequelize";
 
 export default class MessageService {
   async createMessage(
@@ -50,6 +52,19 @@ export default class MessageService {
 
     try {
       const pager = new Pagination(page);
+      // Mark other inbox user messages as read
+      await Message.update(
+        { status: MessageStatus.READ },
+        {
+          where: {
+            inboxId,
+            userId: {
+              [Op.ne]: user.id,
+            },
+          },
+        }
+      );
+
       feedback.results = await Message.findAll({
         where: { inboxId: inboxId },
         offset: pager.startIndex,
@@ -82,6 +97,24 @@ export default class MessageService {
         { where: { inboxId } }
       );
       feedback.data = affectedCount > 0;
+    } catch (error) {
+      feedback.message = Errors.updateMessage;
+      feedback.success = false;
+      console.debug(feedback);
+    }
+    return feedback;
+  }
+
+  async countUnreadMessages(user: User) {
+    const feedback = new Feedback<number>();
+
+    try {
+      const count = await Inbox.count({
+        where: { userId: user.id },
+        include: [{ model: Message, where: { status: MessageStatus.UNREAD } }],
+      });
+      console.log(count);
+      feedback.data = count;
     } catch (error) {
       feedback.message = Errors.updateMessage;
       feedback.success = false;

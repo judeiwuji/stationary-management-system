@@ -28,5 +28,11 @@ export default class MessageRoute implements IRoute {
       SessionManager.ensureAuthenticated,
       (req, res) => this.messageController.getMessages(req, res)
     );
+
+    this.app.get(
+      "/api/messages/count/unread",
+      SessionManager.ensureAuthenticated,
+      (req, res) => this.messageController.countUnReadMessages(req, res)
+    );
   }
 }
