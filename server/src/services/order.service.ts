@@ -1,10 +1,6 @@
 import Errors from "../models/errors";
 import Feedback from "../models/feedback";
 import Pagination from "../models/pagination";
-import Comment, {
-  CommentAttributes,
-  CommentCreationAttributes,
-} from "../models/comment";
 import User from "../models/user";
 import UserDTO from "../models/DTO/UserDTO";
 import Order, {
@@ -16,9 +12,8 @@ import OrderItem, { OrderItemCreationAttributes } from "../models/order_item";
 import Requisition from "../models/requisition";
 import Stock from "../models/stock";
 import { RequisitionStatus } from "../models/requisition-status";
-import { OrderStatus } from "../models/order-status";
+import { OrderStatus } from "../models/order_status";
 import { Roles } from "../models/role";
-import { where } from "sequelize";
 
 export default class OrderService {
   async createOrder(data: OrderCreationAttributes, user: User) {

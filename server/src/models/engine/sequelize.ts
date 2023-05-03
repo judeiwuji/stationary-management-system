@@ -8,13 +8,14 @@ import Requisition from "../requisition";
 import RequisitionItem from "../requisition_item";
 import Order from "../order";
 import OrderItem from "../order_item";
-import Chat from "../chat";
+import Message from "../message";
 import Session from "../session";
 import Comment from "../comment";
 import Receipt from "../receipt";
 import Recommendation from "../recommendation";
 import Audit from "../audit";
 import Verification from "../verification";
+import Inbox from "../inbox";
 dotenv.config();
 
 const db = new Sequelize({
@@ -38,7 +39,8 @@ const db = new Sequelize({
     RequisitionItem,
     Order,
     OrderItem,
-    Chat,
+    Inbox,
+    Message,
     Session,
     Comment,
     Receipt,
