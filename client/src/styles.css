@@ -174,3 +174,26 @@ app-main-sidebar {
 .btn-hover:hover {
   background-color: #f3f3f3;
 }
+
+.modal-transparent .modal-content {
+  background-color: transparent;
+  border: 0;
+}
+
+.static-align-top-right {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.btn-close-rounded {
+  width: 2em;
+  height: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  color: #404040;
+  border: 0;
+  border-radius: 50%;
+}

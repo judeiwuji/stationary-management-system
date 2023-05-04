@@ -35,7 +35,7 @@
                     {{ computeSubtotal(receipt) | number }}
                   </td>
                   <td class="text-capitalize">
-                    <button class="btn btn-sm btn-light">view</button>
+                    <button class="btn btn-sm btn-light" (click)="viewReceipt(receipt)">view</button>
                   </td>
                   <td class="dropdown text-end">
                     <button

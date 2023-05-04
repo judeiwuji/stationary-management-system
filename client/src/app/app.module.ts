@@ -48,6 +48,7 @@ import { OrderDetailsComponent } from './order-details/order-details.component';
 import { ChatComponent } from './chat/chat.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ChatSearchUsersComponent } from './chat-search-users/chat-search-users.component';
+import { ReceiptImageComponent } from './receipt-image/receipt-image.component';
 
 @NgModule({
   declarations: [
@@ -89,6 +90,7 @@ import { ChatSearchUsersComponent } from './chat-search-users/chat-search-users.
     ChatComponent,
     MessagesComponent,
     ChatSearchUsersComponent,
+    ReceiptImageComponent,
   ],
   imports: [
     BrowserModule,

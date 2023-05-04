@@ -49,14 +49,14 @@ export default class ReceiptService {
   async getReceipts(page = 1, search: string) {
     const feedback = new Feedback();
     try {
-      const pager = new Pagination();
+      const pager = new Pagination(page);
       let query = {};
       query = search
         ? {
             [Op.or]: [{ name: { [Op.like]: `%${search}%` } }],
           }
         : query;
-      feedback.results = await Receipt.findAll({
+      const { count, rows } = await Receipt.findAndCountAll({
         where: query,
         offset: pager.startIndex,
         limit: pager.pageSize,
@@ -66,6 +66,9 @@ export default class ReceiptService {
           { model: RequisitionItem, include: [Stock] },
         ],
       });
+      feedback.results = rows;
+      feedback.page = page;
+      feedback.totalPages = pager.totalPages(count);
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.getMessage;

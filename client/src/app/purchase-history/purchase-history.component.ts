@@ -14,6 +14,7 @@ import { MessageBoxService } from '../services/message-box.service';
 import { ToastrService } from 'ngx-toastr';
 import { PurchaseFormComponent } from '../purchase-form/purchase-form.component';
 import { MessageBoxTypes } from '../model/message-box';
+import { ReceiptImageComponent } from '../receipt-image/receipt-image.component';
 
 @Component({
   selector: 'app-purchase-history',
@@ -45,7 +46,7 @@ export class PurchaseHistoryComponent {
     this.loadHistory();
   }
 
-  loadHistory(page = 1, search = '') {
+  loadHistory(page = 1) {
     this.purchaseService.getHistory(page).subscribe((response) => {
       if (response.success) {
         this.currentPage = page;
@@ -100,5 +101,15 @@ export class PurchaseHistoryComponent {
 
   computeSubtotal(receipt: IReceipt) {
     return Number(receipt.item.price) * receipt.item.quantity;
+  }
+
+  viewReceipt(receipt: IReceipt) {
+    const instance = this.modal.open(ReceiptImageComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      modalDialogClass: 'modal-transparent',
+    });
+
+    instance.componentInstance.receipt = receipt;
   }
 }
