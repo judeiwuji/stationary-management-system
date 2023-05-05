@@ -33,6 +33,10 @@ export class MessagesComponent implements OnInit {
 
   @Output()
   onInbox = new EventEmitter<IInbox>();
+
+  @Output()
+  onNewMessage = new EventEmitter<IMessage>();
+
   constructor(
     private readonly messageService: MessageService,
     private readonly toastr: ToastrService
@@ -71,8 +75,11 @@ export class MessagesComponent implements OnInit {
 
   sendMessage() {
     if (this.processing) return;
+    let content = this.messageForm.controls.content.value;
+
+    if (!content) return;
     const message: IMessageActionRequest & IInboxActionRequest = {
-      content: this.messageForm.controls.content.value,
+      content: content.trim(),
       inboxId: this.inbox.inboxId,
       otherId: this.inbox.otherId,
     };
@@ -87,6 +94,8 @@ export class MessagesComponent implements OnInit {
           if (response.data.inbox) {
             this.inbox = response.data.inbox;
             this.onInbox.emit(this.inbox);
+          } else {
+            this.onNewMessage.emit(response.data);
           }
         } else {
           this.toastr.warning(response.message);

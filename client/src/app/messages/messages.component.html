@@ -19,9 +19,6 @@
     </div>
   </div>
   <div class="message-pane" (scroll)="onScroll($event)">
-    <!-- Top -->
-    <div id="message-chat-top"></div>
-    <!-- Top -->
     <ng-container *ngFor="let message of messages">
       <div [ngClass]="{ 'received-message': !message.isOwner }">
         <div class="message-item">

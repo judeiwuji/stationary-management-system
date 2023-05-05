@@ -48,7 +48,7 @@ export default class InboxService {
     try {
       const pager = new Pagination(page);
 
-      feedback.results = await Inbox.findAll({
+      const { count, rows } = await Inbox.findAndCountAll({
         offset: pager.startIndex,
         limit: pager.pageSize,
         where: {
@@ -60,10 +60,24 @@ export default class InboxService {
             model: Message,
             limit: 1,
             order: [["createdAt", "DESC"]],
+            attributes: [
+              "id",
+              "userId",
+              "inboxId",
+              "content",
+              "status",
+              [
+                db.cast(db.where(db.col("Message.userId"), user.id), "int"),
+                "isOwner",
+              ],
+            ],
           },
         ],
         order: [["messageAt", "DESC"]],
       });
+      feedback.results = rows;
+      feedback.totalPages = pager.totalPages(count);
+      feedback.page = pager.page;
     } catch (error) {
       feedback.message = Errors.createMessage;
       feedback.success = false;
@@ -86,6 +100,17 @@ export default class InboxService {
             model: Message,
             limit: 1,
             order: [["createdAt", "DESC"]],
+            attributes: [
+              "id",
+              "userId",
+              "inboxId",
+              "content",
+              "status",
+              [
+                db.cast(db.where(db.col("Message.userId"), user.id), "int"),
+                "isOwner",
+              ],
+            ],
           },
         ],
       });
@@ -117,13 +142,24 @@ export default class InboxService {
               },
             },
             order: [["createdAt", "DESC"]],
+            attributes: [
+              "id",
+              "userId",
+              "inboxId",
+              "content",
+              "status",
+              [
+                db.cast(db.where(db.col("messages.userId"), user.id), "int"),
+                "isOwner",
+              ],
+            ],
           },
         ],
       });
     } catch (error) {
       feedback.message = Errors.updateMessage;
       feedback.success = false;
-      console.debug(feedback);
+      console.debug(error);
     }
     return feedback;
   }

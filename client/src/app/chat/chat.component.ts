@@ -13,6 +13,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { IInbox } from '../model/inbox';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject } from 'rxjs';
+import { IMessage } from '../model/message';
 
 @Component({
   selector: 'app-chat',
@@ -153,8 +154,10 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.selectedInbox = inbox;
     this.setView(ChatViews.MESSAGES);
     this.onSelectInbox.next(inbox);
-    if (inbox.messages && inbox.messages.length > 0) {
-      inbox.messages[0].status = 1;
+
+    const chat = this.inboxes.find((d) => d.inboxId === inbox.inboxId);
+    if (chat && chat.messages && chat.messages.length > 0) {
+      chat.messages[0].status = 1;
     }
   }
 
@@ -167,5 +170,13 @@ export class ChatComponent implements OnInit, OnDestroy {
       replaceUrl: true,
       onSameUrlNavigation: 'reload',
     });
+  }
+
+  onNewMessage(message: IMessage) {
+    const inbox = this.inboxes.find((d) => d.inboxId === message.inboxId);
+    if (inbox) {
+      inbox.messages.splice(0, 1);
+      inbox.messages.push(message);
+    }
   }
 }
