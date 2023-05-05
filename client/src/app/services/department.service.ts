@@ -14,7 +14,7 @@ export class DepartmentService {
 
   getDepartments(page: number, search = '') {
     return this.http.get<IFeedback<IDepartment>>(
-      `${this.api}?search=${search}`
+      `${this.api}?page=${page}&search=${search}`
     );
   }
 

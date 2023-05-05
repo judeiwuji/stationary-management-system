@@ -42,7 +42,7 @@ export class DepartmentsComponent {
     private messageBoxService: MessageBoxService,
     private toastr: ToastrService
   ) {
-    this.loadUsers();
+    this.loadDepartments();
   }
 
   sortBy(label: string, order: string) {
@@ -53,7 +53,8 @@ export class DepartmentsComponent {
     }
   }
 
-  loadUsers(page = 1, search = '') {
+  loadDepartments(page = 1) {
+    const search = this.searchForm.controls['search'].value || '';
     this.departmentService
       .getDepartments(page, search)
       .subscribe((response) => {
@@ -66,9 +67,8 @@ export class DepartmentsComponent {
   }
 
   search() {
-    const searchText = this.searchForm.controls['search'].value || '';
     this.departments = [];
-    this.loadUsers(1, searchText);
+    this.loadDepartments(1);
   }
 
   createDept() {

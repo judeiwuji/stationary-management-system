@@ -87,7 +87,12 @@
             </p>
 
             <ng-container *ngIf="totalPages > currentPage">
-              <button class="btn btn-sm btn-full">Load more</button>
+              <button
+                class="btn btn-sm btn-full"
+                (click)="loadUsers(currentPage + 1)"
+              >
+                Load more
+              </button>
             </ng-container>
           </div>
           <!-- Footer -->

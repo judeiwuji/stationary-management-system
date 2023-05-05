@@ -57,7 +57,8 @@ export class UsersComponent {
     }
   }
 
-  loadUsers(page = 1, search = '') {
+  loadUsers(page = 1) {
+    const search = this.searchForm.controls['search'].value || '';
     this.userService.getUsers(page, search).subscribe((response) => {
       if (response.success) {
         this.currentPage = page;
@@ -68,9 +69,8 @@ export class UsersComponent {
   }
 
   search() {
-    const searchText = this.searchForm.controls['search'].value || '';
     this.users = [];
-    this.loadUsers(1, searchText);
+    this.loadUsers(1);
   }
 
   createUser() {

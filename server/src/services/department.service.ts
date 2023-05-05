@@ -42,19 +42,22 @@ export default class DepartmentService {
   async getDepartments(page = 1, search: string) {
     const feedback = new Feedback();
     try {
-      const pager = new Pagination();
+      const pager = new Pagination(page);
       let query = {};
       query = search
         ? {
             [Op.or]: [{ name: { [Op.like]: `%${search}%` } }],
           }
         : query;
-      feedback.results = await Department.findAll({
+      const { count, rows } = await Department.findAndCountAll({
         where: query,
         offset: pager.startIndex,
         limit: pager.pageSize,
         order: [["name", "ASC"]],
       });
+      feedback.results = rows;
+      feedback.totalPages = pager.totalPages(count);
+      feedback.page = pager.page;
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.getMessage;
