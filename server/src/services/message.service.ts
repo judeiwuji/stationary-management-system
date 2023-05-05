@@ -22,12 +22,17 @@ export default class MessageService {
 
     try {
       const inbox = await Inbox.create(
-        { otherId: data.otherId, userId: user.id },
+        { otherId: data.otherId, userId: user.id, messageAt: new Date() },
         { transaction }
       );
 
       await Inbox.create(
-        { otherId: user.id, userId: data.otherId, inboxId: inbox.id },
+        {
+          otherId: user.id,
+          userId: data.otherId,
+          inboxId: inbox.id,
+          messageAt: new Date(),
+        },
         { transaction }
       );
       await Inbox.update(
@@ -85,14 +90,29 @@ export default class MessageService {
     user: User
   ) {
     const feedback = new Feedback<Message>();
+    const transaction = await db.transaction();
 
     try {
-      const { id } = await Message.create({
-        content: data.content,
-        inboxId: inboxId,
-        status: MessageStatus.UNREAD,
-        userId: user.id,
-      });
+      const { id } = await Message.create(
+        {
+          content: data.content,
+          inboxId: inboxId,
+          status: MessageStatus.UNREAD,
+          userId: user.id,
+        },
+        { transaction }
+      );
+
+      await Inbox.update(
+        { messageAt: new Date() },
+        {
+          where: {
+            inboxId,
+          },
+          transaction,
+        }
+      );
+      transaction.commit();
 
       feedback.data = (await Message.findByPk(id, {
         attributes: [
@@ -106,6 +126,7 @@ export default class MessageService {
         include: [{ model: User, attributes: UserDTO }],
       })) as Message;
     } catch (error) {
+      transaction.rollback();
       feedback.message = Errors.createMessage;
       feedback.success = false;
       console.log(error);
@@ -131,7 +152,7 @@ export default class MessageService {
         }
       );
 
-      feedback.results = await Message.findAll({
+      const { count, rows } = await Message.findAndCountAll({
         where: { inboxId: inboxId },
         offset: pager.startIndex,
         limit: pager.pageSize,
@@ -146,6 +167,9 @@ export default class MessageService {
         ],
         include: [{ model: User, attributes: UserDTO }],
       });
+      feedback.results = rows;
+      feedback.totalPages = pager.totalPages(count);
+      feedback.page = pager.page;
     } catch (error) {
       feedback.message = Errors.getMessage;
       feedback.success = false;
@@ -189,7 +213,6 @@ export default class MessageService {
           },
         ],
       });
-      console.log(count);
       feedback.data = count;
     } catch (error) {
       feedback.message = Errors.updateMessage;

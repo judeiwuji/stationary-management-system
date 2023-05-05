@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import {
   faCheck,
   faCheckDouble,
@@ -19,7 +19,7 @@ import { Subject } from 'rxjs';
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.css'],
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit, OnDestroy {
   faCheck = faCheck;
   faCheckDouble = faCheckDouble;
   faCommentAlt = faCommentAlt;
@@ -33,6 +33,8 @@ export class ChatComponent implements OnInit {
   currentPage = 1;
   selectedInbox!: IInbox;
   onSelectInbox = new Subject<IInbox>();
+  chatInterval: any;
+  lastChatCheck = Date.now();
 
   constructor(
     private readonly modal: NgbModal,
@@ -41,6 +43,17 @@ export class ChatComponent implements OnInit {
     private readonly router: Router
   ) {}
 
+  clearChatInterval() {
+    if (this.chatInterval) {
+      clearInterval(this.chatInterval);
+      this.chatInterval = null;
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.clearChatInterval();
+  }
+
   ngOnInit(): void {
     this.getInbox(this.activatedRoute.snapshot.params['id']);
     this.activatedRoute.params.subscribe((params) => {
@@ -48,6 +61,33 @@ export class ChatComponent implements OnInit {
       this.getInbox(id);
     });
     this.loadInbox();
+
+    this.clearChatInterval();
+    this.chatInterval = setInterval(() => {
+      this.inboxService
+        .hasNewInboxMessages(this.lastChatCheck)
+        .subscribe((response) => {
+          console.log(response);
+          this.lastChatCheck = Date.now();
+          if (response.success) {
+            for (const inbox of response.results) {
+              const index = this.inboxes.findIndex(
+                (d) => d.inboxId === inbox.inboxId
+              );
+
+              if (index !== -1) {
+                this.inboxes.splice(index, 1);
+                this.inboxes.unshift(inbox);
+                if (this.selectedInbox.inboxId === inbox.inboxId) {
+                  this.selectInbox(inbox);
+                }
+              } else {
+                this.inboxes.unshift(inbox);
+              }
+            }
+          }
+        });
+    }, 20000);
   }
 
   getInbox(id: number) {
@@ -113,6 +153,9 @@ export class ChatComponent implements OnInit {
     this.selectedInbox = inbox;
     this.setView(ChatViews.MESSAGES);
     this.onSelectInbox.next(inbox);
+    if (inbox.messages && inbox.messages.length > 0) {
+      inbox.messages[0].status = 1;
+    }
   }
 
   newInbox(inbox: IInbox) {

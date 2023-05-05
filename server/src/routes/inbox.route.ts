@@ -21,6 +21,12 @@ export default class InboxRoute implements IRoute {
     );
 
     this.app.get(
+      "/api/inbox/hasNewMessages",
+      SessionManager.ensureAuthenticated,
+      (req, res) => this.inboxController.hasNewInboxMessages(req, res)
+    );
+
+    this.app.get(
       "/api/inbox/:id",
       SessionManager.ensureAuthenticated,
       (req, res) => this.inboxController.getInbox(req, res)

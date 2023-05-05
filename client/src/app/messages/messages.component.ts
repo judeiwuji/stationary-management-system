@@ -1,10 +1,18 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { IInbox, IInboxActionRequest } from '../model/inbox';
 import { MessageService } from '../services/message.service';
 import { IMessage, IMessageActionRequest } from '../model/message';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ToastrService } from 'ngx-toastr';
 import { Observable } from 'rxjs';
+import { faArrowDown, faSpinner } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-messages',
@@ -12,7 +20,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./messages.component.css'],
 })
 export class MessagesComponent implements OnInit {
-  // @Input()
   inbox!: IInbox;
 
   messages: IMessage[] = [];
@@ -33,9 +40,13 @@ export class MessagesComponent implements OnInit {
 
   @Input()
   onSelectInbox!: Observable<IInbox>;
+  loading = false;
+  faSpinner = faSpinner;
+  faArrowDown = faArrowDown;
 
   ngOnInit(): void {
     this.onSelectInbox.subscribe((inbox) => {
+      console.log(inbox);
       this.inbox = inbox;
       this.messages = [];
       this.totalPages = 0;
@@ -45,9 +56,11 @@ export class MessagesComponent implements OnInit {
   }
 
   loadMessages(page = 1) {
+    this.loading = true;
     this.messageService
       .getMessages(page, this.inbox.inboxId)
       .subscribe((response) => {
+        this.loading = false;
         if (response.success) {
           this.currentPage = page;
           this.messages.push(...response.results);
@@ -84,5 +97,15 @@ export class MessagesComponent implements OnInit {
         this.processing = false;
       },
     });
+  }
+
+  onScroll(event: Event) {
+    const target: any = event.target;
+    if (target.offsetHeight + target.scrollTop >= target.scrollHeight) {
+      console.log('End');
+      if (this.totalPages > this.currentPage) {
+        this.loadMessages(this.currentPage + 1);
+      }
+    }
   }
 }

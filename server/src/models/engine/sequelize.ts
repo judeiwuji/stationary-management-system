@@ -49,6 +49,7 @@ const db = new Sequelize({
     Verification,
   ],
   logging: false,
+  timezone: "+01:00",
 });
 
 export default db;

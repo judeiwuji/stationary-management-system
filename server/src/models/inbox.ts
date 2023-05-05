@@ -16,6 +16,7 @@ export interface InboxAttributes {
   otherId: number;
   inboxId: number;
   messages: Message[];
+  messageAt: Date;
 }
 
 export interface InboxCreationAttributes
@@ -26,6 +27,12 @@ export default class Inbox extends Model<
   InboxAttributes,
   InboxCreationAttributes
 > {
+  @Column({
+    type: DataType.DATE,
+    defaultValue: new Date(),
+  })
+  messageAt!: Date;
+
   @Column
   @ForeignKey(() => User)
   userId!: number;

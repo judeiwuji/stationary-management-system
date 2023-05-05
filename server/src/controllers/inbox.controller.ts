@@ -44,4 +44,14 @@ export default class InboxController {
     );
     res.send(feedback);
   }
+
+  async hasNewInboxMessages(req: IRequest, res: Response) {
+    const { timestamp } = req.query;
+
+    const feedback = await this.inboxService.hasNewInboxMessages(
+      req.user as User,
+      new Date(Number(timestamp))
+    );
+    res.send(feedback);
+  }
 }

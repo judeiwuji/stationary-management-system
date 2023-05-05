@@ -1,6 +1,6 @@
 <ng-container *ngIf="inbox">
   <div class="message-header">
-    <div class="d-flex align-items-center" *ngIf="inbox.id === 0">
+    <div class="d-flex align-items-center py-2" *ngIf="inbox.id === 0">
       <h5>New message</h5>
     </div>
     <div class="d-flex align-items-center" *ngIf="inbox.id !== 0">
@@ -18,7 +18,10 @@
       </div>
     </div>
   </div>
-  <div class="message-pane">
+  <div class="message-pane" (scroll)="onScroll($event)">
+    <!-- Top -->
+    <div id="message-chat-top"></div>
+    <!-- Top -->
     <ng-container *ngFor="let message of messages">
       <div [ngClass]="{ 'received-message': !message.isOwner }">
         <div class="message-item">
@@ -29,7 +32,13 @@
         </div>
       </div>
     </ng-container>
+    <!-- Loading -->
+    <div class="text-center my-2" [hidden]="!loading">
+      <fa-icon [icon]="faSpinner" [spin]="true"></fa-icon>
+    </div>
+    <!-- Loading -->
   </div>
+
   <!-- Message Field -->
   <div class="message-text-pane">
     <form [formGroup]="messageForm" (ngSubmit)="sendMessage()">

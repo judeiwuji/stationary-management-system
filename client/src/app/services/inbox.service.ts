@@ -19,4 +19,12 @@ export class InboxService {
   getInbox(otherId: number) {
     return this.http.get<IFeedback<IInbox>>(`${this.api}/${otherId}`);
   }
+
+  hasNewInboxMessages(timestamp: number) {
+    return this.http.get<IFeedback<IInbox>>(`${this.api}/hasNewMessages`, {
+      params: {
+        timestamp,
+      },
+    });
+  }
 }
