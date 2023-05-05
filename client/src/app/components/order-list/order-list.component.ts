@@ -1,10 +1,12 @@
 import { Component, Input } from '@angular/core';
 import {
+  faBookBookmark,
   faCheck,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
   faComment,
+  faCommentAlt,
   faList,
   faPen,
   faTimesCircle,
@@ -16,9 +18,11 @@ import { IAuthResponse } from 'src/app/model/auth';
 import { MessageBoxTypes } from 'src/app/model/message-box';
 import { IOrder, OrderStatus } from 'src/app/model/order';
 import { OrderDetailsComponent } from 'src/app/order-details/order-details.component';
+import { RequisitionDetailComponent } from 'src/app/requisition-detail/requisition-detail.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { MessageBoxService } from 'src/app/services/message-box.service';
 import { OrderService } from 'src/app/services/order.service';
+import { RequisitionService } from 'src/app/services/requisition.service';
 
 @Component({
   selector: 'app-order-list',
@@ -35,6 +39,8 @@ export class OrderListComponent {
   faCheck = faCheck;
   faTimesCircle = faTimesCircle;
   faComment = faComment;
+  faCommentAlt = faCommentAlt;
+  faBookBookmark = faBookBookmark;
 
   sorts: any = {};
   orders: IOrder[] = [];
@@ -56,7 +62,8 @@ export class OrderListComponent {
     private modal: NgbModal,
     private messageBoxService: MessageBoxService,
     private toastr: ToastrService,
-    private authService: AuthService
+    private authService: AuthService,
+    private requisitionService: RequisitionService
   ) {}
 
   ngOnInit(): void {
@@ -64,9 +71,9 @@ export class OrderListComponent {
     this.credentials = this.authService.getCredentials();
   }
 
-  loadOrders(page = 1, search = '') {
+  loadOrders(page = 1) {
     this.orderService
-      .getOrders(page, search, JSON.stringify(this.filters))
+      .getOrders(page, JSON.stringify(this.filters))
       .subscribe((response) => {
         if (response.success) {
           this.currentPage = page;
@@ -124,5 +131,20 @@ export class OrderListComponent {
 
     this.orders = [];
     this.loadOrders(1);
+  }
+
+  viewRequisition(order: IOrder) {
+    this.requisitionService
+      .getRequisition(order.requisitionId)
+      .subscribe((response) => {
+        if (response.success) {
+          const instance = this.modal.open(RequisitionDetailComponent, {
+            size: 'md',
+            backdrop: 'static',
+          });
+
+          instance.componentInstance.requisition = response.data;
+        }
+      });
   }
 }

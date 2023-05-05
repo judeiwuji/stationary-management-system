@@ -10,6 +10,7 @@ import {
   faTimesCircle,
   faComment,
   faReceipt,
+  faCommentAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { IRequisition, RequisitionStatus } from '../../model/requisition';
 import { FormControl, FormGroup } from '@angular/forms';
@@ -40,6 +41,7 @@ export class RequisitionListComponent implements OnInit {
   faTimesCircle = faTimesCircle;
   faComment = faComment;
   faReceipt = faReceipt;
+  faCommentAlt = faCommentAlt;
 
   sorts: any = {};
   requisitions: IRequisition[] = [];
@@ -70,9 +72,9 @@ export class RequisitionListComponent implements OnInit {
     this.loadRequisitions();
   }
 
-  loadRequisitions(page = 1, search = '') {
+  loadRequisitions(page = 1) {
     this.requisitionService
-      .getRequisitions(page, search, JSON.stringify(this.filters))
+      .getRequisitions(page, JSON.stringify(this.filters))
       .subscribe((response) => {
         if (response.success) {
           this.currentPage = page;
@@ -80,12 +82,6 @@ export class RequisitionListComponent implements OnInit {
           this.totalPages = response.totalPages;
         }
       });
-  }
-
-  search() {
-    const searchText = this.searchForm.controls['search'].value || '';
-    this.requisitions = [];
-    this.loadRequisitions(1, searchText);
   }
 
   createRequisition() {

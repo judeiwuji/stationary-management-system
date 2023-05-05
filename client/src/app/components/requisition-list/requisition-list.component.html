@@ -56,32 +56,9 @@
             <td>{{ i + 1 }}.</td>
             <td>{{ requisition.createdAt | date }}</td>
             <td class="text-capitalize">
-              <ng-container [ngSwitch]="requisition.status">
-                <span
-                  class="badge rounded-pill bg-success"
-                  *ngSwitchCase="RequisitionStatus.VERIFIED"
-                >
-                  {{ requisition.status }}
-                </span>
-
-                <span
-                  class="badge rounded-pill bg-danger"
-                  *ngSwitchCase="RequisitionStatus.CANCELED"
-                >
-                  {{ requisition.status }}
-                </span>
-
-                <span
-                  class="badge rounded-pill bg-secondary"
-                  *ngSwitchCase="RequisitionStatus.PENDING"
-                >
-                  {{ requisition.status }}
-                </span>
-
-                <span class="badge rounded-pill bg-dark" *ngSwitchDefault>
-                  {{ requisition.status }}
-                </span>
-              </ng-container>
+              <app-status-badge
+                [status]="requisition.status"
+              ></app-status-badge>
             </td>
             <td class="text-capitalize">
               {{ requisition.department?.name }}
@@ -125,7 +102,8 @@
                       Details
                     </div>
                   </button>
-
+                </li>
+                <li>
                   <button
                     class="dropdown-item"
                     (click)="viewComments(requisition)"
@@ -135,8 +113,20 @@
                       Comment
                     </div>
                   </button>
-
-                  <ng-container *ngIf="requisition.isOwner">
+                </li>
+                <li *ngIf="!requisition.isOwner">
+                  <a
+                    href="/chat/{{ requisition.userId }}"
+                    class="dropdown-item"
+                  >
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faCommentAlt" class="me-2"></fa-icon>
+                      Send message
+                    </div>
+                  </a>
+                </li>
+                <ng-container *ngIf="requisition.isOwner">
+                  <li>
                     <button
                       class="dropdown-item"
                       (click)="editRequisition(requisition)"
@@ -146,6 +136,8 @@
                         Edit
                       </div>
                     </button>
+                  </li>
+                  <li>
                     <button
                       class="dropdown-item"
                       (click)="deleteRequisition(requisition)"
@@ -155,8 +147,8 @@
                         Delete
                       </div>
                     </button>
-                  </ng-container>
-                </li>
+                  </li>
+                </ng-container>
               </ul>
             </td>
           </tr>
@@ -171,7 +163,12 @@
       </p>
 
       <ng-container *ngIf="totalPages > currentPage">
-        <button class="btn btn-sm btn-full">Load more</button>
+        <button
+          class="btn btn-sm btn-full"
+          (click)="loadRequisitions(currentPage + 1)"
+        >
+          Load more
+        </button>
       </ng-container>
     </div>
     <!-- Footer -->

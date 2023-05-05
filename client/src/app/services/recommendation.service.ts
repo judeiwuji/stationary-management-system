@@ -15,9 +15,9 @@ export class RecommendationService {
 
   constructor(private http: HttpClient) {}
 
-  getRecommendations(page: number, search = '', filters = '') {
+  getRecommendations(page: number, filters = '') {
     return this.http.get<IFeedback<IRecommendation>>(
-      `${this.api}?page=${page}&search=${search}&filters=${filters}`
+      `${this.api}?page=${page}&filters=${filters}`
     );
   }
 

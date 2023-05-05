@@ -12,9 +12,9 @@ export class OrderService {
 
   constructor(private http: HttpClient) {}
 
-  getOrders(page: number, search = '', filters = '') {
+  getOrders(page: number, filters = '') {
     return this.http.get<IFeedback<IOrder>>(
-      `${this.api}?page=${page}&search=${search}&filters=${filters}`
+      `${this.api}?page=${page}&filters=${filters}`
     );
   }
 

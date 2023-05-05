@@ -1,0 +1,45 @@
+<ng-container [ngSwitch]="status">
+  <span
+    class="badge rounded-pill bg-primary"
+    *ngSwitchCase="RequisitionStatus.COMPLETED"
+  >
+    {{ status }}
+  </span>
+  <span
+    class="badge rounded-pill bg-warning"
+    *ngSwitchCase="RequisitionStatus.VERIFIED"
+  >
+    {{ status }}
+  </span>
+  <span
+    class="badge rounded-pill bg-info"
+    *ngSwitchCase="RequisitionStatus.APPROVED"
+  >
+    {{ status }}
+  </span>
+
+  <span
+    class="badge rounded-pill bg-success"
+    *ngSwitchCase="RequisitionStatus.PURCHASED"
+  >
+    {{ status }}
+  </span>
+
+  <span
+    class="badge rounded-pill bg-danger"
+    *ngSwitchCase="RequisitionStatus.CANCELED"
+  >
+    {{ status }}
+  </span>
+
+  <span
+    class="badge rounded-pill bg-secondary"
+    *ngSwitchCase="RequisitionStatus.PENDING"
+  >
+    {{ status }}
+  </span>
+
+  <span class="badge rounded-pill bg-dark" *ngSwitchDefault>
+    {{ status }}
+  </span>
+</ng-container>

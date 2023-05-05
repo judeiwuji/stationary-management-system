@@ -6,6 +6,7 @@ import {
   faChevronLeft,
   faChevronRight,
   faComment,
+  faCommentAlt,
   faList,
   faPen,
   faTimesCircle,
@@ -39,6 +40,7 @@ export class RecommendationListComponent {
   faCheck = faCheck;
   faTimesCircle = faTimesCircle;
   faComment = faComment;
+  faCommentAlt = faCommentAlt;
 
   sorts: any = {};
   recommendations: IRecommendation[] = [];
@@ -69,9 +71,9 @@ export class RecommendationListComponent {
     this.credentials = this.authService.getCredentials();
   }
 
-  loadRecommendations(page = 1, search = '') {
+  loadRecommendations(page = 1) {
     this.recommendationService
-      .getRecommendations(page, search, JSON.stringify(this.filters))
+      .getRecommendations(page, JSON.stringify(this.filters))
       .subscribe((response) => {
         if (response.success) {
           this.currentPage = page;

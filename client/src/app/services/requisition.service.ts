@@ -16,9 +16,9 @@ export class RequisitionService {
 
   constructor(private http: HttpClient) {}
 
-  getRequisitions(page: number, search = '', filters: any) {
+  getRequisitions(page: number, filters: any) {
     return this.http.get<IFeedback<IRequisition>>(
-      `${this.api}?page=${page}&search=${search}&filters=${filters}`
+      `${this.api}?page=${page}&filters=${filters}`
     );
   }
 

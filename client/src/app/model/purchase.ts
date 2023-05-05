@@ -8,6 +8,7 @@ export interface IReceipt {
   image: string;
   user: IUser;
   item: IRequisitionItem;
+  isOwner: boolean;
   createdAt: string;
   updatedAt: string;
 }

@@ -49,6 +49,7 @@ import { ChatComponent } from './chat/chat.component';
 import { MessagesComponent } from './messages/messages.component';
 import { ChatSearchUsersComponent } from './chat-search-users/chat-search-users.component';
 import { ReceiptImageComponent } from './receipt-image/receipt-image.component';
+import { StatusBadgeComponent } from './components/status-badge/status-badge.component';
 
 @NgModule({
   declarations: [
@@ -91,6 +92,7 @@ import { ReceiptImageComponent } from './receipt-image/receipt-image.component';
     MessagesComponent,
     ChatSearchUsersComponent,
     ReceiptImageComponent,
+    StatusBadgeComponent,
   ],
   imports: [
     BrowserModule,

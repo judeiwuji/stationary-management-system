@@ -3,6 +3,7 @@ import {
   faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faCommentAlt,
   faList,
   faPen,
   faTrashAlt,
@@ -28,6 +29,7 @@ export class PurchaseHistoryComponent {
   faPen = faPen;
   faChevronDown = faChevronDown;
   faList = faList;
+  faCommentAlt = faCommentAlt;
 
   sorts: any = {};
   receipts: IReceipt[] = [];

@@ -142,7 +142,13 @@
     </li>
   </ng-container>
 
-  <ng-container *ngIf="credentials && credentials.role === 'purchase_officier'">
+  <ng-container
+    *ngIf="
+      credentials &&
+      (credentials.role === 'purchase_officier' ||
+        credentials.role === 'bursar')
+    "
+  >
     <li class="nav-item">
       <a
         class="nav-link"

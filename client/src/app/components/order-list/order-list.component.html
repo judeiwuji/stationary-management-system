@@ -96,15 +96,39 @@
                       Details
                     </div>
                   </button>
+                </li>
 
-                  <ng-container *ngIf="order.isOwner">
-                    <button class="dropdown-item" (click)="deleteOrder(order)">
-                      <div class="d-flex align-items-center">
-                        <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
-                        Delete
-                      </div>
-                    </button>
-                  </ng-container>
+                <li>
+                  <button
+                    class="dropdown-item"
+                    (click)="viewRequisition(order)"
+                  >
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faBookBookmark" class="me-2"></fa-icon>
+                      Requisition
+                    </div>
+                  </button>
+                </li>
+
+                <li *ngIf="!order.isOwner">
+                  <a
+                    routerLink="/chat/{{ order.userId }}"
+                    class="dropdown-item"
+                  >
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faCommentAlt" class="me-2"></fa-icon>
+                      Send message
+                    </div>
+                  </a>
+                </li>
+
+                <li *ngIf="order.isOwner">
+                  <button class="dropdown-item" (click)="deleteOrder(order)">
+                    <div class="d-flex align-items-center">
+                      <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                      Delete
+                    </div>
+                  </button>
                 </li>
               </ul>
             </td>
@@ -120,7 +144,12 @@
       </p>
 
       <ng-container *ngIf="totalPages > currentPage">
-        <button class="btn btn-sm btn-full">Load more</button>
+        <button
+          class="btn btn-sm btn-full"
+          (click)="loadOrders(currentPage + 1)"
+        >
+          Load more
+        </button>
       </ng-container>
     </div>
     <!-- Footer -->

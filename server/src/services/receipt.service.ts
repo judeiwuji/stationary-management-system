@@ -46,7 +46,7 @@ export default class ReceiptService {
     return feedback;
   }
 
-  async getReceipts(page = 1, search: string) {
+  async getReceipts(page = 1, search: string, user: User) {
     const feedback = new Feedback();
     try {
       const pager = new Pagination(page);
@@ -64,6 +64,15 @@ export default class ReceiptService {
         include: [
           { model: User, attributes: UserDTO },
           { model: RequisitionItem, include: [Stock] },
+        ],
+        attributes: [
+          "id",
+          "requisitionItemId",
+          "userId",
+          "image",
+          "createdAt",
+          "UpdatedAt",
+          [db.cast(db.where(db.col("userId"), user.id), "int"), "isOwner"],
         ],
       });
       feedback.results = rows;

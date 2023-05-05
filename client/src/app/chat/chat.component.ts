@@ -156,7 +156,12 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.onSelectInbox.next(inbox);
 
     const chat = this.inboxes.find((d) => d.inboxId === inbox.inboxId);
-    if (chat && chat.messages && chat.messages.length > 0) {
+    if (
+      chat &&
+      chat.messages &&
+      chat.messages.length > 0 &&
+      !chat.messages[0].isOwner
+    ) {
       chat.messages[0].status = 1;
     }
   }

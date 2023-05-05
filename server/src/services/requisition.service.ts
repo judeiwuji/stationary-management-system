@@ -79,7 +79,7 @@ export default class RequisitionService {
       let query = {};
       query = filters ? { ...filters, ...query } : query;
       const pager = new Pagination(page);
-      const { rows, count } = await Requisition.findAndCountAll({
+      feedback.results = await Requisition.findAll({
         where: query,
         attributes: [
           "id",
@@ -110,6 +110,7 @@ export default class RequisitionService {
           {
             model: RequisitionItem,
             include: [{ model: Stock, attributes: ["name"] }, Receipt],
+            required: true,
           },
           {
             model: Department,
@@ -120,8 +121,10 @@ export default class RequisitionService {
         limit: pager.pageSize,
         order: [["createdAt", "DESC"]],
       });
-      feedback.results = rows;
-      feedback.totalPages = pager.totalPages(count);
+
+      feedback.totalPages = pager.totalPages(
+        await Requisition.count({ where: query })
+      );
       feedback.page = page;
     } catch (error) {
       feedback.success = false;
@@ -165,7 +168,7 @@ export default class RequisitionService {
             model: RequisitionItem,
             include: [
               { model: Stock, attributes: ["name"] },
-              { model: Receipt, attributes: ["id"] },
+              { model: Receipt },
             ],
           },
           {

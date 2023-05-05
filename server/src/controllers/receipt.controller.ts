@@ -34,11 +34,15 @@ export default class ReceiptController {
     res.status(201).send(feedback);
   }
 
-  async getReceipts(req: Request, res: Response) {
+  async getReceipts(req: IRequest, res: Response) {
     const search: any = req.query.search;
     const page = Number(req.query.page) || 1;
 
-    const feedback = await this.receiptService.getReceipts(page, search);
+    const feedback = await this.receiptService.getReceipts(
+      page,
+      search,
+      req.user as User
+    );
     res.send(feedback);
   }
 
