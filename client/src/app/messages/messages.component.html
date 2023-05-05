@@ -19,7 +19,7 @@
     </div>
   </div>
   <div class="message-pane" (scroll)="onScroll($event)">
-    <ng-container *ngFor="let message of messages">
+    <ng-container *ngFor="let message of messages; trackBy: uniqueMessage">
       <div [ngClass]="{ 'received-message': !message.isOwner }">
         <div class="message-item">
           <p class="m-0">{{ message.content }}</p>

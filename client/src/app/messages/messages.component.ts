@@ -117,4 +117,8 @@ export class MessagesComponent implements OnInit {
       }
     }
   }
+
+  uniqueMessage(index: number, message: IMessage) {
+    return message.id;
+  }
 }

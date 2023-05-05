@@ -69,6 +69,14 @@
       </div>
     </ng-container>
     <!-- Inbox Users -->
+
+    <!-- Load More -->
+    <div class="d-grid my-2" *ngIf="totalPages > currentPage">
+      <button class="btn btn-sm btn-full" (click)="loadInbox(currentPage + 1)">
+        Load more
+      </button>
+    </div>
+    <!-- Load More -->
   </div>
   <div class="chat-wrapper">
     <ng-container *ngIf="isMainView">
