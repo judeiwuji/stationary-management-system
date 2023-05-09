@@ -3,6 +3,10 @@
 </div>
 
 <div class="modal-body">
+  <div class="d-flex justify-content-between mb-2">
+    <p class="text-muted small m-0">Order ID: {{ order.id }}</p>
+    <p class="text-muted small m-0">Date: {{ order.createdAt | date }}</p>
+  </div>
   <div class="card">
     <div class="card-body">
       <table class="table table-hover m-0">
@@ -11,13 +15,12 @@
             <th>#</th>
             <th>Name</th>
             <th>Quantity</th>
-            <th>Subtotal</th>
           </tr>
         </thead>
         <tbody>
           <ng-container *ngFor="let item of order.items; index as i">
             <tr>
-              <td>{{ i + 1 }}</td>
+              <td>{{ i + 1 }}.</td>
               <td>{{ item.stock.name }}</td>
               <td>{{ item.quantity }}</td>
               <td>{{ item.subTotal | number }}</td>

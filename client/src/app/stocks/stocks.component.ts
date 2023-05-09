@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import {
+  faCartPlus,
   faChevronDown,
   faChevronLeft,
   faChevronRight,
+  faMinus,
   faPen,
   faTrashAlt,
 } from '@fortawesome/free-solid-svg-icons';
@@ -14,6 +16,9 @@ import { MessageBoxService } from '../services/message-box.service';
 import { ToastrService } from 'ngx-toastr';
 import { StockFormComponent } from '../stock-form/stock-form.component';
 import { MessageBoxTypes } from '../model/message-box';
+import { ICart, ICartActionRequest } from '../model/cart';
+import { CartService } from '../services/cart.service';
+import { CartRx } from '../rx/cart-rx';
 
 @Component({
   selector: 'app-stocks',
@@ -26,6 +31,8 @@ export class StocksComponent {
   faTrashAlt = faTrashAlt;
   faPen = faPen;
   faChevronDown = faChevronDown;
+  faCartPlus = faCartPlus;
+  faMinus = faMinus;
 
   sorts: any = {};
   stocks: IStock[] = [];
@@ -35,17 +42,20 @@ export class StocksComponent {
     search: new FormControl(''),
   });
   processing!: boolean;
+  cartRx = new CartRx();
 
   constructor(
     private stockService: StockService,
     private modal: NgbModal,
     private messageBoxService: MessageBoxService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private cartService: CartService
   ) {
     this.loadStocks();
   }
 
-  loadStocks(page = 1, search = '') {
+  loadStocks(page = 1) {
+    const search = this.searchForm.controls['search'].value || '';
     this.stockService.getStocks(page, search).subscribe((response) => {
       if (response.success) {
         this.currentPage = page;
@@ -56,9 +66,8 @@ export class StocksComponent {
   }
 
   search() {
-    const searchText = this.searchForm.controls['search'].value || '';
     this.stocks = [];
-    this.loadStocks(1, searchText);
+    this.loadStocks(1);
   }
 
   createStock() {
@@ -117,6 +126,68 @@ export class StocksComponent {
       },
       onDismiss: () => {},
       type: MessageBoxTypes.PROMPT,
+    });
+  }
+
+  cartAction(stock: IStock) {
+    if (!stock.cart) {
+      this.addItemToCart(stock);
+    } else {
+      this.removeItemFromCart(stock);
+    }
+  }
+
+  addItemToCart(stock: IStock) {
+    if (this.processing) return;
+    const cart: ICartActionRequest = {
+      quantity: 1,
+      stockId: stock.id,
+    };
+
+    this.processing = true;
+    this.toastr.info('Adding...', '', { timeOut: 0 });
+    this.cartService.addCartItem(cart).subscribe({
+      next: (response) => {
+        this.processing = false;
+        this.toastr.clear();
+        if (response.success) {
+          stock.cart = response.data;
+          this.toastr.success('Added');
+          this.cartRx.addItem(response.data);
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.processing = false;
+        this.toastr.clear();
+        this.toastr.warning(err.error);
+      },
+    });
+  }
+
+  removeItemFromCart(stock: IStock) {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.toastr.info('Removing...', '', { timeOut: 0 });
+    this.cartService.deleteCartItem(stock.cart?.id as number).subscribe({
+      next: (response) => {
+        this.processing = false;
+        this.toastr.clear();
+        if (response.data) {
+          this.toastr.success('Removed');
+          this.cartRx.removeItem(stock.cart as ICart);
+          stock.cart = undefined;
+        } else {
+          this.toastr.warning(response.message);
+        }
+      },
+      error: (err) => {
+        this.processing = false;
+        this.toastr.clear();
+        this.toastr.warning(err.error);
+      },
     });
   }
 }

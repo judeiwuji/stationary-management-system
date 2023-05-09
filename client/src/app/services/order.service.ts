@@ -22,8 +22,15 @@ export class OrderService {
     return this.http.get<IFeedback<IOrder>>(`${this.api}/${id}`);
   }
 
-  createOrder(request: IOrderActionRequest) {
-    return this.http.post<IFeedback<IOrder>>(`${this.api}`, request);
+  createRequisitionOrder(request: IOrderActionRequest) {
+    return this.http.post<IFeedback<IOrder>>(
+      `${this.api}/requisitions`,
+      request
+    );
+  }
+
+  createOrder() {
+    return this.http.post<IFeedback<IOrder>>(`${this.api}`, {});
   }
 
   updateOrder(request: IOrderActionRequest) {

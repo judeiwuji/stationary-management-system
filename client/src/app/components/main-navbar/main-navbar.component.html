@@ -7,7 +7,50 @@
     </a>
 
     <div class="ms-auto dropdown">
-      <button class="btn d-flex align-items-center" data-bs-toggle="dropdown">
+      <ul class="navbar-nav align-items-center">
+        <li class="nav-item dropdown">
+          <a
+            href=""
+            class="d-flex align-items-center nav-link"
+            data-bs-toggle="dropdown"
+          >
+            <img src="assets/avatar.svg" alt="" class="avatar me-2" />
+            <div class="text-start me-2 user-details-pane" *ngIf="credentials">
+              <p class="m-0 small fw-bold">
+                {{ credentials.name }}
+              </p>
+              <p class="m-0 small">
+                {{ credentials.role.split("_").join(" ") }}
+              </p>
+            </div>
+            <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
+          </a>
+
+          <ul class="dropdown-menu dropdown-menu-end">
+            <li>
+              <button (click)="logout()" class="dropdown-item">
+                <fa-icon [icon]="faPowerOff" class="me-2 text-danger"></fa-icon>
+                Logout
+              </button>
+            </li>
+          </ul>
+        </li>
+
+        <li class="nav-item me-2">
+          <a routerLink="/cart" class="nav-link position-relative">
+            <fa-icon [icon]="faShoppingCart"></fa-icon>
+            <span
+              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+            >
+              <span *ngIf="cartCount <= 9">{{ cartCount }}</span>
+              <span *ngIf="cartCount > 9">9+</span>
+              <span class="visually-hidden">cart count</span>
+            </span>
+          </a>
+        </li>
+      </ul>
+      <a href=""> </a>
+      <!-- <button class="btn d-flex align-items-center" data-bs-toggle="dropdown">
         <img src="assets/avatar.svg" alt="" class="avatar me-2" />
         <div class="text-start me-2 user-details-pane" *ngIf="credentials">
           <p class="m-0 small fw-bold">
@@ -18,16 +61,7 @@
           </p>
         </div>
         <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
-      </button>
-
-      <ul class="dropdown-menu dropdown-menu-end">
-        <li>
-          <button (click)="logout()" class="dropdown-item">
-            <fa-icon [icon]="faPowerOff" class="me-2 text-danger"></fa-icon>
-            Logout
-          </button>
-        </li>
-      </ul>
+      </button> -->
     </div>
 
     <button

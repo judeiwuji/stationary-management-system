@@ -230,7 +230,7 @@ export class RequisitionDetailComponent {
       })),
     };
 
-    this.orderService.createOrder(request).subscribe({
+    this.orderService.createRequisitionOrder(request).subscribe({
       next: (response) => {
         this.processing = false;
         this.toastr.clear();

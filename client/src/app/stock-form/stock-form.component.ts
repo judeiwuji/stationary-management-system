@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { faClose } from '@fortawesome/free-solid-svg-icons';
-import { IStock } from '../model/stock';
+import { IStock, IStockActionRequest } from '../model/stock';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { StockService } from '../services/stock.service';
 import { ToastrService } from 'ngx-toastr';
@@ -83,7 +83,7 @@ export class StockFormComponent {
 
     this.toastr.info('saving...', '', { timeOut: 0 });
     this.processing = true;
-    const stock: IStock = {
+    const stock: IStockActionRequest = {
       id: this.stock?.id,
       name: this.stockForm.controls['name'].value,
     };

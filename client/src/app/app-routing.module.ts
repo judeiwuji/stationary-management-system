@@ -13,6 +13,7 @@ import { VerificationsComponent } from './verifications/verifications.component'
 import { PurchaseHistoryComponent } from './purchase-history/purchase-history.component';
 import { OrdersComponent } from './orders/orders.component';
 import { ChatComponent } from './chat/chat.component';
+import { CartComponent } from './cart/cart.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -28,6 +29,7 @@ const routes: Routes = [
   { path: 'orders', component: OrdersComponent },
   { path: 'chat/:id', component: ChatComponent },
   { path: 'chat', component: ChatComponent },
+  { path: 'cart', component: CartComponent },
   { path: '**', component: Error404Component },
 ];
 

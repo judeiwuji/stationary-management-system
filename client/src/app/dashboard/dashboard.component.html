@@ -76,6 +76,15 @@
         </div>
       </div>
 
+      <ng-container *ngIf="credentials && credentials.role === 'hod'">
+        <div class="mb-3">
+          <h1 class="title-text">Purchased Requisitions</h1>
+          <app-requisition-list
+            [filters]="{ status: 'purchased' }"
+          ></app-requisition-list>
+        </div>
+      </ng-container>
+
       <ng-container *ngIf="credentials && credentials.role === 'bursar'">
         <div class="mb-3">
           <h1 class="title-text">Pending Requisitions</h1>

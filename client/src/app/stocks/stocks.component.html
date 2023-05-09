@@ -46,6 +46,20 @@
                   <td>{{ stock.updatedAt | date }}</td>
                   <td class="dropdown text-end">
                     <button
+                      class="btn btn-light btn-sm me-2"
+                      (click)="cartAction(stock)"
+                      [disabled]="stock.quantity === 0"
+                    >
+                      <ng-container *ngIf="!stock.cart">
+                        <fa-icon [icon]="faCartPlus" class="me-1"></fa-icon>
+                        <span> Add to cart</span>
+                      </ng-container>
+                      <ng-container *ngIf="stock.cart">
+                        <fa-icon [icon]="faMinus" class="me-1"></fa-icon>
+                        <span> Remove item</span>
+                      </ng-container>
+                    </button>
+                    <button
                       class="btn btn-sm btn-light"
                       data-bs-toggle="dropdown"
                     >
@@ -91,7 +105,12 @@
             </p>
 
             <ng-container *ngIf="totalPages > currentPage">
-              <button class="btn btn-sm btn-full">Load more</button>
+              <button
+                class="btn btn-sm btn-full"
+                (click)="loadStocks(currentPage + 1)"
+              >
+                Load more
+              </button>
             </ng-container>
           </div>
           <!-- Footer -->

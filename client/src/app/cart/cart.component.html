@@ -1,0 +1,105 @@
+<app-main-navbar></app-main-navbar>
+<div class="app-content-wrapper">
+  <app-main-sidebar></app-main-sidebar>
+  <div class="main-content">
+    <div class="container">
+      <div class="mb-2">
+        <h5 class="text-muted">Cart</h5>
+      </div>
+
+      <div class="card rounded-card">
+        <div class="card-body">
+          <table class="table table-strip">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Stock Name</th>
+                <th class="text-center">Quantity</th>
+                <th class="text-end">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              <ng-container *ngFor="let item of cartItems; index as i">
+                <tr>
+                  <td>{{ i + 1 }}.</td>
+                  <td class="text-capitalize">{{ item.stock.name }}</td>
+                  <td class="text-center" style="width: 10em">
+                    <div class="input-group">
+                      <button
+                        class="btn btn btn-outline-secondary"
+                        [disabled]="item.quantity === 1"
+                        (click)="updateQuantity(item, -1)"
+                      >
+                        <fa-icon [icon]="faMinus"></fa-icon>
+                      </button>
+
+                      <input
+                        type="text"
+                        class="form-control border-secondary text-center"
+                        [ngModel]="item.quantity"
+                      />
+                      <button
+                        class="btn btn-outline-secondary"
+                        (click)="updateQuantity(item)"
+                        [disabled]="item.quantity >= item.stock.quantity"
+                      >
+                        <fa-icon [icon]="faPlus"></fa-icon>
+                      </button>
+                    </div>
+                  </td>
+                  <td class="text-end">
+                    <button
+                      class="btn btn-sm btn-light"
+                      (click)="removeItemFromCart(item)"
+                    >
+                      <fa-icon [icon]="faMinusCircle" class="me-1"></fa-icon>
+                      Remove
+                    </button>
+                  </td>
+                </tr>
+              </ng-container>
+            </tbody>
+          </table>
+
+          <div
+            class="text-center text-muted py-3"
+            *ngIf="cartItems.length === 0 && firstTimeLoadCompleted"
+          >
+            <fa-icon [icon]="faShoppingCart"></fa-icon>
+            <p>Your cart is empty</p>
+          </div>
+
+          <!-- Checkout -->
+          <div class="text-end" *ngIf="cartItems.length > 0">
+            <button class="btn btn-full" (click)="createOrder()">
+              Order
+              <fa-icon
+                [icon]="faSpinner"
+                [spin]="true"
+                *ngIf="orderProcessing"
+              ></fa-icon>
+            </button>
+          </div>
+          <!-- Checkout -->
+
+          <!-- Footer -->
+          <div class="d-flex justify-content-between align-items-center">
+            <p class="mb-0 small text-muted" *ngIf="totalPages >= currentPage">
+              &laquo;&nbsp;{{ currentPage }} of {{ totalPages }}&nbsp;&raquo;
+            </p>
+
+            <ng-container *ngIf="totalPages > currentPage">
+              <button
+                class="btn btn-sm btn-full"
+                (click)="loadCartItems(currentPage + 1)"
+              >
+                Load more
+              </button>
+            </ng-container>
+          </div>
+          <!-- Footer -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

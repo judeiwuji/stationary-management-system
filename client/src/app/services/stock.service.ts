@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { environment } from 'src/environment/environment';
 import { IFeedback } from '../model/feedback';
-import { IStock } from '../model/stock';
+import { IStock, IStockActionRequest } from '../model/stock';
 
 @Injectable({
   providedIn: 'root',
@@ -18,11 +18,11 @@ export class StockService {
     );
   }
 
-  createStock(stock: IStock) {
+  createStock(stock: IStockActionRequest) {
     return this.http.post<IFeedback<IStock>>(`${this.api}`, stock);
   }
 
-  updateStock(stock: IStock) {
+  updateStock(stock: IStockActionRequest) {
     return this.http.put<IFeedback<IStock>>(`${this.api}`, stock);
   }
 

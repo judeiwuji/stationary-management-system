@@ -98,7 +98,7 @@
                   </button>
                 </li>
 
-                <li>
+                <li *ngIf="order.requisitionId">
                   <button
                     class="dropdown-item"
                     (click)="viewRequisition(order)"
