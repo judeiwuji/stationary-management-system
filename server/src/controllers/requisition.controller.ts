@@ -123,4 +123,11 @@ export default class RequisitionController {
     }
     return res.send(feedback);
   }
+
+  async getRequisitionReport(req: IRequest, res: Response) {
+    const feedback = await this.requisitionService.getRequisitionsReport(
+      req.user as User
+    );
+    res.send(feedback);
+  }
 }

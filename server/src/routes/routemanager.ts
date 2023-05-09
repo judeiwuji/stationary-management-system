@@ -13,6 +13,7 @@ import OrderRoute from "./order.route";
 import DashboardRoute from "./dashbard.route";
 import InboxRoute from "./inbox.route";
 import MessageRoute from "./message.route";
+import CartRoute from "./cart.route";
 
 export default class RouteManager {
   constructor(private app: Application) {
@@ -34,5 +35,6 @@ export default class RouteManager {
     new DashboardRoute(this.app);
     new InboxRoute(this.app);
     new MessageRoute(this.app);
+    new CartRoute(this.app);
   }
 }

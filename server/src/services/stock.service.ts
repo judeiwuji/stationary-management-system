@@ -8,6 +8,7 @@ import Stock, {
   StockCreationAttributes,
 } from "../models/stock";
 import { UserAttributes } from "../models/user";
+import Cart from "../models/cart";
 
 export default class StockService {
   async createStock(data: StockCreationAttributes, user: UserAttributes) {
@@ -31,11 +32,11 @@ export default class StockService {
     return feedback;
   }
 
-  async getStocks(page = 1, search = "") {
+  async getStocks(page = 1, search = "", filters: any) {
     const feedback = new Feedback<Stock>();
     try {
       let query = {};
-
+      query = filters ? { ...filters, ...query } : query;
       if (search) {
         query = {
           ...query,
@@ -48,6 +49,7 @@ export default class StockService {
         offset: pager.startIndex,
         limit: pager.pageSize,
         order: [["name", "ASC"]],
+        include: [Cart],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);

@@ -38,8 +38,13 @@ export default class StockController {
   async getStocks(req: Request, res: Response) {
     const search: any = req.query.search;
     const page = Number(req.query.page) || 1;
+    const filters: any = req.query.filters;
 
-    const feedback = await this.stockService.getStocks(page, search);
+    const feedback = await this.stockService.getStocks(
+      page,
+      search,
+      filters ? JSON.parse(filters) : ""
+    );
     res.send(feedback);
   }
 

@@ -60,7 +60,7 @@ export default class ReceiptService {
         where: query,
         offset: pager.startIndex,
         limit: pager.pageSize,
-        order: [["createdAt", "ASC"]],
+        order: [["createdAt", "DESC"]],
         include: [
           { model: User, attributes: UserDTO },
           { model: RequisitionItem, include: [Stock] },

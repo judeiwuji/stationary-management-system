@@ -16,6 +16,7 @@ import Recommendation from "../recommendation";
 import Audit from "../audit";
 import Verification from "../verification";
 import Inbox from "../inbox";
+import Cart from "../cart";
 dotenv.config();
 
 const db = new Sequelize({
@@ -47,6 +48,7 @@ const db = new Sequelize({
     Recommendation,
     Audit,
     Verification,
+    Cart,
   ],
   logging: false,
   timezone: "+01:00",

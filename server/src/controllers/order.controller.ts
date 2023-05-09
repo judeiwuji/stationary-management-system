@@ -12,7 +12,7 @@ import User from "../models/user";
 export default class OrderController {
   orderService = new OrderService();
 
-  async createOrder(req: IRequest, res: Response) {
+  async createRequisitionOrder(req: IRequest, res: Response) {
     const validation = await validate<OrderCreationAttributes>(
       OrderCreationSchema,
       req.body
@@ -22,10 +22,18 @@ export default class OrderController {
       return res.status(400).send(validation.message);
     }
 
-    const feedback = await this.orderService.createOrder(
+    const feedback = await this.orderService.createRequisitionOrder(
       validation.data,
       req.user as User
     );
+    if (!feedback.success) {
+      return res.status(400).send(feedback.message);
+    }
+    res.status(201).send(feedback);
+  }
+
+  async createOrder(req: IRequest, res: Response) {
+    const feedback = await this.orderService.createOrder(req.user as User);
     if (!feedback.success) {
       return res.status(400).send(feedback.message);
     }
@@ -71,6 +79,11 @@ export default class OrderController {
     if (!feedback.success) {
       return res.status(404).send(feedback.message);
     }
+    res.send(feedback);
+  }
+
+  async getOrdersReport(req: IRequest, res: Response) {
+    const feedback = await this.orderService.getOrdersReport(req.user as User);
     res.send(feedback);
   }
 }

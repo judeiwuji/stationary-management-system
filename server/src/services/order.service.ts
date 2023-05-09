@@ -14,9 +14,11 @@ import Stock from "../models/stock";
 import { RequisitionStatus } from "../models/requisition-status";
 import { OrderStatus } from "../models/order_status";
 import { Roles } from "../models/role";
+import { Op } from "sequelize";
+import Cart from "../models/cart";
 
 export default class OrderService {
-  async createOrder(data: OrderCreationAttributes, user: User) {
+  async createRequisitionOrder(data: OrderCreationAttributes, user: User) {
     const feedback = new Feedback<Order>();
     const transaction = await db.transaction();
 
@@ -36,7 +38,6 @@ export default class OrderService {
             orderId: id,
             quantity: d.quantity,
             stockId: d.stockId,
-            subTotal: Number(d.price) * d.quantity,
           })
         );
         for (const d of items) {
@@ -52,6 +53,52 @@ export default class OrderService {
           { where: { id: data.requisitionId }, transaction }
         );
       }
+      await transaction.commit();
+      feedback.data = (await Order.findByPk(id, {
+        include: [OrderItem, { model: User, attributes: UserDTO }],
+      })) as Order;
+    } catch (error) {
+      await transaction.rollback();
+      feedback.success = false;
+      feedback.message = Errors.createMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async createOrder(user: User) {
+    const feedback = new Feedback<Order>();
+    const transaction = await db.transaction();
+
+    try {
+      const { id } = await Order.create(
+        {
+          userId: user.id,
+          status: OrderStatus.COMPLETED,
+        },
+        { transaction }
+      );
+
+      const cartItems = await Cart.findAll({
+        where: {
+          userId: user.id,
+        },
+        include: [Stock],
+      });
+
+      const items: OrderItemCreationAttributes[] = await Promise.all(
+        cartItems.map(async (d) => {
+          d.stock.quantity -= d.quantity;
+          await d.stock.save({ transaction });
+          await d.destroy({ transaction });
+          return {
+            orderId: id,
+            quantity: d.quantity,
+            stockId: d.stockId,
+          };
+        })
+      );
+      await OrderItem.bulkCreate(items, { transaction });
       await transaction.commit();
       feedback.data = (await Order.findByPk(id, {
         include: [OrderItem, { model: User, attributes: UserDTO }],
@@ -149,6 +196,41 @@ export default class OrderService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.deleteMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async getOrdersReport(user: User) {
+    const feedback = new Feedback<any>();
+    try {
+      const today = new Date();
+      const year = today.getFullYear();
+      const month = today.getMonth() + 1;
+      const totalDays = new Date(year, month, 0).getDate();
+      const monthStart = new Date(`${year}-${month}-1 00:00:00`);
+      const monthEnd = new Date(`${year}-${month}-${totalDays} 23:00:00`);
+
+      let query: any = {
+        createdAt: {
+          [Op.and]: [{ [Op.gte]: monthStart }, { [Op.lte]: monthEnd }],
+        },
+      };
+
+      // if (user.role === Roles.HOD) {
+      //   query = { ...query, userId: user.id };
+      // }
+      feedback.results = await OrderItem.count({
+        attributes: [
+          "createdAt",
+          [db.fn("sum", db.col("subTotal")), "totalAmount"],
+        ],
+        group: ["createdAt"],
+        where: query,
+      });
+    } catch (error) {
+      feedback.success = false;
+      feedback.message = Errors.getMessage;
       console.debug(error);
     }
     return feedback;

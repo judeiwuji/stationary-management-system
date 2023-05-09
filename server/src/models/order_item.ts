@@ -15,7 +15,6 @@ export interface OrderItemAttributes {
   orderId: number;
   stockId: number;
   quantity: number;
-  subTotal: number;
   order: Order;
   stock: Stock;
 }
@@ -44,7 +43,4 @@ export default class OrderItem extends Model<
 
   @Column(DataType.INTEGER)
   quantity!: number;
-
-  @Column(DataType.DECIMAL(10, 2))
-  subTotal!: number;
 }

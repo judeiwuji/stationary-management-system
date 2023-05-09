@@ -1,14 +1,16 @@
 import { Optional } from "sequelize";
-import { Column, DataType, Model, Table } from "sequelize-typescript";
+import { Column, DataType, HasOne, Model, Table } from "sequelize-typescript";
+import Cart from "./cart";
 
 export interface StockAttributes {
   id: number;
   name: string;
   quantity: number;
+  cart: Cart;
 }
 
 export interface StockCreationAttributes
-  extends Optional<StockAttributes, "id"> {}
+  extends Optional<StockAttributes, "id" | "cart"> {}
 
 @Table
 export default class Stock extends Model<
@@ -20,4 +22,7 @@ export default class Stock extends Model<
 
   @Column(DataType.INTEGER)
   quantity!: number;
+
+  @HasOne(() => Cart)
+  cart!: Cart;
 }

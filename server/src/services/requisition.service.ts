@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import UserDTO from "../models/DTO/UserDTO";
 import Comment from "../models/comment";
 import Department from "../models/department";
@@ -274,6 +275,38 @@ export default class RequisitionService {
     } catch (error) {
       feedback.success = false;
       feedback.message = Errors.deleteMessage;
+      console.debug(error);
+    }
+    return feedback;
+  }
+
+  async getRequisitionsReport(user: User) {
+    const feedback = new Feedback<any>();
+    try {
+      const today = new Date();
+      const year = today.getFullYear();
+      console.log(today.getMonth());
+      const month = today.getMonth() + 1;
+      const totalDays = new Date(year, month, 0).getDate();
+      const monthStart = new Date(`${year}-${month}-1 00:00:00`);
+      const monthEnd = new Date(`${year}-${month}-${totalDays} 23:00:00`);
+
+      console.log(year, month, totalDays);
+      console.log(monthEnd);
+      let query = {
+        userId: user.id,
+        createdAt: {
+          [Op.and]: [{ [Op.gte]: monthStart }, { [Op.lte]: monthEnd }],
+        },
+      };
+      feedback.results = await Requisition.count({
+        attributes: ["status", "createdAt"],
+        group: ["status"],
+        where: query,
+      });
+    } catch (error) {
+      feedback.success = false;
+      feedback.message = Errors.getMessage;
       console.debug(error);
     }
     return feedback;

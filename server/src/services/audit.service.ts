@@ -118,6 +118,7 @@ export default class AuditService {
             "isOwner",
           ],
         ],
+        order: [["createdAt", "DESC"]],
       });
       feedback.results = rows;
       feedback.totalPages = pager.totalPages(count);

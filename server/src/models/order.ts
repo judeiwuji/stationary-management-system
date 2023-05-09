@@ -24,7 +24,10 @@ export interface OrderAttributes {
 }
 
 export interface OrderCreationAttributes
-  extends Optional<OrderAttributes, "id" | "user" | "requisition" | "items"> {
+  extends Optional<
+    OrderAttributes,
+    "id" | "user" | "requisition" | "items" | "requisitionId"
+  > {
   requisitionItems?: RequisitionItem[];
 }
 

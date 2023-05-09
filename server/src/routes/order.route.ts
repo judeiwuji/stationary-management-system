@@ -13,6 +13,12 @@ export default class OrderRoute implements IRoute {
 
   routes(): void {
     this.app.post(
+      "/api/orders/requisitions",
+      SessionManager.authorize([Roles.ADMIN, Roles.STOCK_MANAGER, Roles.HOD]),
+      (req, res) => this.orderController.createRequisitionOrder(req, res)
+    );
+
+    this.app.post(
       "/api/orders",
       SessionManager.authorize([Roles.ADMIN, Roles.STOCK_MANAGER, Roles.HOD]),
       (req, res) => this.orderController.createOrder(req, res)
@@ -22,6 +28,12 @@ export default class OrderRoute implements IRoute {
       "/api/orders",
       SessionManager.authorize([Roles.ADMIN, Roles.STOCK_MANAGER, Roles.HOD]),
       (req, res) => this.orderController.getOrders(req, res)
+    );
+
+    this.app.get(
+      "/api/orders/report",
+      SessionManager.authorize([Roles.ADMIN, Roles.STOCK_MANAGER, Roles.HOD]),
+      (req, res) => this.orderController.getOrdersReport(req, res)
     );
 
     this.app.put(

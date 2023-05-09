@@ -21,6 +21,12 @@ export default class RequisitionRoute implements IRoute {
     );
 
     this.app.get(
+      "/api/requisitions/report",
+      SessionManager.ensureAuthenticated,
+      (req, res) => this.requisitionController.getRequisitionReport(req, res)
+    );
+
+    this.app.get(
       "/api/requisitions",
       SessionManager.authorize([
         Roles.HOD,
