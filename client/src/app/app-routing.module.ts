@@ -14,23 +14,49 @@ import { PurchaseHistoryComponent } from './purchase-history/purchase-history.co
 import { OrdersComponent } from './orders/orders.component';
 import { ChatComponent } from './chat/chat.component';
 import { CartComponent } from './cart/cart.component';
+import { authGuard } from './auth.guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'users', component: UsersComponent },
-  { path: 'departments', component: DepartmentsComponent },
-  { path: 'requisitions', component: RequisitionsComponent },
-  { path: 'stocks', component: StocksComponent },
-  { path: 'recommendations', component: RecommendationsComponent },
-  { path: 'audits', component: AuditsComponent },
-  { path: 'verifications', component: VerificationsComponent },
-  { path: 'purchase-history', component: PurchaseHistoryComponent },
-  { path: 'orders', component: OrdersComponent },
-  { path: 'chat/:id', component: ChatComponent },
-  { path: 'chat', component: ChatComponent },
-  { path: 'cart', component: CartComponent },
-  { path: '**', component: Error404Component },
+  { path: 'login', component: LoginComponent },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'users', component: UsersComponent, canActivate: [authGuard] },
+  {
+    path: 'departments',
+    component: DepartmentsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'requisitions',
+    component: RequisitionsComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'stocks', component: StocksComponent, canActivate: [authGuard] },
+  {
+    path: 'recommendations',
+    component: RecommendationsComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'audits', component: AuditsComponent, canActivate: [authGuard] },
+  {
+    path: 'verifications',
+    component: VerificationsComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'purchase-history',
+    component: PurchaseHistoryComponent,
+    canActivate: [authGuard],
+  },
+  { path: 'orders', component: OrdersComponent, canActivate: [authGuard] },
+  { path: 'chat/:id', component: ChatComponent, canActivate: [authGuard] },
+  { path: 'chat', component: ChatComponent, canActivate: [authGuard] },
+  { path: 'cart', component: CartComponent, canActivate: [authGuard] },
+  { path: '**', component: Error404Component, canActivate: [authGuard] },
 ];
 
 @NgModule({

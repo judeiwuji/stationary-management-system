@@ -69,3 +69,30 @@
   color: #ffffff;
   font-size: 1.2rem;
 }
+
+@media screen and (max-width: 1000px) {
+  .chat-inbox {
+    width: 40%;
+  }
+
+  .chat-wrapper {
+    width: 60%;
+  }
+}
+
+@media screen and (max-width: 595px) {
+  .chat-inbox {
+    width: 100%;
+    display: none;
+  }
+
+  .chat-inbox.show,
+  .chat-wrapper.show {
+    display: block;
+  }
+
+  .chat-wrapper {
+    width: 100%;
+    display: none;
+  }
+}

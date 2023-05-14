@@ -32,113 +32,92 @@
     </ng-container>
     <!-- Header -->
 
-    <table class="table table-striped mb-4">
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Date created</th>
-          <th>Status</th>
-          <th>Author</th>
-          <th>Bursar</th>
-          <th>Auditor</th>
-          <th class="text-end">Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <ng-container *ngFor="let verification of verifications; index as i">
+    <div class="table-wrapper">
+      <table class="table table-striped mb-4">
+        <thead>
           <tr>
-            <td>{{ i + 1 }}.</td>
-            <td>{{ verification.createdAt | date }}</td>
-            <td class="text-capitalize">
-              <ng-container [ngSwitch]="verification.status">
-                <span
-                  class="badge rounded-pill bg-success"
-                  *ngSwitchCase="RequisitionStatus.VERIFIED"
-                >
-                  {{ verification.status }}
-                </span>
+            <th>#</th>
+            <th>Date created</th>
+            <th>Status</th>
+            <th>Author</th>
+            <th>Bursar</th>
+            <th>Auditor</th>
+            <th class="text-end">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let verification of verifications; index as i">
+            <tr>
+              <td>{{ i + 1 }}.</td>
+              <td>{{ verification.createdAt | date }}</td>
+              <td class="text-capitalize">
+                <app-status-badge
+                  [status]="verification.status"
+                ></app-status-badge>
+              </td>
+              <td class="text-capitalize">
+                {{ verification.requisition?.user?.lastname }}
+                {{ verification.requisition?.user?.firstname }}
+              </td>
+              <td class="text-capitalize">
+                {{ verification.recommendation?.user?.lastname }}
+                {{ verification.recommendation?.user?.firstname }}
+              </td>
 
-                <span
-                  class="badge rounded-pill bg-danger"
-                  *ngSwitchCase="RequisitionStatus.CANCELED"
-                >
-                  {{ verification.status }}
-                </span>
+              <td class="text-capitalize">
+                {{ verification?.audit?.user?.lastname }}
+                {{ verification?.audit?.user?.firstname }}
+              </td>
 
-                <span
-                  class="badge rounded-pill bg-secondary"
-                  *ngSwitchCase="RequisitionStatus.PENDING"
-                >
-                  {{ verification.status }}
-                </span>
+              <td class="dropdown text-end">
+                <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
+                  <div class="d-flex justifycontent-between align-items-center">
+                    More
+                    <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
+                  </div>
+                </button>
 
-                <span class="badge rounded-pill bg-dark" *ngSwitchDefault>
-                  {{ verification.status }}
-                </span>
-              </ng-container>
-            </td>
-            <td class="text-capitalize">
-              {{ verification.requisition?.user?.lastname }}
-              {{ verification.requisition?.user?.firstname }}
-            </td>
-            <td class="text-capitalize">
-              {{ verification.recommendation?.user?.lastname }}
-              {{ verification.recommendation?.user?.firstname }}
-            </td>
-
-            <td class="text-capitalize">
-              {{ verification?.audit?.user?.lastname }}
-              {{ verification?.audit?.user?.firstname }}
-            </td>
-
-            <td class="dropdown text-end">
-              <button class="btn btn-sm btn-light" data-bs-toggle="dropdown">
-                <div class="d-flex justifycontent-between align-items-center">
-                  More
-                  <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
-                </div>
-              </button>
-
-              <ul class="dropdown-menu dropdown-menu-end">
-                <li>
-                  <button
-                    class="dropdown-item"
-                    (click)="viewDetails(verification)"
-                  >
-                    <div class="d-flex align-items-center">
-                      <fa-icon [icon]="faList" class="me-2"></fa-icon>
-                      Details
-                    </div>
-                  </button>
-
-                  <button
-                    class="dropdown-item"
-                    (click)="viewComments(verification)"
-                  >
-                    <div class="d-flex align-items-center">
-                      <fa-icon [icon]="faComment" class="me-2"></fa-icon>
-                      Comments
-                    </div>
-                  </button>
-
-                  <ng-container *ngIf="verification.isOwner">
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
                     <button
                       class="dropdown-item"
-                      (click)="deleteAudit(verification)"
+                      (click)="viewDetails(verification)"
                     >
                       <div class="d-flex align-items-center">
-                        <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
-                        Delete
+                        <fa-icon [icon]="faList" class="me-2"></fa-icon>
+                        Details
                       </div>
                     </button>
-                  </ng-container>
-                </li>
-              </ul>
-            </td>
-          </tr>
-        </ng-container>
-      </tbody>
-    </table>
+
+                    <button
+                      class="dropdown-item"
+                      (click)="viewComments(verification)"
+                    >
+                      <div class="d-flex align-items-center">
+                        <fa-icon [icon]="faComment" class="me-2"></fa-icon>
+                        Comments
+                      </div>
+                    </button>
+
+                    <ng-container *ngIf="verification.isOwner">
+                      <button
+                        class="dropdown-item"
+                        (click)="deleteAudit(verification)"
+                      >
+                        <div class="d-flex align-items-center">
+                          <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
+                          Delete
+                        </div>
+                      </button>
+                    </ng-container>
+                  </li>
+                </ul>
+              </td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
 
     <!-- Footer -->
     <div class="d-flex justify-content-between align-items-center">

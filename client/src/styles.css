@@ -215,3 +215,31 @@ app-main-sidebar {
   transform: translateX(-50%);
   top: 0;
 }
+
+.table-wrapper {
+  width: 100%;
+  max-width: 100%;
+  overflow: auto;
+}
+
+.table-wrapper table {
+  min-width: 800px;
+}
+
+@media screen and (max-width: 978px) {
+  app-main-sidebar {
+    width: 3.1em;
+  }
+  .main-content {
+    width: 91%;
+    padding: 1rem;
+  }
+
+  .sidebar-nav fa-icon {
+    font-size: 1rem !important;
+  }
+
+  .sidebar-nav fa-icon + span {
+    display: none;
+  }
+}

@@ -42,7 +42,7 @@ export class MainSidebarComponent implements OnInit {
     private messageService: MessageService
   ) {
     this.currentURL = this.router.url;
-    this.credentials = this.authService.getCredentials();
+    this.credentials = AuthService.getCredentials();
   }
 
   ngOnInit(): void {

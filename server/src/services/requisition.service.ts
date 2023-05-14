@@ -79,6 +79,9 @@ export default class RequisitionService {
     try {
       let query = {};
       query = filters ? { ...filters, ...query } : query;
+      if (user.role === Roles.HOD || user.role === Roles.STOCK_MANAGER) {
+        query = { ...query, userId: user.id };
+      }
       const pager = new Pagination(page);
       feedback.results = await Requisition.findAll({
         where: query,
@@ -104,6 +107,10 @@ export default class RequisitionService {
               "int"
             ),
             "isPurchaseOfficier",
+          ],
+          [
+            db.literal(`${user.role === Roles.STOCK_MANAGER}`),
+            "isStockManager",
           ],
         ],
         include: [
@@ -161,6 +168,10 @@ export default class RequisitionService {
               "int"
             ),
             "isPurchaseOfficier",
+          ],
+          [
+            db.literal(`${user.role === Roles.STOCK_MANAGER}`),
+            "isStockManager",
           ],
         ],
         include: [

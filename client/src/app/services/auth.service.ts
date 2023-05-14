@@ -9,8 +9,8 @@ import { environment } from 'src/environment/environment';
 })
 export class AuthService {
   private api = `${environment.apiURL}/auth`;
-  private AUTH_TOKEN = 'sms__auth_token';
-  private AUTH_CREDENTIALS = 'sms__auth_credentials';
+  private static AUTH_TOKEN = 'sms__auth_token';
+  private static AUTH_CREDENTIALS = 'sms__auth_credentials';
   constructor(private http: HttpClient) {}
 
   login(request: IAuthRequest) {
@@ -26,13 +26,13 @@ export class AuthService {
   }
 
   clearSession() {
-    localStorage.removeItem(this.AUTH_TOKEN);
-    localStorage.removeItem(this.AUTH_CREDENTIALS);
+    localStorage.removeItem(AuthService.AUTH_TOKEN);
+    localStorage.removeItem(AuthService.AUTH_CREDENTIALS);
   }
 
   saveToken(token: string) {
-    localStorage.setItem(this.AUTH_TOKEN, token);
-    const data = this.getCredentials();
+    localStorage.setItem(AuthService.AUTH_TOKEN, token);
+    const data = AuthService.getCredentials();
     if (data) {
       data.token = token;
       this.saveCredentials(data);
@@ -40,15 +40,15 @@ export class AuthService {
   }
 
   getToken() {
-    return localStorage.getItem(this.AUTH_TOKEN);
+    return localStorage.getItem(AuthService.AUTH_TOKEN);
   }
 
   saveCredentials(data: IAuthResponse) {
-    localStorage.setItem(this.AUTH_CREDENTIALS, JSON.stringify(data));
+    localStorage.setItem(AuthService.AUTH_CREDENTIALS, JSON.stringify(data));
   }
 
-  getCredentials(): IAuthResponse | null {
-    const raw = localStorage.getItem(this.AUTH_CREDENTIALS);
+  static getCredentials(): IAuthResponse | null {
+    const raw = localStorage.getItem(AuthService.AUTH_CREDENTIALS);
     let data: IAuthResponse | null = null;
     if (raw) {
       data = JSON.parse(raw);

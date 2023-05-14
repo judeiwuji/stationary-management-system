@@ -1,13 +1,16 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+<nav class="navbar navbar-light bg-light fixed-top">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">
-      <fa-icon [icon]="faAlignLeft" class="me-3 logo"></fa-icon>
+      <fa-icon
+        [icon]="faAlignLeft"
+        class="me-3 logo d-none d-sm-inline-block"
+      ></fa-icon>
       <span class="fw-bold">SMS</span>
       <span class="red-dot ms-1"></span>
     </a>
 
-    <div class="ms-auto dropdown">
-      <ul class="navbar-nav align-items-center">
+    <div class="ms-auto">
+      <ul class="navbar-nav align-items-center flex-row">
         <li class="nav-item dropdown">
           <a
             href=""
@@ -36,45 +39,24 @@
           </ul>
         </li>
 
-        <li class="nav-item me-2">
-          <a routerLink="/cart" class="nav-link position-relative">
-            <fa-icon [icon]="faShoppingCart"></fa-icon>
-            <span
-              class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
-            >
-              <span *ngIf="cartCount <= 9">{{ cartCount }}</span>
-              <span *ngIf="cartCount > 9">9+</span>
-              <span class="visually-hidden">cart count</span>
-            </span>
-          </a>
-        </li>
+        <ng-container
+          *ngIf="credentials && credentials.role === 'stock_manager'"
+        >
+          <li class="nav-item mx-2">
+            <a routerLink="/cart" class="nav-link position-relative">
+              <fa-icon [icon]="faShoppingCart"></fa-icon>
+              <span
+                class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+              >
+                <span *ngIf="cartCount <= 9">{{ cartCount }}</span>
+                <span *ngIf="cartCount > 9">9+</span>
+                <span class="visually-hidden">cart count</span>
+              </span>
+            </a>
+          </li>
+        </ng-container>
       </ul>
-      <a href=""> </a>
-      <!-- <button class="btn d-flex align-items-center" data-bs-toggle="dropdown">
-        <img src="assets/avatar.svg" alt="" class="avatar me-2" />
-        <div class="text-start me-2 user-details-pane" *ngIf="credentials">
-          <p class="m-0 small fw-bold">
-            {{ credentials.name }}
-          </p>
-          <p class="m-0 small">
-            {{ credentials.role.split("_").join(" ") }}
-          </p>
-        </div>
-        <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
-      </button> -->
     </div>
-
-    <button
-      class="navbar-toggler"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#navbarScroll"
-      aria-controls="navbarScroll"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
   </div>
 </nav>
-<div style="height: 10vh"></div>
+<div style="height: 10.5vh"></div>

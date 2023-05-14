@@ -34,7 +34,7 @@ export default class RequisitionItem extends Model<
   @BelongsTo(() => Requisition)
   requisition!: Requisition;
 
-  @Column({ allowNull: false, type: DataTypes.DECIMAL(10, 2) })
+  @Column({ allowNull: false, type: DataTypes.DECIMAL(8, 2) })
   price!: number;
 
   @Column({ allowNull: false, type: DataTypes.INTEGER })

@@ -68,7 +68,7 @@ export class RecommendationListComponent {
 
   ngOnInit(): void {
     this.loadRecommendations();
-    this.credentials = this.authService.getCredentials();
+    this.credentials = AuthService.getCredentials();
   }
 
   loadRecommendations(page = 1) {

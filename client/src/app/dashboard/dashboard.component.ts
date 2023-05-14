@@ -28,7 +28,7 @@ export class DashboardComponent {
     private readonly authService: AuthService
   ) {
     this.getAnalytics();
-    this.credentials = this.authService.getCredentials();
+    this.credentials = AuthService.getCredentials();
   }
 
   getAnalytics() {

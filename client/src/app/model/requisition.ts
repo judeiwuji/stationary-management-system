@@ -20,6 +20,7 @@ export interface IRequisition {
   isAuditor?: boolean;
   isRector?: boolean;
   isPurchaseOfficier?: boolean;
+  isStockManager?: boolean;
   user?: IUser;
   createdAt?: string;
 }

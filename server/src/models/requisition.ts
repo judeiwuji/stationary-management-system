@@ -44,10 +44,10 @@ export default class Requisition extends Model<
   @BelongsTo(() => Department)
   department!: Department;
 
-  @Column(DataType.NUMBER)
+  @Column(DataType.INTEGER)
   through!: number;
 
-  @Column(DataType.NUMBER)
+  @Column(DataType.INTEGER)
   destination!: number;
 
   @Column(DataType.STRING(300))

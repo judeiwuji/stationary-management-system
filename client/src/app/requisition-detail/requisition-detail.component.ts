@@ -26,6 +26,8 @@ import { IVerificationActionRequest } from '../model/verification';
 import { VerificationService } from '../services/verification.service';
 import { IOrderActionRequest } from '../model/order';
 import { OrderService } from '../services/order.service';
+import { IReceipt } from '../model/purchase';
+import { ReceiptImageComponent } from '../receipt-image/receipt-image.component';
 
 @Component({
   selector: 'app-requisition-detail',
@@ -247,5 +249,34 @@ export class RequisitionDetailComponent {
         this.toastr.warning(err.error);
       },
     });
+  }
+
+  viewReceipt(receipt?: IReceipt) {
+    const instance = this.modal.open(ReceiptImageComponent, {
+      size: 'lg',
+      backdrop: 'static',
+      modalDialogClass: 'modal-transparent',
+    });
+
+    instance.componentInstance.receipt = receipt;
+  }
+
+  markAsCompleted(requisition: IRequisition) {
+    if (this.processing) return;
+
+    this.processing = true;
+    this.requisitionService
+      .updateRequisition({
+        status: RequisitionStatus.COMPLETED,
+        id: requisition.id,
+      })
+      .subscribe((response) => {
+        this.processing = false;
+        if (response.success) {
+          this.requisition.status = RequisitionStatus.COMPLETED;
+        } else {
+          this.toastr.warning(response.message);
+        }
+      });
   }
 }

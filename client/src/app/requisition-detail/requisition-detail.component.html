@@ -82,7 +82,12 @@
                   {{ computeSubTotal(item) | number }}
                 </td>
                 <td *ngIf="requisition.status === 'purchased'">
-                  <button class="btn btn-sm btn-light">receipt</button>
+                  <button
+                    class="btn btn-sm btn-light"
+                    (click)="viewReceipt(item.receipt)"
+                  >
+                    receipt
+                  </button>
                 </td>
                 <ng-container
                   *ngIf="
@@ -182,9 +187,28 @@
   <!-- Order -->
   <div
     class="d-grid"
-    *ngIf="requisition.status === 'purchased' && requisition.isOwner"
+    *ngIf="
+      requisition.status === 'purchased' &&
+      requisition.isOwner &&
+      !requisition.isStockManager
+    "
   >
     <button class="btn btn-full" (click)="createOrder()">Order</button>
   </div>
   <!-- Order -->
+
+  <!-- Stock manager action -->
+  <div
+    class="d-grid"
+    *ngIf="
+      requisition.status === 'purchased' &&
+      requisition.isOwner &&
+      requisition.isStockManager
+    "
+  >
+    <button class="btn btn-full" (click)="markAsCompleted(requisition)">
+      Mark as completed
+    </button>
+  </div>
+  <!-- Stock manager action -->
 </div>

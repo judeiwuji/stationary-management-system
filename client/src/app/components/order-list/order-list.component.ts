@@ -68,7 +68,7 @@ export class OrderListComponent {
 
   ngOnInit(): void {
     this.loadOrders();
-    this.credentials = this.authService.getCredentials();
+    this.credentials = AuthService.getCredentials();
   }
 
   loadOrders(page = 1) {

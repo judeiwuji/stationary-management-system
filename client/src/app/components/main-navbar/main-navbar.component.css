@@ -14,3 +14,7 @@
   border-radius: 50%;
   border: 1px solid #404040;
 }
+
+.navbar-nav .dropdown-menu {
+  position: absolute !important;
+}

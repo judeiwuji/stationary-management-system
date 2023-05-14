@@ -35,7 +35,7 @@ export class MainNavbarComponent {
     private readonly router: Router,
     private readonly cartService: CartService
   ) {
-    this.credentials = this.authService.getCredentials();
+    this.credentials = AuthService.getCredentials();
     this.cartService.getCartItemsCount().subscribe((response) => {
       if (response.success) {
         this.cartCount = response.data;

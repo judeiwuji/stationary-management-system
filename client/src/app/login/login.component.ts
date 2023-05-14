@@ -25,7 +25,7 @@ export class LoginComponent {
     private readonly toastr: ToastrService,
     private readonly router: Router
   ) {
-    if (authService.getCredentials()) {
+    if (AuthService.getCredentials()) {
       router.navigate(['/dashboard']);
     }
   }

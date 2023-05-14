@@ -1,6 +1,6 @@
 <app-main-navbar></app-main-navbar>
 <div class="app-content-wrapper">
-  <div class="chat-inbox">
+  <div class="chat-inbox" [ngClass]="{ show: isMainView }">
     <div class="chat-inbox-header">
       <h5 class="title-text">Chats</h5>
       <input
@@ -78,7 +78,7 @@
     </div>
     <!-- Load More -->
   </div>
-  <div class="chat-wrapper">
+  <div class="chat-wrapper" [ngClass]="{ show: isMessagesView }">
     <ng-container *ngIf="isMainView">
       <div
         class="chat-wrapper d-flex align-items-center justify-content-center w-100"

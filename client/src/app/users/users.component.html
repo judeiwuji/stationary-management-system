@@ -24,61 +24,72 @@
           </div>
           <!-- Header -->
 
-          <table class="table table-striped mb-4">
-            <thead>
-              <tr>
-                <th>#</th>
-                <th>Lastname</th>
-                <th>Firstname</th>
-                <th>Email</th>
-                <th>Role</th>
-                <th class="text-end">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              <ng-container *ngFor="let user of users; index as i">
+          <div class="table-wrapper">
+            <table class="table table-striped mb-4">
+              <thead>
                 <tr>
-                  <td>{{ i + 1 }}.</td>
-                  <td class="text-capitalize">{{ user.lastname }}</td>
-                  <td class="text-capitalize">{{ user.firstname }}</td>
-                  <td>{{ user.email }}</td>
-                  <td class="text-capitalize">{{ user.role | role }}</td>
-                  <td class="dropdown text-end">
-                    <button
-                      class="btn btn-sm btn-light"
-                      data-bs-toggle="dropdown"
-                    >
-                      <div
-                        class="d-flex justifycontent-between align-items-center"
-                      >
-                        More
-                        <fa-icon [icon]="faChevronDown" class="ms-2"></fa-icon>
-                      </div>
-                    </button>
-                    <ul class="dropdown-menu dropdown-menu-end">
-                      <li>
-                        <button class="dropdown-item" (click)="editUser(user)">
-                          <div class="d-flex align-items-center">
-                            <fa-icon [icon]="faPen" class="me-2"></fa-icon>
-                            Edit
-                          </div>
-                        </button>
-                        <button
-                          class="dropdown-item"
-                          (click)="deleteUser(user)"
-                        >
-                          <div class="d-flex align-items-center">
-                            <fa-icon [icon]="faTrashAlt" class="me-2"></fa-icon>
-                            Delete
-                          </div>
-                        </button>
-                      </li>
-                    </ul>
-                  </td>
+                  <th>#</th>
+                  <th>Lastname</th>
+                  <th>Firstname</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th class="text-end">Action</th>
                 </tr>
-              </ng-container>
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                <ng-container *ngFor="let user of users; index as i">
+                  <tr>
+                    <td>{{ i + 1 }}.</td>
+                    <td class="text-capitalize">{{ user.lastname }}</td>
+                    <td class="text-capitalize">{{ user.firstname }}</td>
+                    <td>{{ user.email }}</td>
+                    <td class="text-capitalize">{{ user.role | role }}</td>
+                    <td class="dropdown text-end">
+                      <button
+                        class="btn btn-sm btn-light"
+                        data-bs-toggle="dropdown"
+                      >
+                        <div
+                          class="d-flex justifycontent-between align-items-center"
+                        >
+                          More
+                          <fa-icon
+                            [icon]="faChevronDown"
+                            class="ms-2"
+                          ></fa-icon>
+                        </div>
+                      </button>
+                      <ul class="dropdown-menu dropdown-menu-end">
+                        <li>
+                          <button
+                            class="dropdown-item"
+                            (click)="editUser(user)"
+                          >
+                            <div class="d-flex align-items-center">
+                              <fa-icon [icon]="faPen" class="me-2"></fa-icon>
+                              Edit
+                            </div>
+                          </button>
+                          <button
+                            class="dropdown-item"
+                            (click)="deleteUser(user)"
+                          >
+                            <div class="d-flex align-items-center">
+                              <fa-icon
+                                [icon]="faTrashAlt"
+                                class="me-2"
+                              ></fa-icon>
+                              Delete
+                            </div>
+                          </button>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
 
           <!-- Footer -->
           <div class="d-flex justify-content-between align-items-center">
