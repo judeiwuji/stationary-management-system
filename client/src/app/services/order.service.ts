@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 import { IFeedback } from '../model/feedback';
 import { IOrder, IOrderActionRequest } from '../model/order';
 

@@ -116,8 +116,11 @@ export default class OrderService {
     const feedback = new Feedback<Order>();
 
     try {
-      const query = filters ? { ...filters } : {};
+      let query = filters ? { ...filters } : {};
       const pager = new Pagination(page);
+      if (user.role === Roles.HOD) {
+        query = { ...query, userId: user.id };
+      }
 
       const { rows, count } = await Order.findAndCountAll({
         where: query,

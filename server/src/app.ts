@@ -45,6 +45,10 @@ class App {
 
   settings() {
     new RouteManager(this.app);
+    this.app.all("*", (req, res) => {
+      const indexFile = path.join(__dirname, "..", "public", "index.html");
+      res.sendFile(indexFile);
+    });
   }
 
   run() {

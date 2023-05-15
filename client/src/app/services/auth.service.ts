@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { IAuthRequest, IAuthResponse } from '../model/auth';
 import { HttpClient } from '@angular/common/http';
 import { IFeedback } from '../model/feedback';
-import { environment } from 'src/environment/environment';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root',

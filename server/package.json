@@ -2,9 +2,10 @@
   "name": "stationary-management-server",
   "version": "1.0.0",
   "description": "A stationary management app",
-  "main": "dist/app.js",
+  "main": "node dist/app.js",
   "scripts": {
-    "dev": "nodemon --config nodemon.json src/app.ts"
+    "dev": "nodemon --config nodemon.json src/app.ts",
+    "start": "node dist/app.js"
   },
   "keywords": [
     "stationary",

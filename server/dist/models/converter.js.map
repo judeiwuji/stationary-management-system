@@ -1,0 +1,1 @@
+{"version":3,"file":"converter.js","sourceRoot":"","sources":["../../src/models/converter.ts"],"names":[],"mappings":";;AAAA,MAAqB,SAAS;IAC5B,MAAM,CAAC,MAAM,CAAC,IAAY;QACxB,IAAI;YACF,OAAO,IAAI,CAAC,KAAK,CAAC,IAAI,CAAC,CAAC;SACzB;QAAC,OAAO,KAAK,EAAE;YACd,OAAO,IAAI,CAAC;SACb;IACH,CAAC;CACF;AARD,4BAQC"}
