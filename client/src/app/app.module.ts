@@ -51,6 +51,7 @@ import { ChatSearchUsersComponent } from './chat-search-users/chat-search-users.
 import { ReceiptImageComponent } from './receipt-image/receipt-image.component';
 import { StatusBadgeComponent } from './components/status-badge/status-badge.component';
 import { CartComponent } from './cart/cart.component';
+import { ResetPasswordComponent } from './modals/reset-password/reset-password.component';
 
 @NgModule({
   declarations: [
@@ -95,6 +96,7 @@ import { CartComponent } from './cart/cart.component';
     ReceiptImageComponent,
     StatusBadgeComponent,
     CartComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

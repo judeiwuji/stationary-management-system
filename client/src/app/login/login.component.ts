@@ -5,6 +5,8 @@ import { AuthService } from '../services/auth.service';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
 import { faSpinner } from '@fortawesome/free-solid-svg-icons';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ResetPasswordComponent } from '../modals/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-login',
@@ -23,7 +25,8 @@ export class LoginComponent {
   constructor(
     private readonly authService: AuthService,
     private readonly toastr: ToastrService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly modal: NgbModal
   ) {
     if (AuthService.getCredentials()) {
       router.navigate(['/dashboard']);
@@ -57,6 +60,13 @@ export class LoginComponent {
         console.log(err);
         this.toastr.warning(err.error);
       },
+    });
+  }
+
+  resetPassword() {
+    const instance = this.modal.open(ResetPasswordComponent, {
+      size: 'md',
+      backdrop: 'static',
     });
   }
 }

@@ -27,4 +27,17 @@ export class UserService {
   deleteUser(id: number) {
     return this.http.delete<IFeedback<IUser>>(`${this.api}/${id}`);
   }
+
+  identifyUser(request: { email: string }) {
+    return this.http.get<IUser>(`${this.api}/identify`, {
+      params: request,
+    });
+  }
+
+  resetPassword(request: { userId: number; newPassword: string }) {
+    return this.http.post<{ status: boolean }>(
+      `${this.api}/reset/password`,
+      request
+    );
+  }
 }
