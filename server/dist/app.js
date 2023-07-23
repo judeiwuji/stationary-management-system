@@ -34,24 +34,26 @@ const session_manager_1 = __importDefault(require("./middlewares/session-manager
 const path_1 = __importDefault(require("path"));
 const cors_1 = __importDefault(require("cors"));
 const morgan_1 = __importDefault(require("morgan"));
+const installer_1 = __importDefault(require("./utils/installer"));
 dotEnv.config();
 class App {
     constructor() {
         this.app = (0, express_1.default)();
         this.port = `${process.env.PORT}`;
         sequelize_1.default.sync({ alter: false });
+        (0, installer_1.default)();
         this.middlewares();
         this.settings();
         this.run();
     }
     middlewares() {
         this.app.use((0, cors_1.default)({
-            exposedHeaders: ["x-access", "x-access-refresh"],
-            origin: "*",
+            exposedHeaders: ['x-access', 'x-access-refresh'],
+            origin: '*',
             maxAge: 0,
         }));
-        this.app.use((0, morgan_1.default)("dev"));
-        this.app.use(express_1.default.static(path_1.default.join(__dirname, "../", "public")));
+        this.app.use((0, morgan_1.default)('dev'));
+        this.app.use(express_1.default.static(path_1.default.join(__dirname, '../', 'public')));
         this.app.use(express_1.default.json({}));
         this.app.use(express_1.default.urlencoded({ extended: true }));
         this.app.use((req, res, next) => session_manager_1.default.refreshToken(req, res, next));
@@ -59,8 +61,8 @@ class App {
     }
     settings() {
         new routemanager_1.default(this.app);
-        this.app.all("*", (req, res) => {
-            const indexFile = path_1.default.join(__dirname, "..", "public", "index.html");
+        this.app.all('*', (req, res) => {
+            const indexFile = path_1.default.join(__dirname, '..', 'public', 'index.html');
             res.sendFile(indexFile);
         });
     }

@@ -62,13 +62,39 @@ class UserController {
         return __awaiter(this, void 0, void 0, function* () {
             const id = req.params.id;
             if (!id) {
-                return res.status(400).send("id is required");
+                return res.status(400).send('id is required');
             }
             const feedback = yield this.userService.deleteUser(id);
             if (!feedback.success) {
                 return res.status(404).send(feedback.message);
             }
             res.send(feedback);
+        });
+    }
+    identifyUser(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const user = yield this.userService.findUserBy({
+                    email: req.query.email,
+                });
+                res.send(user);
+            }
+            catch (error) {
+                res.status(400).send({ error: error.message });
+            }
+        });
+    }
+    resetPassword(req, res) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                const formData = (yield (0, validate_1.default)(user_schema_1.ResetPasswordSchema, req.body))
+                    .data;
+                yield this.userService.resetPassword(formData);
+                res.send({ status: true });
+            }
+            catch (error) {
+                res.status(400).send({ error: error.message });
+            }
         });
     }
 }

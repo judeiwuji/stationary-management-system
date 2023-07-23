@@ -28,12 +28,12 @@ class UserService {
                 const emailExists = yield user_1.default.findOne({ where: { email: data.email } });
                 if (emailExists) {
                     feedback.success = false;
-                    feedback.message = "Email already exists";
+                    feedback.message = 'Email already exists';
                     return feedback;
                 }
                 const salt = yield (0, bcryptjs_1.genSalt)(10);
                 const password = yield (0, bcryptjs_1.hash)(data.password, salt);
-                const role = typeof data.role === "number" ? data.role : Number(role_1.Roles[data.role]);
+                const role = typeof data.role === 'number' ? data.role : Number(role_1.Roles[data.role]);
                 const { id } = yield user_1.default.create({
                     firstname: data.firstname,
                     lastname: data.lastname,
@@ -57,7 +57,7 @@ class UserService {
         return __awaiter(this, void 0, void 0, function* () {
             const feedback = new feedback_1.default();
             try {
-                const role = typeof data.role === "number" ? data.role : Number(role_1.Roles[data.role]);
+                const role = typeof data.role === 'number' ? data.role : Number(role_1.Roles[data.role]);
                 yield user_1.default.update({ firstname: data.firstname, lastname: data.lastname, role }, { where: { id: data.id } });
                 feedback.data = (yield user_1.default.findByPk(data.id, {
                     attributes: UserDTO_1.default,
@@ -78,7 +78,7 @@ class UserService {
                 feedback.data = yield user_1.default.destroy({ where: { id } });
                 if (feedback.data === 0) {
                     feedback.success = false;
-                    feedback.message = "Not found";
+                    feedback.message = 'Not found';
                 }
             }
             catch (error) {
@@ -111,7 +111,7 @@ class UserService {
                     offset: pager.startIndex,
                     limit: pager.pageSize,
                     where: query,
-                    order: [["lastname", "ASC"]],
+                    order: [['lastname', 'ASC']],
                 });
                 feedback.totalPages = pager.totalPages(yield user_1.default.count({ where: query }), pager.pageSize);
             }
@@ -121,6 +121,23 @@ class UserService {
                 console.debug(error);
             }
             return feedback;
+        });
+    }
+    findUserBy(query) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const user = yield user_1.default.findOne({ where: query });
+            if (!user) {
+                throw new Error('No record found');
+            }
+            return user;
+        });
+    }
+    resetPassword(request) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const salt = yield (0, bcryptjs_1.genSalt)(10);
+            const hashedPassword = yield (0, bcryptjs_1.hash)(request.newPassword, salt);
+            const user = yield this.findUserBy({ id: request.userId });
+            yield user.update({ password: hashedPassword });
         });
     }
 }

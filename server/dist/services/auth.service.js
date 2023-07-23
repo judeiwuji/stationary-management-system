@@ -68,12 +68,12 @@ class AuthService {
                 const session = yield session_1.default.findByPk(data.session);
                 if (!session) {
                     feedback.success = false;
-                    feedback.message = "Session not found";
+                    feedback.message = 'Session not found';
                     return feedback;
                 }
                 if (!session.valid) {
                     feedback.success = false;
-                    feedback.message = "Session closed";
+                    feedback.message = 'Session closed';
                     return feedback;
                 }
                 const verified = this.verifyToken(session.refreshToken);
@@ -81,7 +81,7 @@ class AuthService {
                     session.valid = false;
                     session.save();
                     feedback.success = false;
-                    feedback.message = "Expired session";
+                    feedback.message = 'Expired session';
                     return feedback;
                 }
                 const accessToken = this.createAccessToken({
@@ -94,7 +94,7 @@ class AuthService {
             }
             catch (error) {
                 feedback.success = false;
-                feedback.message = "Server was unable to refresh session";
+                feedback.message = 'Server was unable to refresh session';
                 console.log(error);
             }
             return feedback;
@@ -107,12 +107,12 @@ class AuthService {
                 const user = yield user_1.default.findOne({ where: { email: data.email } });
                 if (!user) {
                     feedback.success = false;
-                    feedback.message = "Wrong password and email combination";
+                    feedback.message = 'Wrong password and email combination';
                     return feedback;
                 }
                 if (!(yield (0, bcryptjs_1.compare)(data.password, user.password))) {
                     feedback.success = false;
-                    feedback.message = "Wrong password and email combination";
+                    feedback.message = 'Wrong password and email combination';
                     return feedback;
                 }
                 yield session_1.default.update({ valid: false }, { where: { userId: user.id } });
@@ -135,7 +135,7 @@ class AuthService {
             }
             catch (error) {
                 feedback.success = false;
-                feedback.message = "Authentication failed";
+                feedback.message = 'Authentication failed';
             }
             return feedback;
         });

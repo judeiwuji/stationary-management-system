@@ -7,6 +7,7 @@ import SessionManager from './middlewares/session-manager';
 import path from 'path';
 import cors from 'cors';
 import morgan from 'morgan';
+import installer from './utils/installer';
 
 dotEnv.config();
 
@@ -18,6 +19,7 @@ class App {
     this.app = express();
     this.port = `${process.env.PORT}`;
     db.sync({ alter: false });
+    installer();
     this.middlewares();
     this.settings();
     this.run();
