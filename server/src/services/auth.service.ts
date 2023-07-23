@@ -1,15 +1,15 @@
-import { AuthRequest, AuthResponse } from "../models/auth";
-import Feedback from "../models/feedback";
+import { AuthRequest, AuthResponse } from '../models/auth';
+import Feedback from '../models/feedback';
 import {
   AccessTokenPayload,
   RefreshTokenPayload,
   VerifiedToken,
-} from "../models/interfaces/token_payload";
-import { Roles } from "../models/role";
-import Session from "../models/session";
-import User from "../models/user";
-import { compare } from "bcryptjs";
-import { sign, verify, decode } from "jsonwebtoken";
+} from '../models/interfaces/token_payload';
+import { Roles } from '../models/role';
+import Session from '../models/session';
+import User from '../models/user';
+import { compare } from 'bcryptjs';
+import { sign, verify, decode } from 'jsonwebtoken';
 
 export default class AuthService {
   accessTokenTimeout = process.env.ACCESS_TOKEN_TIMEOUT;
@@ -62,13 +62,13 @@ export default class AuthService {
       const session = await Session.findByPk(data.session);
       if (!session) {
         feedback.success = false;
-        feedback.message = "Session not found";
+        feedback.message = 'Session not found';
         return feedback;
       }
 
       if (!session.valid) {
         feedback.success = false;
-        feedback.message = "Session closed";
+        feedback.message = 'Session closed';
         return feedback;
       }
 
@@ -77,7 +77,7 @@ export default class AuthService {
         session.valid = false;
         session.save();
         feedback.success = false;
-        feedback.message = "Expired session";
+        feedback.message = 'Expired session';
         return feedback;
       }
 
@@ -94,7 +94,7 @@ export default class AuthService {
       feedback.data = accessToken;
     } catch (error) {
       feedback.success = false;
-      feedback.message = "Server was unable to refresh session";
+      feedback.message = 'Server was unable to refresh session';
       console.log(error);
     }
     return feedback;
@@ -107,13 +107,13 @@ export default class AuthService {
 
       if (!user) {
         feedback.success = false;
-        feedback.message = "Wrong password and email combination";
+        feedback.message = 'Wrong password and email combination';
         return feedback;
       }
 
       if (!(await compare(data.password, user.password))) {
         feedback.success = false;
-        feedback.message = "Wrong password and email combination";
+        feedback.message = 'Wrong password and email combination';
         return feedback;
       }
 
@@ -137,7 +137,7 @@ export default class AuthService {
       };
     } catch (error) {
       feedback.success = false;
-      feedback.message = "Authentication failed";
+      feedback.message = 'Authentication failed';
     }
     return feedback;
   }

@@ -1,12 +1,14 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 import {
+  IdentifyUserSchema,
+  ResetPasswordSchema,
   UserCreationSchema,
   UserUpdateSchema,
-} from "../validators/schema/user.schema";
-import validate from "../validators/validate";
-import { UserAttributes, UserCreationAttributes } from "../models/user";
-import UserService from "../services/user.service";
-import Converter from "../models/converter";
+} from '../validators/schema/user.schema';
+import validate from '../validators/validate';
+import { UserAttributes, UserCreationAttributes } from '../models/user';
+import UserService from '../services/user.service';
+import Converter from '../models/converter';
 
 export default class UserController {
   userService = new UserService();
@@ -59,7 +61,7 @@ export default class UserController {
     const id: any = req.params.id;
 
     if (!id) {
-      return res.status(400).send("id is required");
+      return res.status(400).send('id is required');
     }
     const feedback = await this.userService.deleteUser(id);
 
@@ -67,5 +69,27 @@ export default class UserController {
       return res.status(404).send(feedback.message);
     }
     res.send(feedback);
+  }
+
+  async identifyUser(req: Request, res: Response) {
+    try {
+      const user = await this.userService.findUserBy({
+        email: req.query.email,
+      });
+      res.send(user);
+    } catch (error: any) {
+      res.status(400).send({ error: error.message });
+    }
+  }
+
+  async resetPassword(req: Request, res: Response) {
+    try {
+      const formData = (await validate<any>(ResetPasswordSchema, req.body))
+        .data;
+      await this.userService.resetPassword(formData);
+      res.send({ status: true });
+    } catch (error: any) {
+      res.status(400).send({ error: error.message });
+    }
   }
 }

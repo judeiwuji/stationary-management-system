@@ -1,11 +1,12 @@
-import { Op } from "sequelize";
-import UserDTO from "../models/DTO/UserDTO";
-import Errors from "../models/errors";
-import Feedback from "../models/feedback";
-import Pagination from "../models/pagination";
-import { Roles } from "../models/role";
-import User, { UserAttributes, UserCreationAttributes } from "../models/user";
-import { hash, genSalt } from "bcryptjs";
+import { Op } from 'sequelize';
+import UserDTO from '../models/DTO/UserDTO';
+import Errors from '../models/errors';
+import Feedback from '../models/feedback';
+import Pagination from '../models/pagination';
+import { Roles } from '../models/role';
+import User, { UserAttributes, UserCreationAttributes } from '../models/user';
+import { hash, genSalt } from 'bcryptjs';
+import { ResetPasswordRequest } from '../models/interfaces/reset_password_request';
 
 export default class UserService {
   async createUser(data: UserCreationAttributes) {
@@ -15,14 +16,14 @@ export default class UserService {
 
       if (emailExists) {
         feedback.success = false;
-        feedback.message = "Email already exists";
+        feedback.message = 'Email already exists';
         return feedback;
       }
 
       const salt = await genSalt(10);
       const password = await hash(data.password, salt);
       const role =
-        typeof data.role === "number" ? data.role : Number(Roles[data.role]);
+        typeof data.role === 'number' ? data.role : Number(Roles[data.role]);
       const { id } = await User.create({
         firstname: data.firstname,
         lastname: data.lastname,
@@ -46,7 +47,7 @@ export default class UserService {
 
     try {
       const role =
-        typeof data.role === "number" ? data.role : Number(Roles[data.role]);
+        typeof data.role === 'number' ? data.role : Number(Roles[data.role]);
       await User.update(
         { firstname: data.firstname, lastname: data.lastname, role },
         { where: { id: data.id } }
@@ -69,7 +70,7 @@ export default class UserService {
       feedback.data = await User.destroy({ where: { id } });
       if (feedback.data === 0) {
         feedback.success = false;
-        feedback.message = "Not found";
+        feedback.message = 'Not found';
       }
     } catch (error) {
       feedback.success = false;
@@ -103,7 +104,7 @@ export default class UserService {
         offset: pager.startIndex,
         limit: pager.pageSize,
         where: query,
-        order: [["lastname", "ASC"]],
+        order: [['lastname', 'ASC']],
       });
       feedback.totalPages = pager.totalPages(
         await User.count({ where: query }),
@@ -115,5 +116,21 @@ export default class UserService {
       console.debug(error);
     }
     return feedback;
+  }
+
+  async findUserBy(query: any) {
+    const user = await User.findOne({ where: query });
+
+    if (!user) {
+      throw new Error('No record found');
+    }
+    return user;
+  }
+
+  async resetPassword(request: ResetPasswordRequest) {
+    const salt = await genSalt(10);
+    const hashedPassword = await hash(request.newPassword, salt);
+    const user = await this.findUserBy({ id: request.userId });
+    await user.update({ password: hashedPassword });
   }
 }
